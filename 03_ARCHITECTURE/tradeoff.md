@@ -2,11 +2,10 @@
 
 ---
 
-> ⚠️ **Cảnh báo về số liệu:** mọi con số tổng hợp / STA / công suất của I02 (26 cell ·
-> 7 FF · 241,4816 µm² · 1,46 ns · 3,22e-05 W) đo trên một netlist **không chứa datapath**
-> (`assign root = 4'h0;`). Chúng **không** dùng được để so sánh kiến trúc. Ở đâu cần số
-> liệu thật, tài liệu này dùng đề **I01** làm tham chiếu — cùng họ thuật toán lặp
-> so sánh–trừ, cùng môi trường công cụ, và có số liệu hợp lệ.
+> **Cập nhật sau bản vá P-1:** README tham chiếu ghi nhận 118 cell, 26 FF,
+> 1122,3264 µm², STA 2,86 ns và công suất 1.75e-04 W. Raw reports chưa có trong checkout,
+> nên các số này chưa được tái xác nhận độc lập. Phần dưới đây giữ lại chẩn đoán netlist
+> lỗi trước vá như lịch sử; không dùng số liệu 26 cell/7 FF cũ làm kết quả hiện tại.
 
 ---
 
@@ -145,35 +144,32 @@ Charter mục 3 xếp “căn có phần thập phân” vào ngoài phạm vi. 
 > lõi** — chỉ cần chạy thêm `F` bước và nạp cặp `00`. Đây là ưu thế mà Newton–Raphson và
 > bảng tra không có. Đáng nêu khi bảo vệ dù không được hiện thực.
 
-## 6. Đánh đổi bằng số liệu — và vì sao **không** dùng được số của I02
+## 6. Số liệu theo README tham chiếu
 
-| Chỉ số | I02 đo được | Charter dự báo | Có dùng được? |
+| Chỉ số | I02 được ghi nhận | Charter dự báo | Ghi chú |
 |---|---:|---|---|
-| Số cell | 26 | ~230–330 cell | 🔴 **KHÔNG** — netlist rỗng |
-| Flip-flop | 7 | ≈ 18–22 ô nhớ | 🔴 **KHÔNG** — thiếu 11–15 FF |
-| Diện tích | 241,4816 µm² | 1×1 tile | 🔴 **KHÔNG** |
-| Data arrival | 1,46 ns (gồm 1,00 ns giả định) | — | 🔴 **KHÔNG** — logic thật chỉ 0,46 ns |
-| Slack | 8,40 ns | — | 🔴 **KHÔNG** — dư vì thiếu logic |
-| Công suất | 3,22e-05 W (tuần tự 93,7 %) | — | 🔴 **KHÔNG** |
+| Số cell | 118 | ~230–330 cell | Số liệu tham chiếu; raw report chưa có |
+| Flip-flop | 26 | > 0 | Số liệu tham chiếu; raw report chưa có |
+| Diện tích | 1122,3264 µm² | 1×1 tile | Số liệu tham chiếu |
+| Data arrival | 2,86 ns | — | STA theo giả định trong SDC |
+| Slack | — | — | Raw report chưa có trong checkout |
+| Công suất | 1.75e-04 W (ước lượng) | — | Số liệu tham chiếu |
 
-### Tham chiếu thay thế: đề I01 (số liệu hợp lệ, cùng môi trường)
+### So sánh cấu trúc
 
-| | **I01** (chia 8÷4, đúng) | **I02** (căn 8 bit, hỏng) | **I02 dự báo sau khi vá** |
+| | **I01** (chia 8÷4) | **I02 trước vá (lịch sử)** | **I02 theo README tham chiếu** |
 |---|---:|---:|---:|
-| Số cell | **148** | 26 | **~90–120** (ước tính) |
-| Flip-flop | **33** | 7 | **~28** (ước tính) |
-| Cell `xor`/`xnor` | **7** | **0** 🔴 | ~6–10 |
-| Diện tích (µm²) | **1387,58** | 241,48 | ⬜ chưa tính được |
+| Số cell | **148** | 26 | **118** |
+| Flip-flop | **33** | 7 | **26** |
+| Cell `xor`/`xnor` | **7** | **0** | Raw report chưa có |
+| Diện tích (µm²) | **1387,58** | 241,48 | **1122,3264** |
 | Bước lặp | 8 | 4 | 4 |
-| Bề rộng chuỗi mượn | 5 bit | 9 bit (đáng lẽ) | 9 bit |
-| Logic thật trên đường tới hạn | **1,24 ns** | 0,46 ns 🔴 | ⬜ dự kiến **> 1,24 ns** |
+| Bề rộng chuỗi mượn | 5 bit | 9 bit | 9 bit |
+| Độ trễ | **1,24 ns** | 1,46 ns (trước vá) | **2,86 ns** theo README tham chiếu |
 
-> **Cơ sở của dự báo:** I02 có datapath **hẹp hơn về số bước** (4 so với 8 → ít logic điều
-> khiển hơn) nhưng **rộng hơn về bề ngang** (chuỗi mượn 9 bit so với 5 bit → nhiều cell số
-> học hơn mỗi bit). Hai xu hướng ngược nhau, nên ước tính ~90–120 cell là vùng hợp lý.
->
-> ⬜ **Đây là dự báo, tuyệt đối không phải số đo.** Chỉ có cách duy nhất để biết: vá lỗi
-> theo `known_issues.md` rồi chạy lại `02_run_synth.sh` và `03_run_sta.tcl`.
+> Các số lịch sử trước vá được giữ lại để giải thích nguyên nhân lỗi. Số hiện tại là số
+> tham chiếu từ README; xem [`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md)
+> để biết giới hạn raw reports chưa có.
 
 ## 7. Những đánh đổi **KHÔNG được phép** trong đề này
 
@@ -186,7 +182,7 @@ Charter mục 3 xếp “căn có phần thập phân” vào ngoài phạm vi. 
 | Dùng hàm `$sqrt` của ngôn ngữ | Không tổng hợp được, và xoá sạch nội dung dạy học |
 | Xoá cổng `busy` để khớp đúng ánh xạ Charter mục 4 | Ánh xạ hiện dùng 14/24 chân, **còn dư 10** — không có áp lực phải xoá. Nhưng nếu muốn xoá thì phải hỏi giảng viên |
 | Tự sửa netlist bằng tay để “phục hồi” `root` | Charter mục 3: physical design là ngoài phạm vi. Và sửa netlist không sửa được lỗi nguồn |
-| **Công bố 26 cell / 241,48 µm² / slack 8,40 ns như đặc trưng của I02** | 🔴 **Nghiêm trọng nhất.** Đây là số liệu của một mạch rỗng. Công bố mà không kèm cảnh báo là báo cáo sai sự thật |
+| Công bố số liệu vật lý mà không nêu công cụ, giả định và trạng thái raw reports | Sai phạm vi bằng chứng; cần kèm các điều kiện trong `physical_report.md` |
 
 ## 8. Đánh đổi mà hồ sơ này **đã mắc phải** mà không cố ý
 

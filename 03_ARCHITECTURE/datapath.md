@@ -2,14 +2,13 @@
 
 ---
 
-> 🔴 **Toàn bộ datapath mô tả dưới đây tồn tại trong RTL nhưng KHÔNG tồn tại trong
-> netlist.** Xung đột driver trên `root` (dòng 51 vs dòng 59) khiến Yosys nối `root` về
-> hằng `4'h0`, kéo theo cả chuỗi phụ thuộc chết theo. Bằng chứng:
-> `netlist.v:182  assign root = 4'h0;` và cổng `x` có **0 tham chiếu**.
-> Xem `05_VERIFICATION/known_issues.md`.
+> **Ảnh chụp lịch sử trước bản vá P-1:** đoạn dưới mô tả datapath trong RTL và cách lỗi
+> driver kép từng làm Yosys nối `root` về `4'h0`. Lỗi đã được vá; không coi các mô tả
+> netlist lỗi bên dưới là kết quả hiện tại. Xem
+> [`../05_VERIFICATION/known_issues.md`](../05_VERIFICATION/known_issues.md).
 >
-> Phân tích dưới đây vẫn có giá trị đầy đủ: nó mô tả datapath **phải có**, và là thước đo
-> để đối chiếu sau khi vá.
+> Cấu trúc datapath RTL vẫn có giá trị để đọc kiến trúc; báo cáo số liệu hiện có xem tại
+> [`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md).
 
 ---
 

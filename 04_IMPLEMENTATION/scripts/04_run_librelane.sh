@@ -39,7 +39,12 @@ fi
 $RUNNER "$CFG" 2>&1 | tee 06_GDSII/librelane_run.log
 RUNDIR=$(ls -dt runs/*/ 2>/dev/null | head -1 || true)
 [ -z "$RUNDIR" ] && { echo "[LOI] khong thay thu muc runs/"; exit 1; }
-cp_if(){ [ -e "$1" ] && cp -r "$1" "$2" && echo "  -> $2"; }
+cp_if(){
+  [ -e "$1" ] || return 0
+  mkdir -p "$2"
+  cp -r "$1"/. "$2"/
+  echo "  -> $2"
+}
 cp_if "$RUNDIR/final/gds"          06_GDSII/gds/
 cp_if "$RUNDIR/reports/signoff"    06_GDSII/sta/
 cp_if "$RUNDIR/reports/drc"        06_GDSII/drc/

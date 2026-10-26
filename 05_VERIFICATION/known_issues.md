@@ -27,7 +27,9 @@
 >
 > Không có chênh lệch nào giữa bản vá đã soạn và bản vá đã áp dụng.
 >
-> Phần chẩn đoán bên dưới **giữ nguyên** làm tài liệu dạy học.
+> **Lưu ý:** Phần dưới đây là chẩn đoán lịch sử của phiên bản *trước khi vá*. Các thông
+> báo `COMPILE_FAIL`, netlist rỗng và kết luận “RTL chưa bị sửa” mô tả trạng thái cũ,
+> không phải trạng thái hiện tại. Kết quả sau vá được tóm tắt ở bảng trên.
 
 ---
 

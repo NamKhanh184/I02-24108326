@@ -2,19 +2,14 @@
 
 ---
 
-> ## ⬜ Waveform dưới đây **suy ra từ mã**, không phải thu từ mô phỏng
+> ## ✅ Waveform và kiểm tra số bước
 >
-> `Mô phỏng RTL = COMPILE_FAIL` (`iverilog_compile.log`), nên hồ sơ **không có file VCD
-> nào**. Mọi giản đồ ở đây được dựng bằng cách mô phỏng bằng tay theo từng cạnh clock, và
-> **đối chiếu khớp từng dòng** với mô hình chuẩn `reference_model.py` (hàm
-> `isqrt_bitwise`, mảng `trace`) — vốn đã PASS trên toàn miền 256 giá trị.
+> RTL đã chạy PASS bằng Icarus Verilog 12.0. Testbench ghi waveform tại
+> `../05_VERIFICATION/waveforms/i02_integer_sqrt.vcd` và kiểm tra `busy` đúng 4 chu kỳ
+> cho mỗi ca. Bảng dưới đây được suy ra từ RTL và đối chiếu với mô hình chuẩn Python.
 >
-> Ngay cả khi mô phỏng chạy được, waveform vẫn là mô phỏng **hành vi (zero-delay)**: mọi
+> Đây là mô phỏng **hành vi (zero-delay)**: mọi
 > tín hiệu đổi đúng tại cạnh clock, **không** minh hoạ `t_ckq`, `t_setup` hay độ trễ cổng.
->
-> 🔴 **Và phải nhớ:** waveform của **netlist hiện tại** sẽ khác hẳn — `root` sẽ **phẳng ở
-> 0** suốt, vì `assign root = 4'h0;`. Các dòng `root`, `rem`, `x_reg` dưới đây mô tả hành
-> vi **đáng lẽ phải có** sau khi vá.
 
 ---
 
@@ -45,12 +40,10 @@
 > lời “4 chu kỳ” mà không kèm giải thích là **thiếu**; trả lời “6 chu kỳ” mà không nói
 > trong đó có 4 bước lặp cũng là **thiếu**.
 
-⬜ **Chưa có bằng chứng đo được.** Khác với đề I01 (nơi `$finish at 635` trong
-`simulation.log` xác nhận độ trễ 10 chu kỳ), I02 **không có `simulation.log`** —
-COMPILE_FAIL nên không có mốc thời gian nào để dựng lại. Ca **B-4** trong
-`corner_cases.md` là cách lấy bằng chứng này sau khi vá.
+Testbench xác nhận 4 chu kỳ `busy` cho từng ca; tổng độ trễ `start`→`done` là 6 chu kỳ
+theo diễn tiến FSM trong bảng. Waveform là bằng chứng hành vi, không phải STA.
 
-## 2. Giản đồ dạng sóng đầy đủ — `√255 = 15` (ca 13 của testbench)
+## 2. Giản đồ dạng sóng đầy đủ — `√255 = 15` (ca 15 của testbench)
 
 `x = 255 = 8'b1111_1111`. Các cặp bit theo thứ tự: `11, 11, 11, 11`.
 
@@ -85,7 +78,6 @@ done    _______________________________╱‾‾‾╲__________
 root    │ 0  │ 0  │ 1  │ 3  │ 7  │ 15 │ 15 │
                    ▲b1  ▲b2  ▲b3  ▲b4
                    1    11   111  1111
-        🔴 TRONG NETLIST HIỆN TẠI: dòng này PHẲNG Ở 0 suốt
 ```
 
 ### Bảng giá trị từng chu kỳ — **giá trị sau mỗi cạnh clock**
@@ -108,7 +100,7 @@ root    │ 0  │ 0  │ 1  │ 3  │ 7  │ 15 │ 15 │
 `pair`, `rem_shift`, `trial`, `bit`, `root`, `remainder` — **trùng khớp từng dòng** với
 bảng trên.
 
-## 3. Giản đồ `√100 = 10` — **ca Charter mục 8 đang THIẾU trong testbench**
+## 3. Giản đồ `√100 = 10` — ca Charter mục 8
 
 `x = 100 = 8'b0110_0100`. Các cặp bit: `01, 10, 01, 00`.
 
@@ -150,11 +142,8 @@ done    _________________________________╱‾‾‾╲
 > | `rem_shift >= trial` (đúng) | **10** | ✅ |
 > | `rem_shift > trial` (sai) | **8** | ❌ |
 >
-> Và mẫu `qbit` là **`1,0,1,0`** — mẫu xen kẽ duy nhất trong bộ ca Charter yêu cầu.
-> Không ca nào hiện có trong testbench (`root ∈ {0,1,2,3,4,7,8,15}`) sinh ra mẫu xen kẽ.
->
-> **Đây là lý do kỹ thuật vì sao Charter mục 8 liệt `x=100` vào ca bắt buộc — và vì sao
-> việc testbench thiếu nó là một khiếm khuyết thật, không phải chuyện hình thức.**
+> Và mẫu `qbit` là **`1,0,1,0`** — testbench hiện có cả `x=99` và `x=100`, hai ca Charter
+> kiểm tra mẫu xen kẽ.
 
 ## 4. Giản đồ **hai phép tính liên tiếp**
 
@@ -186,15 +175,13 @@ done   _____________________╱‾╲__________________╱‾╲
 | Số bước lặp | **4** | 8 |
 | Tổng độ trễ | **6** chu kỳ | 10 chu kỳ |
 | Bề rộng chuỗi mượn | **9** bit | 5 bit |
-| Số chu kỳ có bằng chứng đo? | ❌ COMPILE_FAIL | ✅ `$finish at 635` |
+| Kiểm chứng số bước | ✅ testbench xác nhận 4 chu kỳ `busy` | ✅ mô phỏng |
 
 > **Đánh đổi rõ ràng:** I02 tiêu thụ **2 bit mỗi bước** nên chỉ cần **một nửa** số bước
 > so với I01 — nhưng phải trả giá bằng **chuỗi mượn rộng gần gấp đôi** (9 bit so với
-> 5 bit), tức đường tổ hợp sâu hơn. Ít chu kỳ hơn, mỗi chu kỳ dài hơn.
->
-> ⬜ **Không kiểm chứng được bằng số đo ở gói này.** STA của I02 báo đường tới hạn
-> **0,46 ns** — ngắn hơn I01 (1,24 ns) thay vì dài hơn, vì bộ so sánh–trừ 9 bit **không
-> tồn tại trong netlist**. Xem `block_diagram.md` §3.
+> 5 bit), tức đường tổ hợp sâu hơn. Số liệu STA 2,86 ns được ghi nhận trong README tham
+> chiếu; raw report chưa có trong checkout để so sánh độc lập. Xem
+> [`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md).
 
 ## 6. Quy luật mở rộng — dự báo cho `INPUT_W` khác
 

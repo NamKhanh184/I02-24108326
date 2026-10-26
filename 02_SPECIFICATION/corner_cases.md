@@ -2,14 +2,14 @@
 
 ---
 
-> **Tình trạng kiểm thử RTL: `COMPILE_FAIL`** (`test_matrix.csv`: TC-001, TC-002 =
-> `XEM known_issues.md`). Không ca nào dưới đây đã chạy được trên RTL. Cột “có trong TB”
-> chỉ nói testbench *có viết* ca đó, **không** nói ca đó đã PASS.
+> **Trạng thái hiện tại:** RTL đã vá và testbench chạy PASS bằng Icarus Verilog 12.0.
+> Chẩn đoán lỗi trước vá được lưu trong
+> [`../05_VERIFICATION/known_issues.md`](../05_VERIFICATION/known_issues.md).
 
 ## 1. Testbench thật có gì
 
-`05_VERIFICATION/testbench/i02_integer_sqrt_tb.sv` liệt kê **13 ca**, mỗi ca có **1
-assertion** so `root` với giá trị kỳ vọng:
+`05_VERIFICATION/testbench/i02_integer_sqrt_tb.sv` chạy **15 ca**. Mỗi ca so `root` với
+giá trị kỳ vọng và kiểm tra có đúng 4 chu kỳ `busy`:
 
 | # | `x` | kỳ vọng | Ý nghĩa kỹ thuật |
 |---:|---:|---:|---|
@@ -25,31 +25,28 @@ assertion** so `root` với giá trị kỳ vọng:
 | 10 | 63 | 7 | `k²−1` với `k=8` — **biên chuyển bit cao** |
 | 11 | 64 | 8 | Số chính phương `8²` — **bit 3 của `root` lần đầu bằng 1** |
 | 12 | 65 | 8 | `k²+1` với `k=8` |
-| 13 | 255 | 15 | **Biên trên tuyệt đối** |
+| 13 | 99 | 9 | Ca Charter — `k²−1` với `k=10` |
+| 14 | 100 | 10 | Ca Charter — số chính phương `10²` |
+| 15 | 255 | 15 | **Biên trên tuyệt đối** |
 
 **Chất lượng thiết kế ca: tốt.** Bộ ca này phủ rất bài bản cụm ba
 `(k²−1, k², k²+1)` — đúng chỗ mà lỗi off-by-one trong phép so sánh `>=` sẽ lộ ra.
 
-### ⚠️ Nhưng **thiếu 2/5 ca bắt buộc của Charter mục 8**
+### Ca bắt buộc của Charter mục 8
 
 | Ca Charter yêu cầu | Có trong TB? | Ghi chú |
 |---|:-:|---|
 | `x = 0` | ✅ | ca 1 |
 | `x = 1` | ✅ | ca 2 |
-| `x = 255` (kết quả 15) | ✅ | ca 13 |
-| **`x = 100` (kết quả 10)** | ❌ **THIẾU** | — |
-| **`x = 99` (kết quả 9)** | ❌ **THIẾU** | — |
+| `x = 255` (kết quả 15) | ✅ | ca 15 |
+| `x = 100` (kết quả 10) | ✅ | ca 14 |
+| `x = 99` (kết quả 9) | ✅ | ca 13 |
 
-Hai ca thiếu này **không** phải ngẫu nhiên vô hại. Cặp `(99, 100)` là cụm
+Hai ca này **không** phải ngẫu nhiên vô hại. Cặp `(99, 100)` là cụm
 `(k²−1, k²)` với `k = 10` — và `10 = 4'b1010` là giá trị `root` duy nhất trong bộ ca yêu
-cầu có **mẫu bit xen kẽ**. Mọi giá trị `root` mà TB hiện kiểm đều là
-`0, 1, 2, 3, 4, 7, 8, 15` — tức `0000, 0001, 0010, 0011, 0100, 0111, 1000, 1111`. **Không
-ca nào cho `root` dạng `1010` hay `1001`.** Nếu logic dịch `root_reg <= (root_reg << 1) |
-qbit` bị sai ở một vị trí bit cụ thể, các mẫu “toàn 0 / toàn 1 / một khối liền” có thể
-vẫn đúng trong khi mẫu xen kẽ thì sai.
+ cầu có **mẫu bit xen kẽ**. Hai ca này kiểm tra các mẫu `1010` và `1001`.
 
-> **Kết luận: phải bổ sung `x=99` và `x=100` — đây là yêu cầu bắt buộc của Charter mục 8,
-> không phải tuỳ chọn.**
+> **Kết luận:** đủ 5/5 ca bắt buộc của Charter mục 8 đã có trong testbench.
 
 ## 2. Phân loại ca theo tiêu chí kỹ thuật **riêng của đề này**
 
@@ -59,13 +56,13 @@ vì đó chính là chuỗi `qbit` mà 4 bước lặp sinh ra.
 | Lớp | Mẫu `root` | Số lần trừ / 4 bước | Ca đại diện | Đã có? |
 |---|---|---:|---|:-:|
 | **A. Toàn 0** | `0000` | **0** | `x=0` | ✅ ca 1 |
-| **B. Toàn 1** | `1111` | **4** | `x=255` | ✅ ca 13 |
+| **B. Toàn 1** | `1111` | **4** | `x=255` | ✅ ca 15 |
 | **C. Một khối liền ở đầu** | `1000` | 1 (bước 1) | `x=64` | ✅ ca 11 |
 | **D. Một khối liền ở cuối** | `0001`, `0011`, `0111` | 1–3 (các bước cuối) | `x=1`, `x=9`, `x=63` | ✅ ca 2, 7, 10 |
-| **E. Xen kẽ** | `1010`, `1001` | 2 | `x=100` (`root=10`), `x=81…99` (`root=9`) | ❌ **THIẾU HOÀN TOÀN** |
+| **E. Xen kẽ** | `1010`, `1001` | 2 | `x=100` (`root=10`), `x=99` (`root=9`) | ✅ ca 13–14 |
 
-Lớp **E** là lớp duy nhất bắt được lỗi “bit `qbit` vào nhầm vị trí” hoặc “`root_reg` dịch
-sai chiều”. Đó chính xác là lớp mà Charter mục 8 yêu cầu qua hai ca `99` và `100`.
+Lớp **E** giúp bắt lỗi “bit `qbit` vào nhầm vị trí” hoặc “`root_reg` dịch sai chiều”.
+Charter mục 8 yêu cầu hai ca `99` và `100`; cả hai đều chạy trong testbench.
 
 ### Phân loại phụ: theo **vị trí bước lặp sinh ra bit 1 đầu tiên**
 
@@ -83,14 +80,14 @@ sai chiều”. Đó chính xác là lớp mà Charter mục 8 yêu cầu qua ha
 
 | # | Ca | Vì sao cần | Loại |
 |---|---|---|---|
-| **B-1** | **`x = 100` → `root = 10`** | **Bắt buộc theo Charter mục 8.** Lớp E: mẫu `root = 1010` xen kẽ | **Bắt buộc** |
-| **B-2** | **`x = 99` → `root = 9`** | **Bắt buộc theo Charter mục 8.** Lớp E: mẫu `root = 1001`, và là `k²−1` với `k=10` | **Bắt buộc** |
-| **B-3** | Quét **vét cạn cả 256 giá trị `x`** | Miền chỉ có 256 phần tử — quét hết là chuyện vài mili-giây. Mô hình chuẩn **đã làm** (`test_full_domain`). RTL mới có 13/256 = **5,1 %** | **Vét cạn** |
-| **B-4** | Đo **số chu kỳ** từ `start` tới `done` ngay trong TB | Charter mục 2 câu 1 yêu cầu “kiểm chứng trên waveform”. TB dùng `wait(done)` nên **không biết** đã trôi qua mấy chu kỳ. Giá trị mong đợi: **6** | **Bắt buộc theo Charter mục 2** |
+| **B-1** | **`x = 100` → `root = 10`** | Ca Charter lớp E đã thêm vào testbench | ✅ đã chạy |
+| **B-2** | **`x = 99` → `root = 9`** | Ca Charter lớp E đã thêm vào testbench | ✅ đã chạy |
+| **B-3** | Quét **vét cạn cả 256 giá trị `x`** | Mô hình chuẩn Python đã làm (`test_full_domain`); RTL chưa quét vét cạn | Mở rộng tự nguyện |
+| **B-4** | Kiểm tra số bước lặp bằng `busy` và waveform | Testbench xác nhận `busy` đúng 4 chu kỳ; chưa assert tổng `start`→`done` là 6 cạnh | ✅ 4 bước lặp |
 | **B-5** | `start` bật lại **khi đang `busy`** | Đặc tả nói phải bị bỏ qua. Chưa bao giờ được thử | **Ca biên giao thức** |
 | **B-6** | Reset **giữa chừng** (`rst_n=0` khi `iter=2`) | Reset **đồng bộ**. Phải chứng minh `busy` về 0, `done` không phát xung rác, và phép tính kế tiếp vẫn đúng | **Ca biên** |
 | **B-7** | Kiểm `INPUT_W = 16` bằng cách khởi tạo module với tham số khác | Module tham số hoá nhưng **chưa bao giờ** chạy với giá trị khác 8. Mô hình chuẩn có `test_16bit_scaling()` — PASS. RTL thì chưa | **Ca tham số** |
-| **B-8** | Assertion `root*root <= x < (root+1)*(root+1)` thay vì so với bảng cố định | Biến 13 ca cố định thành **một tính chất tổng quát** kiểm được với mọi `x` — điều kiện tiên quyết cho B-3 | **Assertion tính chất** |
+| **B-8** | Assertion `root*root <= x < (root+1)*(root+1)` thay vì so với bảng cố định | Sẽ biến ca cố định thành một tính chất tổng quát; hiện chưa có trong RTL testbench | **Assertion tính chất** |
 
 ### Mẫu mã cho B-3 + B-8 — quét vét cạn với checker tính chất
 
@@ -133,7 +130,7 @@ assert (cyc == 6)
 | **Ca số âm** | `x` khai `logic [INPUT_W-1:0]` — không dấu. Căn của số âm không tồn tại trong số nguyên |
 | **Ca tràn `root`** | Không thể xảy ra. `√255 = 15,97…` → `root ≤ 15`, vừa đúng 4 bit. Đây là kết luận chứng minh được: `√(2^W−1) < 2^(W/2)` |
 | **Ca tràn `rem_reg`** | Không thể xảy ra. Từ INV-6: `rem ≤ 2·root ≤ 30` → `rem_shift ≤ 123`, trong khi `REM_W = 9` bit chứa được tới 511 |
-| **Ca số chu kỳ phụ thuộc dữ liệu** | Không áp dụng — số bước cố định bằng 4. Đây là **tính chất**, và ca B-4 chứng minh nó |
+| **Ca số chu kỳ phụ thuộc dữ liệu** | Không áp dụng — số bước cố định bằng 4. Testbench kiểm tra 4 chu kỳ `busy` trên từng ca |
 | **Ca `X`/`Z` trên `x`** | `interface.md` §4 giao nghĩa vụ này cho tầng ngoài. `properties.sv` chỉ kiểm **đầu ra** không có `X` |
 | **Ca pipeline / nhiều phép song song** | Khối chỉ có một bộ so sánh–trừ dùng chung, vòng hồi tiếp không pipeline được |
 
@@ -141,29 +138,29 @@ assert (cyc == 6)
 
 | Mức | Ca cần thêm | Vì sao — **đặc biệt quan trọng với đề này** |
 |---|---|---|
-| **Gate-level** | Chạy **bất kỳ** ca nào trên `06_GDSII/synthesis/netlist.v` | 🔴 **Đây là ca quan trọng nhất của cả hồ sơ.** Netlist có `assign root = 4'h0;` và **0 tham chiếu** tới cổng `x`. Một ca gate-level duy nhất với `x=4` sẽ ra `root=0` thay vì `2` và **phát hiện ngay** lỗi CT-2. Mô phỏng RTL không phát hiện được vì nó còn không chạy nổi |
-| **Gate-level** | So sánh danh sách FF netlist với danh sách biến RTL | 7 FF so với ~27 bit khai báo → chênh lệch 20 bit. Đây là kiểm tra **tự động hoá được** bằng script |
-| **Gate-level** | Ca khởi tạo `X`: thả netlist chạy **không** reset | 7 FF đều là `dfxtp_1` — **không có chân reset**. Reset tổng hợp thành logic trước chân `D` |
-| **Post-layout (SDF)** | Ca `x=255` (lớp B — trừ 4/4 lần) với độ trễ back-annotate | Lớp B ép đường dữ liệu mạnh nhất — nhưng **chỉ có ý nghĩa sau khi vá CT-1/CT-2**, vì hiện tại đường dữ liệu không tồn tại |
-| **Post-layout** | Hold check trên vòng `rem_reg → so sánh → rem_reg` | `timing_report_min.txt` hiện dùng clock **lý tưởng**. Và vòng này hiện **không tồn tại** trong netlist |
+| **Gate-level** | Chạy ca Charter trên netlist tổng hợp | Chưa chạy; cần netlist đã sinh từ RTL sau vá và testbench gate-level |
+| **Gate-level** | So sánh danh sách FF netlist với danh sách biến RTL | Số liệu 26 FF được ghi trong README tham chiếu; raw netlist/report hiện chưa có trong checkout |
+| **Gate-level** | Ca khởi tạo `X`: thả netlist chạy **không** reset | Chưa chạy; raw netlist chưa có trong checkout |
+| **Post-layout (SDF)** | Ca `x=255` (lớp B — trừ 4/4 lần) với độ trễ back-annotate | Chưa chạy; P&R/SDF chưa được xác nhận |
+| **Post-layout** | Hold check trên vòng `rem_reg → so sánh → rem_reg` | Chưa có báo cáo post-layout trong checkout |
 | **Post-layout** | Công suất với hoạt độ thật (VCD) | Lớp A (`x=0`, không trừ lần nào) và lớp B (`x=255`, trừ 4 lần) sẽ cho công suất khác nhau rõ rệt |
 
 ## 6. Bảng tổng kết độ phủ
 
 | Nhóm | Số ca | Có trong TB | Đã chạy | Kết quả |
 |---|---:|---:|---:|---|
-| Charter mục 8 (5 ca bắt buộc) | 5 | **3** (`0`, `1`, `255`) | 0 | ❌ COMPILE_FAIL, và **thiếu 2 ca** |
-| Ca TB tự có ngoài Charter | 10 | 10 | 0 | ❌ COMPILE_FAIL |
-| Ca đề xuất B-1…B-8 | 8 | 0 | 0 | ⬜ chưa có |
+| Charter mục 8 (5 ca bắt buộc) | 5 | **5** (`0`, `1`, `99`, `100`, `255`) | 5 | ✅ PASS |
+| Ca TB tự có ngoài Charter | 10 | 10 | 10 | ✅ PASS |
+| Ca đề xuất B-1…B-8 | 8 | B-1, B-2, B-4 đã thực hiện | — | 🟡 còn mở rộng |
 | Mô hình chuẩn Python | 7 hàm, **256 ca vét cạn** + 10 000 ca random (seed 2026) + quét 16 bit | tất cả | tất cả | ✅ **PASS** |
 
 Bằng chứng mức Python: `05_VERIFICATION/python_reference_run.log` —
 `test_full_domain`, `test_boundaries`, `test_perfect_squares`, `test_cycle_count`,
 `test_trial_recurrence`, `test_16bit_scaling`, `test_random`.
 
-> **Khoảng cách:** mô hình chuẩn đã chứng minh thuật toán đúng trên **toàn miền 256 giá
-> trị** và cả ở độ rộng 16 bit. RTL chưa chứng minh được **một ca nào**. Đóng khoảng cách
-> đó bắt đầu bằng **một dòng sửa** ở `05_VERIFICATION/known_issues.md`.
+> **Khoảng cách còn lại:** RTL đã chạy các ca testbench bắt buộc và bổ sung, nhưng chưa
+> quét vét cạn 8-bit và chưa kiểm thử tham số 16-bit. Mô hình Python không thay thế các
+> kiểm tra RTL đó.
 
 ---
 

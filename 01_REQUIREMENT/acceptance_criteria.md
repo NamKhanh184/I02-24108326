@@ -28,7 +28,7 @@ Trạng thái: ✅ ĐẠT (có bằng chứng do tool sinh) · ⚠️ CÓ VẤN 
 |---|---|---|---|---|
 | AC-1 | Bảng giao diện đầy đủ, nhất quán với đặc tả | Đối chiếu bảng với cổng module trong RTL | `02_SPECIFICATION/interface.md` §2 | ✅ |
 | AC-2 | Mỗi khẳng định kèm bằng chứng và điều kiện tạo ra | Rà từng dòng RTM | `07_TRACEABILITY/RTM.csv` | ✅ (phần đã chạy) |
-| AC-3 | Trả lời câu phân tích riêng bằng dữ liệu của chính mình | Charter mục 9 | `06_GDSII/sta/` · `06_GDSII/physical_report.md` | ✅ |
+| AC-3 | Trả lời câu phân tích riêng bằng dữ liệu của chính mình | Charter mục 9 | `06_GDSII/physical_report.md` | ✅ theo README tham chiếu |
 | AC-4 | Nêu giới hạn trung thực, không phát biểu vượt mức | Quét kết luận | `07_TRACEABILITY/limitations.md` | ✅ |
 
 ## 2. Tiêu chí chức năng
@@ -52,8 +52,8 @@ Trạng thái: ✅ ĐẠT (có bằng chứng do tool sinh) · ⚠️ CÓ VẤN 
 
 | # | Tiêu chí | Đo được | Trạng thái |
 |---|---|---|---|
-| AC-12 | Có báo cáo STA do chính mình sinh | PASS | ✅ |
-| AC-13 | Xác định được đường tới hạn (startpoint → endpoint) | _191_ → _199_ | ✅ |
+| AC-12 | Có báo cáo STA do chính mình sinh | PASS theo README tham chiếu; raw report chưa có trong checkout | ✅ theo hồ sơ tham chiếu |
+| AC-13 | Xác định được đường tới hạn (startpoint → endpoint) | _191_ → _199_ theo README tham chiếu | ✅ theo hồ sơ tham chiếu |
 | AC-14 | Nêu rõ giả định timing khi báo số | xem `02_SPECIFICATION/timing.md` §3 | ✅ |
 
 ## 5. Tiêu chí vật lý (chưa chạy)

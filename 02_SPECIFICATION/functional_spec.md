@@ -2,30 +2,17 @@
 
 ---
 
-> ## ⚠️ CẢNH BÁO — RTL HIỆN TẠI **CHƯA THOẢ** ĐỀ BÀI
+> ## Trạng thái kiểm chứng
 >
-> Tài liệu này đặc tả **hành vi đúng**. RTL trong
-> `04_IMPLEMENTATION/rtl/i02_integer_sqrt.sv` **không biên dịch được** và **netlist sinh ra
-> là một mạch rỗng**. Ba điểm chưa thoả, tất cả đều có bằng chứng trực tiếp:
+> Lỗi driver kép D-1 đã được vá trong `04_IMPLEMENTATION/rtl/i02_integer_sqrt.sv` bằng
+> cách bỏ phép gán `root <= '0;` dư thừa trong nhánh reset. Icarus Verilog 12.0 mô phỏng
+> testbench thành công; testbench kiểm tra 4 chu kỳ `busy` và các ca Charter bắt buộc.
+> Mô hình chuẩn Python cũng PASS. Chẩn đoán trước vá được lưu trong
+> [`../05_VERIFICATION/known_issues.md`](../05_VERIFICATION/known_issues.md).
 >
-> | # | Yêu cầu | Trạng thái | Bằng chứng |
-> |---|---|---|---|
-> | **CT-1** | RTL phải mô phỏng được | ❌ **CHƯA THOẢ** | `iverilog_compile.log`: `i02_integer_sqrt.sv:59: error: root Unable to assign to unresolved wires.` `1 error(s) during elaboration.` |
-> | **CT-2** | Charter mục 4: `uo_out[3:0]` = **căn bậc hai** | ❌ **CHƯA THOẢ** | Netlist dòng 182: `assign root = 4'h0;` — cổng ra bị **nối chết về 0** |
-> | **CT-3** | Charter mục 10: “≈ 18–22 ô nhớ” | ❌ **CHƯA ĐẠT — thiếu 11–15 FF** | Netlist có **7 flip-flop**: `iter[0..2]`, `state[0..1]`, `busy`, `done`. **Không có bit nào** của `x_reg`, `root_reg`, `rem_reg` |
->
-> ### 🔴 Hệ quả nghiêm trọng nhất
->
-> Cổng vào `x[7:0]` **không xuất hiện một lần nào** trong netlist (0 tham chiếu tới `x[`).
-> Toàn bộ đường dữ liệu — thanh ghi `x_reg`, `root_reg`, `rem_reg` và bộ so sánh–trừ —
-> **đã bị tổng hợp xoá sạch**. Cái còn lại chỉ là một bộ đếm 3 bit và một FSM 2 bit.
->
-> **Vì vậy mọi số liệu tổng hợp / STA / công suất trong hồ sơ này (26 cell · 7 FF ·
-> 241,4816 µm² · 1,46 ns · 3,22e-05 W) KHÔNG mô tả một bộ tính căn bậc hai.** Chúng mô tả
-> một khung FSM rỗng. Không được trích dẫn chúng như đặc trưng của khối I02.
->
-> Phán xử đầy đủ, nguyên nhân gốc và bản vá **một dòng** nằm ở
-> `05_VERIFICATION/known_issues.md`. **Không tự sửa RTL.**
+> Các số liệu 118 cell, 26 FF, 1122,3264 µm², 2,86 ns và 1.75e-04 W được ghi nhận trong
+> README tham chiếu; raw reports chưa có trong checkout. Xem
+> [`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md) để biết giới hạn.
 
 ---
 
@@ -85,9 +72,9 @@ Mô hình chuẩn kiểm đúng đẳng thức này: `test_trial_recurrence()` k
 
 | Đầu ra | Độ rộng | Định nghĩa | RTL hiện tại |
 |---|---:|---|---|
-| `root[3:0]` | `INPUT_W/2` = 4 | `⌊√x⌋`, hợp lệ tại chu kỳ `done=1` | ❌ **hằng `4'h0`** trong netlist |
-| `busy` | 1 | `1` trong các chu kỳ lặp; `0` ở `S_IDLE` và `S_DONE` | ✅ còn trong netlist |
-| `done` | 1 | Xung **đúng 1 chu kỳ** báo `root` hợp lệ | ✅ còn trong netlist |
+| `root[3:0]` | `INPUT_W/2` = 4 | `⌊√x⌋`, hợp lệ tại chu kỳ `done=1` | ✅ `assign root = root_reg` |
+| `busy` | 1 | `1` trong các chu kỳ lặp; `0` ở `S_IDLE` và `S_DONE` | ✅ |
+| `done` | 1 | Xung **đúng 1 chu kỳ** báo `root` hợp lệ | ✅ |
 
 > Charter mục 4 ánh xạ `uo_out[3:0]` = căn bậc hai, `uo_out[4]` = xong. Tổng 9 bit vào +
 > 5 bit ra = 14/24 chân — **ánh xạ đã khả thi**, không phải đổi gì (`interface.md` §3).
@@ -103,7 +90,7 @@ Tên đề chỉ định **“theo từng bit”** → RTL **bắt buộc** mô 
 | Xử lý **2 bit `x` mỗi bước**, sinh **1 bit `root` mỗi bước** | ✅ | `x_reg[INPUT_W-1 -: 2]` (dòng 38), `root_reg <= (root_reg << 1) \| qbit` (dòng 83) |
 | Số bước = `ROOT_W = INPUT_W/2` = **4**, **cố định** | ✅ | `if (iter == ROOT_W-1)` (dòng 86) |
 | **Không** dùng thử dần (Charter mục 10 cấm) | ✅ | Điều kiện thoát chỉ phụ thuộc `iter`, không phụ thuộc dữ liệu |
-| Mạch tuần tự, có thanh ghi trạng thái | 🟡 **có trong RTL, mất trong netlist** | RTL có `state_t`; netlist chỉ còn 7 FF |
+| Mạch tuần tự, có thanh ghi trạng thái | ✅ | RTL có `state_t`; README tham chiếu ghi nhận 26 FF sau tổng hợp |
 | Tham số hoá theo `INPUT_W` | ✅ | `parameter int INPUT_W = 8`, mọi độ rộng suy từ đó |
 
 > Charter mục 10 cảnh báo: “Dùng vòng lặp **thử dần** cho dễ — đề cấm, vì nó cho số chu kỳ
@@ -169,13 +156,13 @@ Gọi cạnh clock lấy mẫu `start=1` là **cạnh 1**:
 | **INV-4** | **Đẳng thức thử**: `trial_i == 4·root_{i−1} + 1` ở mọi bước | ✅ `test_trial_recurrence()` — PASS |
 | **INV-5** | **Đẳng thức phần dư**: `x = root² + rem` khi kết thúc | ⬜ chưa có test tường minh; suy được từ INV-1 |
 | **INV-6** | **Chặn phần dư**: `rem ≤ 2·root` ở mọi bước (vì `rem < (root+1)² − root² = 2·root+1`) | ⬜ chưa có assertion — dùng để tính độ rộng `rem_reg` tối ưu, xem §10 |
-| **INV-7** | `done` là xung 1 chu kỳ: `done \|=> !done` | ✅ `properties.sv` — `done_pulse` (chưa chạy được vì CT-1) |
-| **INV-8** | Không có `X` ở đầu ra | ✅ `properties.sv` — `no_unknown` (bản gốc dùng `$isunknown`, đã thay bằng XOR rút gọn) |
+| **INV-7** | `done` là xung 1 chu kỳ: `done \|=> !done` | ⬜ SVA được bảo vệ bởi macro `I02_SVA`; chưa chạy trong flow Icarus |
+| **INV-8** | Không có `X` ở đầu ra | ⬜ SVA được bảo vệ bởi macro `I02_SVA`; chưa chạy trong flow Icarus |
 | **INV-9** | `busy` và `done` không đồng thời bằng 1 | ⬜ chưa có — suy từ bảng §5 là đúng |
 | **INV-10** | Bit cao nhất của `root` được sinh ở bước **1**, bit thấp nhất ở bước **4** | ⬜ chưa có — hệ quả của `root_reg <= (root_reg << 1) \| qbit` |
 
-> **INV-1…INV-4 đã được chứng minh trên toàn miền 256 giá trị — nhưng chỉ ở mức Python.**
-> Chưa một bất biến nào được kiểm trên RTL, vì mô phỏng `COMPILE_FAIL`.
+> **INV-1…INV-4 được chứng minh trên toàn miền ở mức Python.** RTL được mô phỏng với các
+> ca trong testbench; chưa có kiểm chứng RTL vét cạn toàn miền.
 
 ## 8. Điều kiện biên và hành vi không xác định
 
@@ -184,8 +171,8 @@ Gọi cạnh clock lấy mẫu `start=1` là **cạnh 1**:
 | `x = 0` | `root = 0`, `rem = 0` | ✅ mọi `qbit = 0` | ✅ |
 | `x = 1` | `root = 1` | ✅ bước 4 cho `qbit=1` | ✅ |
 | `x = 255` | `root = 15`, `rem = 30` — **giá trị lớn nhất** | ✅ mọi `qbit = 1` | ✅ |
-| `x = 100` | `root = 10` | ✅ | ❌ **thiếu — ca Charter mục 8** |
-| `x = 99` | `root = 9` | ✅ | ❌ **thiếu — ca Charter mục 8** |
+| `x = 100` | `root = 10` | ✅ | ✅ ca Charter mục 8 |
+| `x = 99` | `root = 9` | ✅ | ✅ ca Charter mục 8 |
 | Số chính phương (`x = k²`) | `root = k`, `rem = 0` | ✅ | 🟡 có `0,1,4,9,16,64` |
 | Ngay dưới số chính phương (`x = k²−1`) | `root = k−1` | ✅ | 🟡 có `3, 15, 63` |
 | Ngay trên số chính phương (`x = k²+1`) | `root = k` | ✅ | 🟡 có `2, 65` |
@@ -221,8 +208,8 @@ Từ INV-6, `rem ≤ 2·root ≤ 30`, nên `rem_shift = 4·rem + 3 ≤ 123` → 
 đề I01). Nhưng nó là một điểm để bàn khi bảo vệ: công thức đúng theo INV-6 là
 `REM_W = INPUT_W/2 + 3` chứ không phải `INPUT_W + 1`.
 
-> ⬜ **Không kiểm chứng được ở gói này.** Vì `root` bị nối chết, toàn bộ `rem_reg` đã bị
-> xoá khỏi netlist, nên không có số liệu để so “9 bit” với “7 bit”.
+> RTL mô phỏng PASS, nhưng raw netlist chưa có trong checkout để xác minh tổng hợp có thu
+> hồi các bit thừa hay không.
 
 ## 11. Truy vết Charter
 
@@ -232,10 +219,10 @@ Từ INV-6, `rem ≤ 2·root ≤ 30`, nên `rem_shift = 4·rem + 3 ≤ 123` → 
 | Mục 2 câu 1 (đúng 4 chu kỳ — kiểm chứng trên waveform?) | §6 + `timing_diagram.md`. ⚠️ **4 bước lặp, 6 chu kỳ tổng** |
 | Mục 2 câu 2 (mở rộng 16 bit: chu kỳ và diện tích tăng theo quy luật nào) | `implementation-notes_I02.md` §8 |
 | Mục 2 câu 3 (từng bit khác thử dần ở chỗ nào) | §4 + `tradeoff.md` §2 |
-| Mục 4 (giao diện) | §3 — ánh xạ chân khả thi, nhưng CT-2 **CHƯA THOẢ** |
-| Mục 8 (ca kiểm thử) | `corner_cases.md` — **thiếu `x=100` và `x=99`** |
-| Mục 9 (phân tích riêng) | `implementation-notes_I02.md` §8 — ⚠️ phần diện tích **không trả lời được bằng số đo** vì CT-2 |
-| Mục 10 (dấu hiệu làm đúng) | CT-3 — 7 FF so với 18–22 mong đợi |
+| Mục 4 (giao diện) | §3 — giao diện RTL và bảng chân trong `interface.md` |
+| Mục 8 (ca kiểm thử) | `corner_cases.md` — đủ 5 ca bắt buộc; testbench PASS |
+| Mục 9 (phân tích riêng) | `implementation-notes_I02.md` §8 — mô hình kiểm tra thuật toán 16-bit; chưa tổng hợp RTL 16-bit |
+| Mục 10 (dấu hiệu làm đúng) | README tham chiếu ghi nhận 26 FF; raw synthesis report chưa có trong checkout |
 
 ---
 

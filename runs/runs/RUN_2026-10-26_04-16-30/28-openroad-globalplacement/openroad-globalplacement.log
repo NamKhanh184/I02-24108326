@@ -1,0 +1,133 @@
+Reading timing models for corner nom_tt_025C_1v80…
+Reading timing library for the 'nom_tt_025C_1v80' corner at '/home/runner/.ciel/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib'…
+Reading OpenROAD database at '/home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/25-openroad-ioplacement/i02_integer_sqrt.odb'…
+Reading design constraints file at '/home/runner/work/I02-24108326/I02-24108326/04_IMPLEMENTATION/constraints/design.sdc'…
+[INFO] No information on clock propagation in input SDC file-- propagating all clocks.
+[INFO] Setting signal min routing layer to: met1 and clock min routing layer to met1. 
+[INFO] Setting signal max routing layer to: met5 and clock max routing layer to met5. 
++ global_placement -density 0.45 -routability_driven -pad_right 0 -pad_left 0 -init_wirelength_coef 0.25
+[INFO GPL-0001] ---- Initialize GPL Main Data Structures
+[INFO GPL-0002] DBU: 1000
+[INFO GPL-0003] SiteSize: (  0.460  2.720 ) um
+[INFO GPL-0004] CoreBBox: (  5.520 10.880 ) ( 66.240 70.720 ) um
+[INFO GPL-0036] Movable instances area:       1492.682 um^2
+[INFO GPL-0037] Total instances area:         1717.898 um^2
+[INFO GPL-0035] Pin density area adjust:       203.476 um^2
+[INFO GPL-0032] ---- Initialize Region: Top-level
+[INFO GPL-0006] Number of instances:               220
+[INFO GPL-0007] Movable instances:                 128
+[INFO GPL-0008] Fixed instances:                    92
+[INFO GPL-0009] Dummy instances:                     0
+[INFO GPL-0010] Number of nets:                    139
+[INFO GPL-0011] Number of pins:                    476
+[INFO GPL-0012] Die BBox:  (  0.000  0.000 ) ( 72.125 82.845 ) um
+[INFO GPL-0013] Core BBox: (  5.520 10.880 ) ( 66.240 70.720 ) um
+[INFO GPL-0016] Core area:                    3633.485 um^2
+[INFO GPL-0014] Region name: top-level.
+[INFO GPL-0015] Region area:                  3633.485 um^2
+[INFO GPL-0017] Fixed instances area:          225.216 um^2
+[INFO GPL-0018] Movable instances area:       1696.157 um^2
+[INFO GPL-0019] Utilization:                    49.766 %
+[INFO GPL-0020] Standard cells area:          1696.157 um^2
+[INFO GPL-0021] Large instances area:            0.000 um^2
+[INFO GPL-0005] ---- Execute Conjugate Gradient Initial Placement.
+[INFO GPL-0051] Source of initial instance position counters:
+	Odb location = 128	Core center = 0	Region center = 0
+[InitialPlace]  Iter: 1 conjugate gradient residual: 0.00000011 HPWL: 2621679
+[InitialPlace]  Iter: 2 conjugate gradient residual: 0.00000009 HPWL: 2131814
+[InitialPlace]  Iter: 3 conjugate gradient residual: 0.00000011 HPWL: 2056470
+[InitialPlace]  Iter: 4 conjugate gradient residual: 0.00000007 HPWL: 2018528
+[InitialPlace]  Iter: 5 conjugate gradient residual: 0.00000005 HPWL: 2001566
+[INFO GPL-0033] ---- Initialize Nesterov Region: Top-level
+[WARNING GPL-0302] Target density 0.4500 is too low for the available free area.
+Automatically adjusting to uniform density 0.5000.
+[INFO GPL-0023] Placement target density:       0.5000
+[INFO GPL-0024] Movable insts average area:     13.251 um^2
+[INFO GPL-0025] Ideal bin area:                 26.502 um^2
+[INFO GPL-0026] Ideal bin count:                   137
+[INFO GPL-0027] Total bin area:               3633.485 um^2
+[INFO GPL-0028] Bin count (X, Y):           8 ,      8
+[INFO GPL-0029] Bin size (W * H):       7.590 *  7.480 um
+[INFO GPL-0030] Number of bins:                     64
+[INFO GPL-0007] ---- Execute Nesterov Global Placement.
+[INFO GPL-0031] HPWL: Half-Perimeter Wirelength
+Iteration | Overflow |     HPWL (um) |  HPWL(%) |   Penalty | Group
+---------------------------------------------------------------
+        0 |   0.7266 |  1.094583e+03 |   +0.00% |  1.40e-13 |      
+       10 |   0.6494 |  1.200495e+03 |   +9.68% |  2.28e-13 |      
+       20 |   0.6435 |  1.202156e+03 |   +0.14% |  3.71e-13 |      
+       30 |   0.6511 |  1.204909e+03 |   +0.23% |  6.05e-13 |      
+       40 |   0.6521 |  1.205995e+03 |   +0.09% |  9.85e-13 |      
+       50 |   0.6515 |  1.205377e+03 |   -0.05% |  1.60e-12 |      
+       60 |   0.6491 |  1.204001e+03 |   -0.11% |  2.61e-12 |      
+       70 |   0.6481 |  1.203878e+03 |   -0.01% |  4.26e-12 |      
+       80 |   0.6484 |  1.204923e+03 |   +0.09% |  6.93e-12 |      
+       90 |   0.6482 |  1.205628e+03 |   +0.06% |  1.13e-11 |      
+      100 |   0.6462 |  1.206099e+03 |   +0.04% |  1.84e-11 |      
+      110 |   0.6420 |  1.206705e+03 |   +0.05% |  3.00e-11 |      
+      120 |   0.6361 |  1.208093e+03 |   +0.12% |  4.88e-11 |      
+      130 |   0.6286 |  1.210587e+03 |   +0.21% |  7.95e-11 |      
+      140 |   0.6222 |  1.214603e+03 |   +0.33% |  1.30e-10 |      
+      150 |   0.6170 |  1.221034e+03 |   +0.53% |  2.11e-10 |      
+      160 |   0.6076 |  1.230489e+03 |   +0.77% |  3.44e-10 |      
+[INFO GPL-0038] Routability snapshot saved at iter = 168
+      167 |   0.5990 |  1.240029e+03 |          |           |      
+      170 |   0.5932 |  1.244485e+03 |   +1.14% |  5.60e-10 |      
+      180 |   0.5727 |  1.260841e+03 |   +1.31% |  9.12e-10 |      
+      190 |   0.5429 |  1.287555e+03 |   +2.12% |  1.49e-09 |      
+      200 |   0.5067 |  1.305593e+03 |   +1.40% |  2.42e-09 |      
+      210 |   0.4844 |  1.342220e+03 |   +2.81% |  3.94e-09 |      
+      220 |   0.4711 |  1.391558e+03 |   +3.68% |  6.42e-09 |      
+      230 |   0.4358 |  1.427262e+03 |   +2.57% |  1.05e-08 |      
+      240 |   0.3877 |  1.461598e+03 |   +2.41% |  1.70e-08 |      
+      250 |   0.3486 |  1.494443e+03 |   +2.25% |  2.77e-08 |      
+      260 |   0.3172 |  1.518417e+03 |   +1.60% |  4.13e-08 |      
+[INFO GPL-0040] Routability iteration: 1
+[INFO GPL-0041] Total routing overflow: 0.0000
+[INFO GPL-0042] Number of overflowed tiles: 0 (0.00%)
+[INFO GPL-0043] Average top 0.5% routing congestion: 0.8609
+[INFO GPL-0044] Average top 1.0% routing congestion: 0.8523
+[INFO GPL-0045] Average top 2.0% routing congestion: 0.8431
+[INFO GPL-0046] Average top 5.0% routing congestion: 0.8092
+[INFO GPL-0047] Routability iteration weighted routing congestion: 0.8566
+[INFO GPL-0050] Weighted routing congestion is lower than target routing congestion(1.0100), end routability optimization.
+[INFO GPL-0090] Routability finished. Target routing congestion achieved succesfully.
+Iteration | Overflow |     HPWL (um) |  HPWL(%) |   Penalty | Group
+---------------------------------------------------------------
+      270 |   0.2815 |  1.532009e+03 |   +0.90% |  6.08e-08 |      
+      280 |   0.2399 |  1.547773e+03 |   +1.03% |  8.96e-08 |      
+      290 |   0.1986 |  1.562809e+03 |   +0.97% |  1.32e-07 |      
+      300 |   0.1546 |  1.569875e+03 |   +0.45% |  1.94e-07 |      
+      310 |   0.1280 |  1.584427e+03 |   +0.93% |  2.86e-07 |      
+      320 |   0.1037 |  1.586222e+03 |   +0.11% |  4.22e-07 |      
+      322 |   0.0983 |  1.587185e+03 |          |  4.74e-07 |      
+---------------------------------------------------------------
+[INFO GPL-1001] Global placement finished at iteration 322
+[INFO GPL-1003] Routability mode iteration count: 97
+[INFO GPL-1005] Routability final weighted congestion: 0.8360
+[INFO GPL-1002] Placed Cell Area             1696.1572
+[INFO GPL-1003] Available Free Area          3408.2688
+[INFO GPL-1004] Minimum Feasible Density        0.5000 (cell_area / free_area)
+[INFO GPL-1006]   Suggested Target Densities:
+[INFO GPL-1007]     - For 90% usage of free space: 0.5530
+[INFO GPL-1008]     - For 80% usage of free space: 0.6221
+[INFO GPL-1009]     - For 50% usage of free space: 0.9953
+[INFO GPL-1011] Original area (um^2): 1696.16
+[INFO GPL-1012] Total routability artificial inflation: 0.00 (+0.00%)
+[INFO GPL-1014] Final placement area: 1696.16 (+0.00%)
+Setting global connections for newly added cells…
+[INFO] Setting global connections...
+[INFO ODB-0403] 0 connections made, 0 conflicts skipped.
+Updating metrics…
+Cell type report:                       Count       Area
+  Fill cell                                44     165.16
+  Tap cell                                 48      60.06
+  Inverter                                  3      11.26
+  Sequential cell                          27     574.30
+  Multi-Input combinational cell           98     907.12
+  Total                                   220    1717.90
+Writing OpenROAD database to '/home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/28-openroad-globalplacement/i02_integer_sqrt.odb'…
+Writing netlist to '/home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/28-openroad-globalplacement/i02_integer_sqrt.nl.v'…
+Writing powered netlist to '/home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/28-openroad-globalplacement/i02_integer_sqrt.pnl.v'…
+Writing layout to '/home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/28-openroad-globalplacement/i02_integer_sqrt.def'…
+Writing timing constraints to '/home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/28-openroad-globalplacement/i02_integer_sqrt.sdc'…

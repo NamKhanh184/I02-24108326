@@ -40,22 +40,25 @@ set_output_delay 1.0 -clock clk [all_outputs]
 | G-3 | Thư viện + PVT | `sky130_fd_sc_hd__tt_025C_1v80.lib` (typical · 25 °C · 1,80 V) |
 | G-4 | Ký sinh dây (RC) | **Chưa có** — số liệu mới ở mức sau tổng hợp, chưa qua P&R |
 
-> ❗ Không được diễn giải "period 10 ns" thành "I02 chạy được ở 100 MHz".
-> Tần số tối đa thật phải lấy từ STA sau routing, ở nhiều góc PVT.
+> ❗ Chu kỳ 10 ns tương ứng 100 MHz về mặt phép đổi đơn vị, nhưng đây chỉ là giả định
+> khởi điểm trong SDC, không phải xác nhận I02 chạy ổn định ở 100 MHz. README tham chiếu
+> ghi “10 MHz” đồng thời với “10 ns”; hai thông tin mâu thuẫn. Tần số hoạt động phải được
+> xác nhận theo yêu cầu hệ thống và STA phù hợp, sau routing ở nhiều góc PVT.
 
-## 4. Số liệu thời gian đo được
+## 4. Số liệu được ghi nhận
 
 | Đại lượng | Giá trị |
 |---|---:|
 | Startpoint | `_191_` |
 | Endpoint | `_199_` |
 | **Data arrival time** | **2,86 ns** |
-| Slack | 7,03 ns |
-| WNS | `wns max 0.00` |
-| TNS | `tns max 0.00` |
-| Số cell trên đường tới hạn | 11 |
+| Slack | Raw report chưa có trong checkout |
+| WNS | Raw report chưa có trong checkout |
+| TNS | Raw report chưa có trong checkout |
+| Số cell trên đường tới hạn | Raw report chưa có trong checkout |
 
-Công cụ: **OpenSTA 3.1.0** · Bằng chứng: `06_GDSII/sta/timing_report_max.txt`
+Công cụ: **OpenSTA 3.1.0** · Số liệu theo README tham chiếu; xem
+[`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md). Raw timing report chưa có trong checkout.
 
 ## 5. Nghĩa vụ của tầng ngoài
 

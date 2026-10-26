@@ -1,0 +1,1585 @@
+{
+  "creator": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+  "modules": {
+    "i02_integer_sqrt": {
+      "attributes": {
+        "hdlname": "i02_integer_sqrt",
+        "dynports": "00000000000000000000000000000001",
+        "top": "00000000000000000000000000000001",
+        "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:3.1-107.10"
+      },
+      "parameter_default_values": {
+        "INPUT_W": "00000000000000000000000000001000"
+      },
+      "ports": {
+        "clk": {
+          "direction": "input",
+          "bits": [ 2 ]
+        },
+        "rst_n": {
+          "direction": "input",
+          "bits": [ 3 ]
+        },
+        "start": {
+          "direction": "input",
+          "bits": [ 4 ]
+        },
+        "x": {
+          "direction": "input",
+          "bits": [ 5, 6, 7, 8, 9, 10, 11, 12 ]
+        },
+        "root": {
+          "direction": "output",
+          "bits": [ 13, 14, 15, 16 ]
+        },
+        "busy": {
+          "direction": "output",
+          "bits": [ 17 ]
+        },
+        "done": {
+          "direction": "output",
+          "bits": [ 18 ]
+        }
+      },
+      "cells": {
+        "$add$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:89$14": {
+          "hide_name": 1,
+          "type": "$add",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000011",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000011"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:89.33-89.44"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 19, 20, 21 ],
+            "B": [ "1" ],
+            "Y": [ 22, 23, 24 ]
+          }
+        },
+        "$eq$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85$13": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000011",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000011",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85.25-85.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 19, 20, 21 ],
+            "B": [ "1", "1", "0" ],
+            "Y": [ 25 ]
+          }
+        },
+        "$ge$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43$6": {
+          "hide_name": 1,
+          "type": "$ge",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000001001",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000001001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43.13-43.31"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 26, 27, 28, 29, 30, 31, 32, 33, 34 ],
+            "B": [ "1", "0", 13, 14, 15, 16, "0", "0", "0" ],
+            "Y": [ 35 ]
+          }
+        },
+        "$or$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:40$3": {
+          "hide_name": 1,
+          "type": "$or",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000001001",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000001001"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:40.21-40.47"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0", 36, 37, 38, 39, 40, 41, 42 ],
+            "B": [ 43, 44 ],
+            "Y": [ 26, 27, 28, 29, 30, 31, 32, 33, 34 ]
+          }
+        },
+        "$or$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:82$11": {
+          "hide_name": 1,
+          "type": "$or",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000100",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000100"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:82.33-82.55"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", 13, 14, 15 ],
+            "B": [ 45 ],
+            "Y": [ 46, 47, 48, 49 ]
+          }
+        },
+        "$procdff$100": {
+          "hide_name": 1,
+          "type": "$dff",
+          "parameters": {
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000001001"
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "CLK": [ 2 ],
+            "D": [ 50, 51, 52, 53, 54, 55, 56, 57, 58 ],
+            "Q": [ 36, 37, 38, 39, 40, 41, 42, 59, 60 ]
+          }
+        },
+        "$procdff$101": {
+          "hide_name": 1,
+          "type": "$dff",
+          "parameters": {
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000011"
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "CLK": [ 2 ],
+            "D": [ 61, 62, 63 ],
+            "Q": [ 19, 20, 21 ]
+          }
+        },
+        "$procdff$102": {
+          "hide_name": 1,
+          "type": "$dff",
+          "parameters": {
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "CLK": [ 2 ],
+            "D": [ 64, 65 ],
+            "Q": [ 66, 67 ]
+          }
+        },
+        "$procdff$96": {
+          "hide_name": 1,
+          "type": "$dff",
+          "parameters": {
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "CLK": [ 2 ],
+            "D": [ 68 ],
+            "Q": [ 17 ]
+          }
+        },
+        "$procdff$97": {
+          "hide_name": 1,
+          "type": "$dff",
+          "parameters": {
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "CLK": [ 2 ],
+            "D": [ 69 ],
+            "Q": [ 18 ]
+          }
+        },
+        "$procdff$98": {
+          "hide_name": 1,
+          "type": "$dff",
+          "parameters": {
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000001000"
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "CLK": [ 2 ],
+            "D": [ 70, 71, 72, 73, 74, 75, 76, 77 ],
+            "Q": [ 78, 79, 80, 81, 82, 83, 43, 44 ]
+          }
+        },
+        "$procdff$99": {
+          "hide_name": 1,
+          "type": "$dff",
+          "parameters": {
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000100"
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "CLK": [ 2 ],
+            "D": [ 84, 85, 86, 87 ],
+            "Q": [ 13, 14, 15, 16 ]
+          }
+        },
+        "$procmux$16": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:91.20-91.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 88 ],
+            "Y": [ 89 ]
+          }
+        },
+        "$procmux$17_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:91.20-91.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "B": [ "0", "1" ],
+            "Y": [ 88 ]
+          }
+        },
+        "$procmux$19": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.13-55.19|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.9-104.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ 89 ],
+            "S": [ 3 ],
+            "Y": [ 69 ]
+          }
+        },
+        "$procmux$24": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85.25-85.41|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85.21-90.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "1" ],
+            "B": [ "0" ],
+            "S": [ 25 ],
+            "Y": [ 90 ]
+          }
+        },
+        "$procmux$26": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000010",
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ 90, 91 ],
+            "S": [ 92, 93 ],
+            "Y": [ 94 ]
+          }
+        },
+        "$procmux$27_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "B": [ "1", "0" ],
+            "Y": [ 92 ]
+          }
+        },
+        "$procmux$28": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.25-69.30|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.21-76.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 4 ],
+            "Y": [ 91 ]
+          }
+        },
+        "$procmux$30_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.25-66.25|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "Y": [ 93 ]
+          }
+        },
+        "$procmux$32": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.13-55.19|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.9-104.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ 94 ],
+            "S": [ 3 ],
+            "Y": [ 68 ]
+          }
+        },
+        "$procmux$37": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85.25-85.41|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85.21-90.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "B": [ "0", "1" ],
+            "S": [ 25 ],
+            "Y": [ 95, 96 ]
+          }
+        },
+        "$procmux$39": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000010",
+            "WIDTH": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0" ],
+            "B": [ 95, 96, 97, 98 ],
+            "S": [ 99, 100 ],
+            "Y": [ 101, 102 ]
+          }
+        },
+        "$procmux$40_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "B": [ "1", "0" ],
+            "Y": [ 99 ]
+          }
+        },
+        "$procmux$41": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.25-69.30|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.21-76.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "B": [ "1", "0" ],
+            "S": [ 4 ],
+            "Y": [ 97, 98 ]
+          }
+        },
+        "$procmux$43_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.25-66.25|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "Y": [ 100 ]
+          }
+        },
+        "$procmux$45": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.13-55.19|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.9-104.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0" ],
+            "B": [ 101, 102 ],
+            "S": [ 3 ],
+            "Y": [ 64, 65 ]
+          }
+        },
+        "$procmux$50": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000011"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85.25-85.41|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85.21-90.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 22, 23, 24 ],
+            "B": [ 19, 20, 21 ],
+            "S": [ 25 ],
+            "Y": [ 103, 104, 105 ]
+          }
+        },
+        "$procmux$52": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000010",
+            "WIDTH": "00000000000000000000000000000011"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 19, 20, 21 ],
+            "B": [ 103, 104, 105, 106, 107, 108 ],
+            "S": [ 109, 110 ],
+            "Y": [ 111, 112, 113 ]
+          }
+        },
+        "$procmux$53_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "B": [ "1", "0" ],
+            "Y": [ 109 ]
+          }
+        },
+        "$procmux$54": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000011"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.25-69.30|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.21-76.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 19, 20, 21 ],
+            "B": [ "0", "0", "0" ],
+            "S": [ 4 ],
+            "Y": [ 106, 107, 108 ]
+          }
+        },
+        "$procmux$56_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.25-66.25|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "Y": [ 110 ]
+          }
+        },
+        "$procmux$58": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000011"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.13-55.19|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.9-104.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0", "0" ],
+            "B": [ 111, 112, 113 ],
+            "S": [ 3 ],
+            "Y": [ 61, 62, 63 ]
+          }
+        },
+        "$procmux$62": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000010",
+            "WIDTH": "00000000000000000000000000001001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 36, 37, 38, 39, 40, 41, 42, 59, 60 ],
+            "B": [ 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131 ],
+            "S": [ 132, 133 ],
+            "Y": [ 134, 135, 136, 137, 138, 139, 140, 141, 142 ]
+          }
+        },
+        "$procmux$63_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "B": [ "1", "0" ],
+            "Y": [ 132 ]
+          }
+        },
+        "$procmux$64": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000001001"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.25-69.30|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.21-76.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 36, 37, 38, 39, 40, 41, 42, 59, 60 ],
+            "B": [ "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+            "S": [ 4 ],
+            "Y": [ 123, 124, 125, 126, 127, 128, 129, 130, 131 ]
+          }
+        },
+        "$procmux$66_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.25-66.25|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "Y": [ 133 ]
+          }
+        },
+        "$procmux$68": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000001001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.13-55.19|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.9-104.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+            "B": [ 134, 135, 136, 137, 138, 139, 140, 141, 142 ],
+            "S": [ 3 ],
+            "Y": [ 50, 51, 52, 53, 54, 55, 56, 57, 58 ]
+          }
+        },
+        "$procmux$72": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000010",
+            "WIDTH": "00000000000000000000000000000100"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 13, 14, 15, 16 ],
+            "B": [ 46, 47, 48, 49, 143, 144, 145, 146 ],
+            "S": [ 147, 148 ],
+            "Y": [ 149, 150, 151, 152 ]
+          }
+        },
+        "$procmux$73_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "B": [ "1", "0" ],
+            "Y": [ 147 ]
+          }
+        },
+        "$procmux$74": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000100"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.25-69.30|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.21-76.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 13, 14, 15, 16 ],
+            "B": [ "0", "0", "0", "0" ],
+            "S": [ 4 ],
+            "Y": [ 143, 144, 145, 146 ]
+          }
+        },
+        "$procmux$76_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.25-66.25|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "Y": [ 148 ]
+          }
+        },
+        "$procmux$78": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000100"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.13-55.19|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.9-104.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0", "0", "0" ],
+            "B": [ 149, 150, 151, 152 ],
+            "S": [ 3 ],
+            "Y": [ 84, 85, 86, 87 ]
+          }
+        },
+        "$procmux$82": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000010",
+            "WIDTH": "00000000000000000000000000001000"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 78, 79, 80, 81, 82, 83, 43, 44 ],
+            "B": [ "0", "0", 78, 79, 80, 81, 82, 83, 153, 154, 155, 156, 157, 158, 159, 160 ],
+            "S": [ 161, 162 ],
+            "Y": [ 163, 164, 165, 166, 167, 168, 169, 170 ]
+          }
+        },
+        "$procmux$83_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:77.20-77.20|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "B": [ "1", "0" ],
+            "Y": [ 161 ]
+          }
+        },
+        "$procmux$84": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000001000"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.25-69.30|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:69.21-76.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 78, 79, 80, 81, 82, 83, 43, 44 ],
+            "B": [ 5, 6, 7, 8, 9, 10, 11, 12 ],
+            "S": [ 4 ],
+            "Y": [ 153, 154, 155, 156, 157, 158, 159, 160 ]
+          }
+        },
+        "$procmux$86_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.25-66.25|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:66.13-103.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 66, 67 ],
+            "Y": [ 162 ]
+          }
+        },
+        "$procmux$88": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000001000"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.13-55.19|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:55.9-104.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0", "0", "0", "0", "0", "0", "0" ],
+            "B": [ 163, 164, 165, 166, 167, 168, 169, 170 ],
+            "S": [ 3 ],
+            "Y": [ 70, 71, 72, 73, 74, 75, 76, 77 ]
+          }
+        },
+        "$procmux$91": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43.13-43.31|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43.9-49.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 35 ],
+            "Y": [ 45 ]
+          }
+        },
+        "$procmux$94": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000001001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43.13-43.31|/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43.9-49.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 26, 27, 28, 29, 30, 31, 32, 33, 34 ],
+            "B": [ 171, 172, 173, 174, 175, 176, 177, 178, 179 ],
+            "S": [ 35 ],
+            "Y": [ 114, 115, 116, 117, 118, 119, 120, 121, 122 ]
+          }
+        },
+        "$sub$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44$7": {
+          "hide_name": 1,
+          "type": "$sub",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000001001",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000001001",
+            "Y_WIDTH": "00000000000000000000000000001001"
+          },
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44.24-44.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 26, 27, 28, 29, 30, 31, 32, 33, 34 ],
+            "B": [ "1", "0", 13, 14, 15, 16, "0", "0", "0" ],
+            "Y": [ 171, 172, 173, 174, 175, 176, 177, 178, 179 ]
+          }
+        }
+      },
+      "netnames": {
+        "$0\\busy[0:0]": {
+          "hide_name": 1,
+          "bits": [ 68 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          }
+        },
+        "$0\\done[0:0]": {
+          "hide_name": 1,
+          "bits": [ 69 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          }
+        },
+        "$0\\iter[2:0]": {
+          "hide_name": 1,
+          "bits": [ 61, 62, 63 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          }
+        },
+        "$0\\rem_reg[8:0]": {
+          "hide_name": 1,
+          "bits": [ 50, 51, 52, 53, 54, 55, 56, 57, 58 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          }
+        },
+        "$0\\root_reg[3:0]": {
+          "hide_name": 1,
+          "bits": [ 84, 85, 86, 87 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          }
+        },
+        "$0\\state[1:0]": {
+          "hide_name": 1,
+          "bits": [ 64, 65 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          }
+        },
+        "$0\\x_reg[7:0]": {
+          "hide_name": 1,
+          "bits": [ 70, 71, 72, 73, 74, 75, 76, 77 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54.5-105.8"
+          }
+        },
+        "$add$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:89$14_Y": {
+          "hide_name": 1,
+          "bits": [ 22, 23, 24 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:89.33-89.44"
+          }
+        },
+        "$eq$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85$13_Y": {
+          "hide_name": 1,
+          "bits": [ 25 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85.25-85.41"
+          }
+        },
+        "$ge$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43$6_Y": {
+          "hide_name": 1,
+          "bits": [ 35 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43.13-43.31"
+          }
+        },
+        "$or$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:82$11_Y": {
+          "hide_name": 1,
+          "bits": [ 46, 47, 48, 49 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:82.33-82.55"
+          }
+        },
+        "$procmux$16_Y": {
+          "hide_name": 1,
+          "bits": [ 89 ],
+          "attributes": {
+          }
+        },
+        "$procmux$17_CMP": {
+          "hide_name": 1,
+          "bits": [ 88 ],
+          "attributes": {
+          }
+        },
+        "$procmux$24_Y": {
+          "hide_name": 1,
+          "bits": [ 90 ],
+          "attributes": {
+          }
+        },
+        "$procmux$26_Y": {
+          "hide_name": 1,
+          "bits": [ 94 ],
+          "attributes": {
+          }
+        },
+        "$procmux$27_CMP": {
+          "hide_name": 1,
+          "bits": [ 92 ],
+          "attributes": {
+          }
+        },
+        "$procmux$28_Y": {
+          "hide_name": 1,
+          "bits": [ 91 ],
+          "attributes": {
+          }
+        },
+        "$procmux$30_CMP": {
+          "hide_name": 1,
+          "bits": [ 93 ],
+          "attributes": {
+          }
+        },
+        "$procmux$37_Y": {
+          "hide_name": 1,
+          "bits": [ 95, 96 ],
+          "attributes": {
+          }
+        },
+        "$procmux$39_Y": {
+          "hide_name": 1,
+          "bits": [ 101, 102 ],
+          "attributes": {
+          }
+        },
+        "$procmux$40_CMP": {
+          "hide_name": 1,
+          "bits": [ 99 ],
+          "attributes": {
+          }
+        },
+        "$procmux$41_Y": {
+          "hide_name": 1,
+          "bits": [ 97, 98 ],
+          "attributes": {
+          }
+        },
+        "$procmux$43_CMP": {
+          "hide_name": 1,
+          "bits": [ 100 ],
+          "attributes": {
+          }
+        },
+        "$procmux$50_Y": {
+          "hide_name": 1,
+          "bits": [ 103, 104, 105 ],
+          "attributes": {
+          }
+        },
+        "$procmux$52_Y": {
+          "hide_name": 1,
+          "bits": [ 111, 112, 113 ],
+          "attributes": {
+          }
+        },
+        "$procmux$53_CMP": {
+          "hide_name": 1,
+          "bits": [ 109 ],
+          "attributes": {
+          }
+        },
+        "$procmux$54_Y": {
+          "hide_name": 1,
+          "bits": [ 106, 107, 108 ],
+          "attributes": {
+          }
+        },
+        "$procmux$56_CMP": {
+          "hide_name": 1,
+          "bits": [ 110 ],
+          "attributes": {
+          }
+        },
+        "$procmux$62_Y": {
+          "hide_name": 1,
+          "bits": [ 134, 135, 136, 137, 138, 139, 140, 141, 142 ],
+          "attributes": {
+          }
+        },
+        "$procmux$63_CMP": {
+          "hide_name": 1,
+          "bits": [ 132 ],
+          "attributes": {
+          }
+        },
+        "$procmux$64_Y": {
+          "hide_name": 1,
+          "bits": [ 123, 124, 125, 126, 127, 128, 129, 130, 131 ],
+          "attributes": {
+          }
+        },
+        "$procmux$66_CMP": {
+          "hide_name": 1,
+          "bits": [ 133 ],
+          "attributes": {
+          }
+        },
+        "$procmux$72_Y": {
+          "hide_name": 1,
+          "bits": [ 149, 150, 151, 152 ],
+          "attributes": {
+          }
+        },
+        "$procmux$73_CMP": {
+          "hide_name": 1,
+          "bits": [ 147 ],
+          "attributes": {
+          }
+        },
+        "$procmux$74_Y": {
+          "hide_name": 1,
+          "bits": [ 143, 144, 145, 146 ],
+          "attributes": {
+          }
+        },
+        "$procmux$76_CMP": {
+          "hide_name": 1,
+          "bits": [ 148 ],
+          "attributes": {
+          }
+        },
+        "$procmux$82_Y": {
+          "hide_name": 1,
+          "bits": [ 163, 164, 165, 166, 167, 168, 169, 170 ],
+          "attributes": {
+          }
+        },
+        "$procmux$83_CMP": {
+          "hide_name": 1,
+          "bits": [ 161 ],
+          "attributes": {
+          }
+        },
+        "$procmux$84_Y": {
+          "hide_name": 1,
+          "bits": [ 153, 154, 155, 156, 157, 158, 159, 160 ],
+          "attributes": {
+          }
+        },
+        "$procmux$86_CMP": {
+          "hide_name": 1,
+          "bits": [ 162 ],
+          "attributes": {
+          }
+        },
+        "$sub$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44$7_Y": {
+          "hide_name": 1,
+          "bits": [ 171, 172, 173, 174, 175, 176, 177, 178, 179 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44.24-44.41"
+          }
+        },
+        "busy": {
+          "hide_name": 0,
+          "bits": [ 17 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:11.31-11.35"
+          }
+        },
+        "clk": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:6.31-6.34"
+          }
+        },
+        "done": {
+          "hide_name": 0,
+          "bits": [ 18 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:12.31-12.35"
+          }
+        },
+        "iter": {
+          "hide_name": 0,
+          "bits": [ 19, 20, 21 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:22.24-22.28"
+          }
+        },
+        "qbit": {
+          "hide_name": 0,
+          "bits": [ 45 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:28.11-28.15"
+          }
+        },
+        "rem_next": {
+          "hide_name": 0,
+          "bits": [ 114, 115, 116, 117, 118, 119, 120, 121, 122 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:27.23-27.31"
+          }
+        },
+        "rem_reg": {
+          "hide_name": 0,
+          "bits": [ 36, 37, 38, 39, 40, 41, 42, 59, 60 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:21.23-21.30"
+          }
+        },
+        "rem_shift": {
+          "hide_name": 0,
+          "bits": [ 26, 27, 28, 29, 30, 31, 32, 33, 34 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:25.23-25.32"
+          }
+        },
+        "root": {
+          "hide_name": 0,
+          "bits": [ 13, 14, 15, 16 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:10.34-10.38"
+          }
+        },
+        "rst_n": {
+          "hide_name": 0,
+          "bits": [ 3 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:7.31-7.36"
+          }
+        },
+        "start": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:8.31-8.36"
+          }
+        },
+        "state": {
+          "hide_name": 0,
+          "bits": [ 66, 67 ],
+          "attributes": {
+            "enum_type": "$enum0",
+            "enum_value_00": "\\S_IDLE",
+            "enum_value_01": "\\S_ITER",
+            "enum_value_10": "\\S_DONE",
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:36.13-36.18",
+            "wiretype": "\\state_t"
+          }
+        },
+        "x": {
+          "hide_name": 0,
+          "bits": [ 5, 6, 7, 8, 9, 10, 11, 12 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:9.32-9.33"
+          }
+        },
+        "x_reg": {
+          "hide_name": 0,
+          "bits": [ 78, 79, 80, 81, 82, 83, 43, 44 ],
+          "attributes": {
+            "src": "/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:19.25-19.30"
+          }
+        }
+      }
+    }
+  }
+}

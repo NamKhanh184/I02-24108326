@@ -1,0 +1,1365 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)
+
+1. Executing Liberty frontend: /home/runner/.ciel/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+Imported 428 cell types from liberty file.
+[INFO] Using SDC file '/home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/06-yosys-synthesis/synthesis.abc.sdc' for ABC…
+
+2. Executing Verilog-2005 frontend: /home/runner/work/I02-24108326/I02-24108326/rtl/project.sv
+Parsing SystemVerilog input from `/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv' to AST representation.
+Storing AST representation for module `$abstract\i02_integer_sqrt'.
+Successfully finished Verilog frontend.
+
+3. Executing HIERARCHY pass (managing design hierarchy).
+
+4. Executing AST frontend in derive mode using pre-parsed AST for module `\i02_integer_sqrt'.
+Generating RTLIL representation for module `\i02_integer_sqrt'.
+
+4.1. Analyzing design hierarchy..
+Top module:  \i02_integer_sqrt
+
+4.2. Analyzing design hierarchy..
+Top module:  \i02_integer_sqrt
+Removing unused module `$abstract\i02_integer_sqrt'.
+Removed 1 unused modules.
+Renaming module i02_integer_sqrt to i02_integer_sqrt.
+
+5. Executing ATTRMAP pass (move or copy attributes).
+
+6. Executing TRIBUF pass.
+
+7. Executing HIERARCHY pass (managing design hierarchy).
+
+7.1. Analyzing design hierarchy..
+Top module:  \i02_integer_sqrt
+
+7.2. Analyzing design hierarchy..
+Top module:  \i02_integer_sqrt
+Removed 0 unused modules.
+
+8. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+9. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 3 switch rules as full_case in process $proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8 in module i02_integer_sqrt.
+Marked 1 switch rules as full_case in process $proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:38$1 in module i02_integer_sqrt.
+Removed a total of 0 dead cases.
+
+10. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 2 redundant assignments.
+Promoted 5 assignments to connections.
+
+11. Executing PROC_INIT pass (extract init attributes).
+
+12. Executing PROC_ARST pass (detect async resets in processes).
+
+13. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~5 debug messages>
+
+14. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+     1/7: $0\done[0:0]
+     2/7: $0\busy[0:0]
+     3/7: $0\state[1:0]
+     4/7: $0\iter[2:0]
+     5/7: $0\rem_reg[8:0]
+     6/7: $0\root_reg[3:0]
+     7/7: $0\x_reg[7:0]
+Creating decoders for process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:38$1'.
+     1/2: $1\qbit[0:0]
+     2/2: $1\rem_next[8:0]
+
+15. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\i02_integer_sqrt.\next_pair' from process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:38$1'.
+No latch inferred for signal `\i02_integer_sqrt.\rem_shift' from process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:38$1'.
+No latch inferred for signal `\i02_integer_sqrt.\trial' from process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:38$1'.
+No latch inferred for signal `\i02_integer_sqrt.\rem_next' from process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:38$1'.
+No latch inferred for signal `\i02_integer_sqrt.\qbit' from process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:38$1'.
+
+16. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\i02_integer_sqrt.\busy' using process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+  created $dff cell `$procdff$96' with positive edge clock.
+Creating register for signal `\i02_integer_sqrt.\done' using process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+  created $dff cell `$procdff$97' with positive edge clock.
+Creating register for signal `\i02_integer_sqrt.\x_reg' using process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+  created $dff cell `$procdff$98' with positive edge clock.
+Creating register for signal `\i02_integer_sqrt.\root_reg' using process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+  created $dff cell `$procdff$99' with positive edge clock.
+Creating register for signal `\i02_integer_sqrt.\rem_reg' using process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+  created $dff cell `$procdff$100' with positive edge clock.
+Creating register for signal `\i02_integer_sqrt.\iter' using process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+  created $dff cell `$procdff$101' with positive edge clock.
+Creating register for signal `\i02_integer_sqrt.\state' using process `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+  created $dff cell `$procdff$102' with positive edge clock.
+
+17. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+18. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 4 empty switches in `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+Removing empty process `i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:54$8'.
+Found and cleaned up 1 empty switch in `\i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:38$1'.
+Removing empty process `i02_integer_sqrt.$proc$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:38$1'.
+Cleaned up 5 empty switches.
+
+19. Executing CHECK pass (checking for obvious problems).
+Checking module i02_integer_sqrt...
+Found and reported 0 problems.
+
+20. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+<suppressed ~18 debug messages>
+
+21. Executing FLATTEN pass (flatten design).
+
+22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+23. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 1 unused cells and 41 unused wires.
+<suppressed ~2 debug messages>
+
+24. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+25. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 51 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 41 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+<suppressed ~30 debug messages>
+Removed a total of 10 cells.
+
+26. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i02_integer_sqrt..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~33 debug messages>
+
+27. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i02_integer_sqrt.
+Performed a total of 0 changes.
+
+28. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 41 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+29. Executing OPT_DFF pass (perform DFF optimizations).
+
+30. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 0 unused cells and 10 unused wires.
+<suppressed ~1 debug messages>
+
+31. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+32. Rerunning OPT passes. (Maybe there is more to do…)
+
+33. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i02_integer_sqrt..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~33 debug messages>
+
+34. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i02_integer_sqrt.
+Performed a total of 0 changes.
+
+35. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 41 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+36. Executing OPT_DFF pass (perform DFF optimizations).
+
+37. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+
+38. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+39. Executing FSM pass (extract and optimize FSM).
+
+39.1. Executing FSM_DETECT pass (finding FSMs in design).
+Found FSM state register i02_integer_sqrt.state.
+
+39.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+Extracting FSM `\state' from module `\i02_integer_sqrt'.
+  found $dff cell for state register: $procdff$102
+  root of input selection tree: $0\state[1:0]
+  found reset state: 2'00 (guessed from mux tree)
+  found ctrl input: \rst_n
+  found state code: 2'00
+  found ctrl input: $procmux$27_CMP
+  found ctrl input: $procmux$30_CMP
+  found ctrl input: $eq$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85$13_Y
+  found state code: 2'10
+  found ctrl input: \start
+  found state code: 2'01
+  found ctrl output: $procmux$17_CMP
+  found ctrl output: $procmux$27_CMP
+  found ctrl output: $procmux$30_CMP
+  ctrl inputs: { $eq$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85$13_Y \start \rst_n }
+  ctrl outputs: { $procmux$30_CMP $procmux$27_CMP $procmux$17_CMP $0\state[1:0] }
+  transition:       2'00 3'--0 ->       2'00 5'10000
+  transition:       2'00 3'-01 ->       2'00 5'10000
+  transition:       2'00 3'-11 ->       2'01 5'10001
+  transition:       2'10 3'--0 ->       2'00 5'00100
+  transition:       2'10 3'--1 ->       2'00 5'00100
+  transition:       2'01 3'--0 ->       2'00 5'01000
+  transition:       2'01 3'0-1 ->       2'01 5'01001
+  transition:       2'01 3'1-1 ->       2'10 5'01010
+
+39.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+Optimizing FSM `$fsm$\state$103' from module `\i02_integer_sqrt'.
+  Merging pattern 3'--0 and 3'--1 from group (1 0 5'00100).
+  Merging pattern 3'--1 and 3'--0 from group (1 0 5'00100).
+
+39.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 8 unused cells and 8 unused wires.
+<suppressed ~9 debug messages>
+
+39.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+Optimizing FSM `$fsm$\state$103' from module `\i02_integer_sqrt'.
+  Removing unused output signal $0\state[1:0] [0].
+  Removing unused output signal $0\state[1:0] [1].
+
+39.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+Recoding FSM `$fsm$\state$103' from module `\i02_integer_sqrt' using `auto' encoding:
+  mapping auto encoding to `one-hot` for this FSM.
+  00 -> --1
+  10 -> -1-
+  01 -> 1--
+
+39.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+FSM `$fsm$\state$103' from module `i02_integer_sqrt':
+-------------------------------------
+
+  Information on FSM $fsm$\state$103 (\state):
+
+  Number of input signals:    3
+  Number of output signals:   3
+  Number of state bits:       3
+
+  Input signals:
+    0: \rst_n
+    1: \start
+    2: $eq$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85$13_Y
+
+  Output signals:
+    0: $procmux$17_CMP
+    1: $procmux$27_CMP
+    2: $procmux$30_CMP
+
+  State encoding:
+    0:      3'--1  <RESET STATE>
+    1:      3'-1-
+    2:      3'1--
+
+  Transition Table (state_in, ctrl_in, state_out, ctrl_out):
+      0:     0 3'--0   ->     0 3'100
+      1:     0 3'-01   ->     0 3'100
+      2:     0 3'-11   ->     2 3'100
+      3:     1 3'---   ->     0 3'001
+      4:     2 3'--0   ->     0 3'010
+      5:     2 3'1-1   ->     1 3'010
+      6:     2 3'0-1   ->     2 3'010
+
+-------------------------------------
+
+39.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+Mapping FSM `$fsm$\state$103' from module `\i02_integer_sqrt'.
+
+40. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+<suppressed ~1 debug messages>
+
+41. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 45 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+42. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i02_integer_sqrt..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~28 debug messages>
+
+43. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i02_integer_sqrt.
+Performed a total of 0 changes.
+
+44. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 45 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+45. Executing OPT_DFF pass (perform DFF optimizations).
+Adding SRST signal on $procdff$99 ($dff) from module i02_integer_sqrt (D = $procmux$72_Y, Q = \root_reg, rval = 4'0000).
+Adding EN signal on $auto$ff.cc:337:slice$132 ($sdff) from module i02_integer_sqrt (D = $procmux$72_Y, Q = \root_reg).
+Adding SRST signal on $procdff$98 ($dff) from module i02_integer_sqrt (D = $procmux$82_Y, Q = \x_reg, rval = 8'00000000).
+Adding EN signal on $auto$ff.cc:337:slice$140 ($sdff) from module i02_integer_sqrt (D = $procmux$82_Y, Q = \x_reg).
+Adding SRST signal on $procdff$97 ($dff) from module i02_integer_sqrt (D = $procmux$16_Y, Q = \done, rval = 1'0).
+Adding SRST signal on $procdff$96 ($dff) from module i02_integer_sqrt (D = $procmux$26_Y, Q = \busy, rval = 1'0).
+Adding SRST signal on $procdff$101 ($dff) from module i02_integer_sqrt (D = $procmux$52_Y, Q = \iter, rval = 3'000).
+Adding EN signal on $auto$ff.cc:337:slice$150 ($sdff) from module i02_integer_sqrt (D = $procmux$52_Y, Q = \iter).
+Adding SRST signal on $procdff$100 ($dff) from module i02_integer_sqrt (D = $procmux$62_Y, Q = \rem_reg, rval = 9'000000000).
+Adding EN signal on $auto$ff.cc:337:slice$160 ($sdff) from module i02_integer_sqrt (D = $procmux$62_Y, Q = \rem_reg).
+
+46. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 6 unused cells and 12 unused wires.
+<suppressed ~7 debug messages>
+
+47. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+<suppressed ~4 debug messages>
+
+48. Rerunning OPT passes. (Maybe there is more to do…)
+
+49. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i02_integer_sqrt..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~22 debug messages>
+
+50. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i02_integer_sqrt.
+Performed a total of 0 changes.
+
+51. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 52 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 46 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 44 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+<suppressed ~24 debug messages>
+Removed a total of 8 cells.
+
+52. Executing OPT_DFF pass (perform DFF optimizations).
+
+53. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 0 unused cells and 8 unused wires.
+<suppressed ~1 debug messages>
+
+54. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+55. Rerunning OPT passes. (Maybe there is more to do…)
+
+56. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i02_integer_sqrt..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~22 debug messages>
+
+57. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i02_integer_sqrt.
+Performed a total of 0 changes.
+
+58. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 44 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+59. Executing OPT_DFF pass (perform DFF optimizations).
+
+60. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+
+61. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+62. Executing WREDUCE pass (reducing word size of cells).
+Removed top 2 bits (of 9) from FF cell i02_integer_sqrt.$auto$ff.cc:337:slice$161 ($sdffe).
+Removed top 1 bits (of 2) from port B of cell i02_integer_sqrt.$auto$fsm_map.cc:77:implement_pattern_cache$128 ($eq).
+Removed top 1 bits (of 2) from port B of cell i02_integer_sqrt.$auto$fsm_map.cc:77:implement_pattern_cache$115 ($eq).
+Removed top 3 bits (of 9) from port B of cell i02_integer_sqrt.$ge$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43$6 ($ge).
+Removed top 3 bits (of 9) from port B of cell i02_integer_sqrt.$sub$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44$7 ($sub).
+Removed top 1 bits (of 3) from port B of cell i02_integer_sqrt.$eq$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:85$13 ($eq).
+Removed top 2 bits (of 9) from mux cell i02_integer_sqrt.$procmux$62 ($pmux).
+Removed top 2 bits (of 9) from mux cell i02_integer_sqrt.$procmux$64 ($mux).
+Removed top 2 bits (of 9) from mux cell i02_integer_sqrt.$procmux$94 ($mux).
+Removed top 2 bits (of 9) from port Y of cell i02_integer_sqrt.$sub$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44$7 ($sub).
+Removed top 2 bits (of 9) from port A of cell i02_integer_sqrt.$sub$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44$7 ($sub).
+Removed top 2 bits (of 9) from wire i02_integer_sqrt.$procmux$62_Y.
+Removed top 2 bits (of 9) from wire i02_integer_sqrt.$procmux$64_Y.
+Removed top 2 bits (of 9) from wire i02_integer_sqrt.$sub$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44$7_Y.
+Removed top 2 bits (of 9) from wire i02_integer_sqrt.rem_next.
+Removed top 2 bits (of 9) from wire i02_integer_sqrt.rem_reg.
+Removed top 1 bits (of 9) from wire i02_integer_sqrt.rem_shift.
+Removed top 1 bits (of 4) from wire i02_integer_sqrt.root_reg.
+Removed top 1 bits (of 8) from wire i02_integer_sqrt.x_reg.
+
+63. Executing PEEPOPT pass (run peephole optimizers).
+
+64. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 0 unused cells and 7 unused wires.
+<suppressed ~1 debug messages>
+
+65. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module i02_integer_sqrt:
+  creating $macc model for $add$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:89$14 ($add).
+  creating $macc model for $sub$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44$7 ($sub).
+  creating $alu model for $macc $sub$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44$7.
+  creating $alu model for $macc $add$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:89$14.
+  creating $alu model for $ge$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43$6 ($ge): new $alu
+  creating $alu cell for $ge$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:43$6: $auto$alumacc.cc:512:replace_alu$177
+  creating $alu cell for $add$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:89$14: $auto$alumacc.cc:512:replace_alu$190
+  creating $alu cell for $sub$/home/runner/work/I02-24108326/I02-24108326/rtl/project.sv:44$7: $auto$alumacc.cc:512:replace_alu$193
+  created 3 $alu and 0 $macc cells.
+
+66. Executing SHARE pass (SAT-based resource sharing).
+
+67. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+68. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 49 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+69. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i02_integer_sqrt..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~22 debug messages>
+
+70. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i02_integer_sqrt.
+Performed a total of 0 changes.
+
+71. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 49 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+72. Executing OPT_DFF pass (perform DFF optimizations).
+
+73. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+74. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+75. Rerunning OPT passes. (Maybe there is more to do…)
+
+76. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i02_integer_sqrt..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~22 debug messages>
+
+77. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i02_integer_sqrt.
+Performed a total of 0 changes.
+
+78. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 49 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+79. Executing OPT_DFF pass (perform DFF optimizations).
+
+80. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+
+81. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+82. Executing MEMORY pass.
+
+82.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+82.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+82.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+82.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+82.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+82.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+
+82.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+82.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+82.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+
+82.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+83. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+
+84. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+<suppressed ~13 debug messages>
+
+85. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 41 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+86. Executing OPT_DFF pass (perform DFF optimizations).
+
+87. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 0 unused cells and 8 unused wires.
+<suppressed ~1 debug messages>
+
+88. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+89. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+90. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 41 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+91. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i02_integer_sqrt..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~11 debug messages>
+
+92. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i02_integer_sqrt.
+Performed a total of 0 changes.
+
+93. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 41 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+94. Executing OPT_SHARE pass.
+
+95. Executing OPT_DFF pass (perform DFF optimizations).
+
+96. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+
+97. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+98. Executing TECHMAP pass (map to technology primitives).
+
+98.1. Executing Verilog-2005 frontend: /nix/store/f1q0w7rd0a4ny4hqvfxlhs4cmariidcy-yosys-0.62/bin/../share/yosys/techmap.v
+Parsing Verilog input from `/nix/store/f1q0w7rd0a4ny4hqvfxlhs4cmariidcy-yosys-0.62/bin/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_pmux'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+98.2. Continuing TECHMAP pass.
+Using template $paramod$d597a1d02e4b78ac244cbe0a6bc64f098a6f19e7\_90_alu for cells of type $alu.
+Using template $paramod$3ef7d3dd227da7627a99c5e5a6a4deb817573e39\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $reduce_or.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $reduce_and.
+Using template $paramod$5d7bf89bead63599a0c4fbe7617ae2af1a7c16a5\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $sdffe.
+Using extmapper simplemap for cells of type $ne.
+Using extmapper simplemap for cells of type $sdff.
+Using extmapper simplemap for cells of type $reduce_bool.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $eq.
+Using extmapper simplemap for cells of type $dff.
+Using template $paramod$c5c783b17ab1d780abfad8cfe6563a0a7b47a3b0\_90_pmux for cells of type $pmux.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $xor.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000111 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000111 for cells of type $lcu.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000011 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000011 for cells of type $lcu.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000001001 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000001001 for cells of type $lcu.
+No more expansions possible.
+<suppressed ~658 debug messages>
+
+99. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+<suppressed ~151 debug messages>
+
+100. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 207 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 188 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 177 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 172 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 167 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 165 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 161 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 159 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 156 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Computing hashes of 155 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+<suppressed ~156 debug messages>
+Removed a total of 52 cells.
+
+101. Executing OPT_DFF pass (perform DFF optimizations).
+
+102. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 6 unused cells and 193 unused wires.
+<suppressed ~7 debug messages>
+
+103. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+104. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 149 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+105. Executing OPT_DFF pass (perform DFF optimizations).
+Adding SRST signal on $auto$ff.cc:337:slice$318 ($_SDFF_PN0_) from module i02_integer_sqrt (D = $procmux$26.Y_B, Q = \busy, rval = 1'0).
+
+106. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 1 unused cells and 2 unused wires.
+<suppressed ~2 debug messages>
+
+107. Rerunning OPT passes (Removed registers in this run.)
+
+108. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+109. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 149 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+110. Executing OPT_DFF pass (perform DFF optimizations).
+
+111. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+
+112. Executing ABC pass (technology mapping using ABC).
+
+112.1. Extracting gate netlist of module `\i02_integer_sqrt' to `<abc-temp-dir>/input.blif'..
+
+112.1.1. Executed ABC.
+Extracted 122 gates and 158 wires to a netlist network with 35 inputs and 29 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+ABC: ======== ABC command line "source <abc-temp-dir>/abc.script"
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library /tmp/yosys-abc-dlnZaU/stdcells.genlib 
+ABC: + strash 
+ABC: + dretime 
+ABC: + map 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+112.1.2. Re-integrating ABC results.
+ABC RESULTS:               AND cells:       15
+ABC RESULTS:            ANDNOT cells:       31
+ABC RESULTS:               MUX cells:       14
+ABC RESULTS:              NAND cells:        3
+ABC RESULTS:               NOR cells:        3
+ABC RESULTS:               NOT cells:        2
+ABC RESULTS:                OR cells:       10
+ABC RESULTS:             ORNOT cells:        6
+ABC RESULTS:              XNOR cells:       11
+ABC RESULTS:               XOR cells:        2
+ABC RESULTS:        internal signals:       94
+ABC RESULTS:           input signals:       35
+ABC RESULTS:          output signals:       29
+Removing temp directory.
+Removing global temp directory.
+
+113. Executing OPT pass (performing simple optimizations).
+
+113.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+113.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 124 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+113.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+113.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 0 unused cells and 101 unused wires.
+<suppressed ~3 debug messages>
+
+113.5. Finished fast OPT passes.
+
+114. Executing HIERARCHY pass (managing design hierarchy).
+
+114.1. Analyzing design hierarchy..
+Top module:  \i02_integer_sqrt
+
+114.2. Analyzing design hierarchy..
+Top module:  \i02_integer_sqrt
+Removed 0 unused modules.
+
+115. Executing CHECK pass (checking for obvious problems).
+Checking module i02_integer_sqrt...
+Found and reported 0 problems.
+
+116. Printing statistics.
+
+=== i02_integer_sqrt ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      112 wires
+      156 wire bits
+       15 public wires
+       59 public wire bits
+        7 ports
+       17 port bits
+      124 cells
+       31   $_ANDNOT_
+       15   $_AND_
+        3   $_DFF_P_
+       14   $_MUX_
+        3   $_NAND_
+        3   $_NOR_
+        2   $_NOT_
+        6   $_ORNOT_
+       10   $_OR_
+       22   $_SDFFE_PN0P_
+        2   $_SDFF_PN0_
+       11   $_XNOR_
+        2   $_XOR_
+
+117. Executing OPT pass (performing simple optimizations).
+
+117.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+117.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 124 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+117.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i02_integer_sqrt..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+117.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i02_integer_sqrt.
+Performed a total of 0 changes.
+
+117.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i02_integer_sqrt'.
+Computing hashes of 124 cells of `\i02_integer_sqrt'.
+Finding duplicate cells in `\i02_integer_sqrt'.
+Removed a total of 0 cells.
+
+117.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+117.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+
+117.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i02_integer_sqrt.
+
+117.9. Finished fast OPT passes. (There is nothing left to do.)
+
+118. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 0 unused cells and 3 unused wires.
+<suppressed ~3 debug messages>
+{
+   "creator": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+   "invocation": "stat -json -liberty /home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/tmp/00f5b65b17ff4a05b2e22a0c6f7eb807.lib ",
+   "modules": {
+      "\\i02_integer_sqrt": {
+         "num_wires":         109,
+         "num_wire_bits":     136,
+         "num_pub_wires":     12,
+         "num_pub_wire_bits": 39,
+         "num_ports":         7,
+         "num_port_bits":     17,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         124,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 31,
+            "$_AND_": 15,
+            "$_DFF_P_": 3,
+            "$_MUX_": 14,
+            "$_NAND_": 3,
+            "$_NOR_": 3,
+            "$_NOT_": 2,
+            "$_ORNOT_": 6,
+            "$_OR_": 10,
+            "$_SDFFE_PN0P_": 22,
+            "$_SDFF_PN0_": 2,
+            "$_XNOR_": 11,
+            "$_XOR_": 2
+         }
+      }
+   },
+      "design": {
+         "num_wires":         109,
+         "num_wire_bits":     136,
+         "num_pub_wires":     12,
+         "num_pub_wire_bits": 39,
+         "num_ports":         7,
+         "num_port_bits":     17,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         124,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 31,
+            "$_AND_": 15,
+            "$_DFF_P_": 3,
+            "$_MUX_": 14,
+            "$_NAND_": 3,
+            "$_NOR_": 3,
+            "$_NOT_": 2,
+            "$_ORNOT_": 6,
+            "$_OR_": 10,
+            "$_SDFFE_PN0P_": 22,
+            "$_SDFF_PN0_": 2,
+            "$_XNOR_": 11,
+            "$_XOR_": 2
+         }
+      }
+}
+
+119. Printing statistics.
+
+=== i02_integer_sqrt ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      109 wires
+      136 wire bits
+       12 public wires
+       39 public wire bits
+        7 ports
+       17 port bits
+      124 cells
+       31   $_ANDNOT_
+       15   $_AND_
+        3   $_DFF_P_
+       14   $_MUX_
+        3   $_NAND_
+        3   $_NOR_
+        2   $_NOT_
+        6   $_ORNOT_
+       10   $_OR_
+       22   $_SDFFE_PN0P_
+        2   $_SDFF_PN0_
+       11   $_XNOR_
+        2   $_XOR_
+
+   Area for cell type $_ANDNOT_ is unknown!
+   Area for cell type $_AND_ is unknown!
+   Area for cell type $_DFF_P_ is unknown!
+   Area for cell type $_MUX_ is unknown!
+   Area for cell type $_NAND_ is unknown!
+   Area for cell type $_NOR_ is unknown!
+   Area for cell type $_NOT_ is unknown!
+   Area for cell type $_ORNOT_ is unknown!
+   Area for cell type $_OR_ is unknown!
+   Area for cell type $_SDFFE_PN0P_ is unknown!
+   Area for cell type $_SDFF_PN0_ is unknown!
+   Area for cell type $_XNOR_ is unknown!
+   Area for cell type $_XOR_ is unknown!
+
+[INFO] Applying tri-state buffer mapping from '/home/runner/.ciel/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.tech/openlane/sky130_fd_sc_hd/tribuff_map.v'…
+
+120. Executing TECHMAP pass (map to technology primitives).
+
+120.1. Executing Verilog-2005 frontend: /home/runner/.ciel/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.tech/openlane/sky130_fd_sc_hd/tribuff_map.v
+Parsing Verilog input from `/home/runner/.ciel/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.tech/openlane/sky130_fd_sc_hd/tribuff_map.v' to AST representation.
+Generating RTLIL representation for module `$_TBUF_'.
+Successfully finished Verilog frontend.
+
+120.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~3 debug messages>
+
+121. Executing SIMPLEMAP pass (map simple cells to gate primitives).
+[INFO] Applying latch mapping from '/home/runner/.ciel/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.tech/openlane/sky130_fd_sc_hd/latch_map.v'…
+
+122. Executing TECHMAP pass (map to technology primitives).
+
+122.1. Executing Verilog-2005 frontend: /home/runner/.ciel/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.tech/openlane/sky130_fd_sc_hd/latch_map.v
+Parsing Verilog input from `/home/runner/.ciel/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.tech/openlane/sky130_fd_sc_hd/latch_map.v' to AST representation.
+Generating RTLIL representation for module `$_DLATCH_P_'.
+Generating RTLIL representation for module `$_DLATCH_N_'.
+Successfully finished Verilog frontend.
+
+122.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~4 debug messages>
+
+123. Executing SIMPLEMAP pass (map simple cells to gate primitives).
+
+124. Executing DFFLIBMAP pass (mapping DFF cells to sequential cells from liberty file).
+  cell sky130_fd_sc_hd__dfxtp_2 (noninv, pins=3, area=21.27) is a direct match for cell type $_DFF_P_.
+  cell sky130_fd_sc_hd__dfrtp_2 (noninv, pins=4, area=26.28) is a direct match for cell type $_DFF_PN0_.
+  cell sky130_fd_sc_hd__dfstp_2 (noninv, pins=4, area=26.28) is a direct match for cell type $_DFF_PN1_.
+  cell sky130_fd_sc_hd__dfbbn_2 (noninv, pins=6, area=35.03) is a direct match for cell type $_DFFSR_NNN_.
+  final dff cell mappings:
+    unmapped dff cell: $_DFF_N_
+    \sky130_fd_sc_hd__dfxtp_2 _DFF_P_ (.CLK( C), .D( D), .Q( Q));
+    unmapped dff cell: $_DFF_NN0_
+    unmapped dff cell: $_DFF_NN1_
+    unmapped dff cell: $_DFF_NP0_
+    unmapped dff cell: $_DFF_NP1_
+    \sky130_fd_sc_hd__dfrtp_2 _DFF_PN0_ (.CLK( C), .D( D), .Q( Q), .RESET_B( R));
+    \sky130_fd_sc_hd__dfstp_2 _DFF_PN1_ (.CLK( C), .D( D), .Q( Q), .SET_B( R));
+    unmapped dff cell: $_DFF_PP0_
+    unmapped dff cell: $_DFF_PP1_
+    unmapped dff cell: $_DFFE_NN_
+    unmapped dff cell: $_DFFE_NP_
+    unmapped dff cell: $_DFFE_PN_
+    unmapped dff cell: $_DFFE_PP_
+    \sky130_fd_sc_hd__dfbbn_2 _DFFSR_NNN_ (.CLK_N( C), .D( D), .Q( Q), .Q_N(~Q), .RESET_B( R), .SET_B( S));
+    unmapped dff cell: $_DFFSR_NNP_
+    unmapped dff cell: $_DFFSR_NPN_
+    unmapped dff cell: $_DFFSR_NPP_
+    unmapped dff cell: $_DFFSR_PNN_
+    unmapped dff cell: $_DFFSR_PNP_
+    unmapped dff cell: $_DFFSR_PPN_
+    unmapped dff cell: $_DFFSR_PPP_
+
+124.1. Executing DFFLEGALIZE pass (convert FFs to types supported by the target).
+Mapping DFF cells in module `\i02_integer_sqrt':
+  mapped 27 $_DFF_P_ cells to \sky130_fd_sc_hd__dfxtp_2 cells.
+{
+   "creator": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+   "invocation": "stat -json -liberty /home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/tmp/00f5b65b17ff4a05b2e22a0c6f7eb807.lib ",
+   "modules": {
+      "\\i02_integer_sqrt": {
+         "num_wires":         155,
+         "num_wire_bits":     182,
+         "num_pub_wires":     12,
+         "num_pub_wire_bits": 39,
+         "num_ports":         7,
+         "num_port_bits":     17,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         170,
+         "num_submodules":       0,
+         "area":              574.300800,
+         "sequential_area":    574.300800,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 31,
+            "$_AND_": 15,
+            "$_MUX_": 60,
+            "$_NAND_": 3,
+            "$_NOR_": 3,
+            "$_NOT_": 2,
+            "$_ORNOT_": 6,
+            "$_OR_": 10,
+            "$_XNOR_": 11,
+            "$_XOR_": 2,
+            "sky130_fd_sc_hd__dfxtp_2": 27
+         }
+      }
+   },
+      "design": {
+         "num_wires":         155,
+         "num_wire_bits":     182,
+         "num_pub_wires":     12,
+         "num_pub_wire_bits": 39,
+         "num_ports":         7,
+         "num_port_bits":     17,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         170,
+         "num_submodules":       0,
+         "area":              574.300800,
+         "sequential_area":    574.300800,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 31,
+            "$_AND_": 15,
+            "$_MUX_": 60,
+            "$_NAND_": 3,
+            "$_NOR_": 3,
+            "$_NOT_": 2,
+            "$_ORNOT_": 6,
+            "$_OR_": 10,
+            "$_XNOR_": 11,
+            "$_XOR_": 2,
+            "sky130_fd_sc_hd__dfxtp_2": 27
+         }
+      }
+}
+
+125. Printing statistics.
+
+=== i02_integer_sqrt ===
+
+        +----------Local Count, excluding submodules.
+        |        +-Local Area, excluding submodules.
+        |        | 
+      155        - wires
+      182        - wire bits
+       12        - public wires
+       39        - public wire bits
+        7        - ports
+       17        - port bits
+      170  574.301 cells
+       31        -   $_ANDNOT_
+       15        -   $_AND_
+       60        -   $_MUX_
+        3        -   $_NAND_
+        3        -   $_NOR_
+        2        -   $_NOT_
+        6        -   $_ORNOT_
+       10        -   $_OR_
+       11        -   $_XNOR_
+        2        -   $_XOR_
+       27  574.301   sky130_fd_sc_hd__dfxtp_2
+
+   Area for cell type $_ANDNOT_ is unknown!
+   Area for cell type $_AND_ is unknown!
+   Area for cell type $_MUX_ is unknown!
+   Area for cell type $_NAND_ is unknown!
+   Area for cell type $_NOR_ is unknown!
+   Area for cell type $_NOT_ is unknown!
+   Area for cell type $_ORNOT_ is unknown!
+   Area for cell type $_OR_ is unknown!
+   Area for cell type $_XNOR_ is unknown!
+   Area for cell type $_XOR_ is unknown!
+
+   Chip area for module '\i02_integer_sqrt': 574.300800
+     of which used for sequential elements: 574.300800 (100.00%)
+
+[INFO] Using generated ABC script '/home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/06-yosys-synthesis/AREA_0.abc'…
+
+126. Executing ABC pass (technology mapping using ABC).
+
+126.1. Extracting gate netlist of module `\i02_integer_sqrt' to `/tmp/yosys-abc-RfGPXF/input.blif'..
+
+126.1.1. Executed ABC.
+Extracted 143 gates and 179 wires to a netlist network with 35 inputs and 27 outputs.
+Running ABC script: /tmp/yosys-abc-RfGPXF/abc.script
+ABC: ======== ABC command line "source /tmp/yosys-abc-RfGPXF/abc.script"
+ABC: + read_blif /tmp/yosys-abc-RfGPXF/input.blif 
+ABC: + read_lib -w /home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/tmp/00f5b65b17ff4a05b2e22a0c6f7eb807.lib 
+ABC: Parsing finished successfully.  Parsing time =     0.05 sec
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfbbn_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfrbp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfrtp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfrtp_4".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfsbp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfstp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfstp_4".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfxbp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfxtp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfxtp_4".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dlxtn_1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dlxtn_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dlxtn_4".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dlxtp_1".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "sky130_fd_sc_hd__ebufn_2".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "sky130_fd_sc_hd__ebufn_4".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "sky130_fd_sc_hd__ebufn_8".
+ABC: Library "sky130_fd_sc_hd__tt_025C_1v80" from "/home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/tmp/00f5b65b17ff4a05b2e22a0c6f7eb807.lib" has 175 cells (17 skipped: 14 seq; 3 tri-state; 0 no func; 0 dont_use; 0 with 2 outputs; 0 with 3+ outputs).  Time =     0.08 sec
+ABC: Memory =    9.54 MB. Time =     0.08 sec
+ABC: Warning: Detected 2 multi-output cells (for example, "sky130_fd_sc_hd__fa_1").
+ABC: + read_constr -v /home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/06-yosys-synthesis/synthesis.abc.sdc 
+ABC: Setting driving cell to be "sky130_fd_sc_hd__inv_2".
+ABC: Setting output load to be 33.442001.
+ABC: + source /home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/06-yosys-synthesis/AREA_0.abc 
+ABC: Error: The network is combinational.
+ABC: WireLoad = "none"  Gates =    101 (  3.0 %)   Cap = 12.0 ff (  4.1 %)   Area =      918.38 ( 85.1 %)   Delay =  2500.29 ps  ( 18.8 %)               
+ABC: Path  0 --       5 : 0    4 pi                        A =   0.00  Df =  37.5  -21.1 ps  S =  57.6 ps  Cin =  0.0 ff  Cout =  11.1 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --      84 : 2    3 sky130_fd_sc_hd__or2_2    A =   6.26  Df = 346.5 -159.3 ps  S =  93.3 ps  Cin =  1.5 ff  Cout =  16.1 ff  Cmax = 299.4 ff  G = 1059  
+ABC: Path  2 --      86 : 4    3 sky130_fd_sc_hd__a211o_2  A =  10.01  Df = 710.4 -242.1 ps  S =  65.2 ps  Cin =  2.4 ff  Cout =   9.6 ff  Cmax = 325.0 ff  G =  388  
+ABC: Path  3 --      89 : 5    2 sky130_fd_sc_hd__a311o_2  A =  11.26  Df =1111.5 -459.3 ps  S =  65.9 ps  Cin =  2.3 ff  Cout =   7.1 ff  Cmax = 298.5 ff  G =  297  
+ABC: Path  4 --      92 : 5   10 sky130_fd_sc_hd__a2111o_2 A =  12.51  Df =1690.4 -789.5 ps  S = 186.0 ps  Cin =  2.4 ff  Cout =  37.1 ff  Cmax = 324.1 ff  G = 1481  
+ABC: Path  5 --     115 : 2    1 sky130_fd_sc_hd__or2_2    A =   6.26  Df =1992.1 -954.1 ps  S =  52.3 ps  Cin =  1.5 ff  Cout =   2.4 ff  Cmax = 299.4 ff  G =  161  
+ABC: Path  6 --     119 : 5    1 sky130_fd_sc_hd__a32o_2   A =  11.26  Df =2244.2 -324.5 ps  S =  52.3 ps  Cin =  2.3 ff  Cout =   1.5 ff  Cmax = 264.6 ff  G =   62  
+ABC: Path  7 --     120 : 2    1 sky130_fd_sc_hd__and2_2   A =   7.51  Df =2500.3 -336.0 ps  S = 181.3 ps  Cin =  1.5 ff  Cout =  33.4 ff  Cmax = 303.0 ff  G = 2288  
+ABC: Start-point = pi4 (\next_pair [1]).  End-point = po8 ($auto$rtlil.cc:3583:MuxGate$933).
+ABC: netlist                       : i/o =   35/   27  lat =    0  nd =   101  edge =    277  area =918.55  delay = 7.00  lev = 7
+ABC: + write_blif /tmp/yosys-abc-RfGPXF/output.blif 
+
+126.1.2. Re-integrating ABC results.
+ABC RESULTS:   sky130_fd_sc_hd__a2111o_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a211o_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a21o_2 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__a21oi_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a22o_2 cells:       12
+ABC RESULTS:   sky130_fd_sc_hd__a311o_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a31o_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__a32o_2 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__and2_2 cells:       18
+ABC RESULTS:   sky130_fd_sc_hd__and2b_2 cells:        6
+ABC RESULTS:   sky130_fd_sc_hd__and3_2 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__inv_2 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__mux2_1 cells:        9
+ABC RESULTS:   sky130_fd_sc_hd__nand2_2 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__nand2b_2 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__nand3_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__nand3b_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__nor2_2 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__o211a_2 cells:        8
+ABC RESULTS:   sky130_fd_sc_hd__o21a_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__o21ai_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__or2_2 cells:       10
+ABC RESULTS:   sky130_fd_sc_hd__or3b_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__xnor2_2 cells:        5
+ABC RESULTS:   sky130_fd_sc_hd__xor2_2 cells:        2
+ABC RESULTS:        internal signals:      117
+ABC RESULTS:           input signals:       35
+ABC RESULTS:          output signals:       27
+Removing temp directory.
+Removing global temp directory.
+
+127. Executing SETUNDEF pass (replace undef values with defined constants).
+
+128. Executing HILOMAP pass (mapping to constant drivers).
+
+129. Executing SPLITNETS pass (splitting up multi-bit signals).
+
+130. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i02_integer_sqrt..
+Removed 0 unused cells and 179 unused wires.
+<suppressed ~2 debug messages>
+
+131. Executing INSBUF pass (insert buffer cells for connected wires).
+
+132. Executing CHECK pass (checking for obvious problems).
+Checking module i02_integer_sqrt...
+Found and reported 0 problems.
+{
+   "creator": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+   "invocation": "stat -json -liberty /home/runner/work/I02-24108326/I02-24108326/runs/RUN_2026-10-26_04-16-30/tmp/00f5b65b17ff4a05b2e22a0c6f7eb807.lib ",
+   "modules": {
+      "\\i02_integer_sqrt": {
+         "num_wires":         129,
+         "num_wire_bits":     139,
+         "num_pub_wires":     28,
+         "num_pub_wire_bits": 38,
+         "num_ports":         7,
+         "num_port_bits":     17,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         128,
+         "num_submodules":       0,
+         "area":              1492.681600,
+         "sequential_area":    574.300800,
+         "num_cells_by_type": {
+            "sky130_fd_sc_hd__a2111o_2": 1,
+            "sky130_fd_sc_hd__a211o_2": 1,
+            "sky130_fd_sc_hd__a21o_2": 2,
+            "sky130_fd_sc_hd__a21oi_2": 1,
+            "sky130_fd_sc_hd__a22o_2": 12,
+            "sky130_fd_sc_hd__a311o_2": 1,
+            "sky130_fd_sc_hd__a31o_2": 1,
+            "sky130_fd_sc_hd__a32o_2": 3,
+            "sky130_fd_sc_hd__and2_2": 18,
+            "sky130_fd_sc_hd__and2b_2": 6,
+            "sky130_fd_sc_hd__and3_2": 2,
+            "sky130_fd_sc_hd__dfxtp_2": 27,
+            "sky130_fd_sc_hd__inv_2": 3,
+            "sky130_fd_sc_hd__mux2_1": 9,
+            "sky130_fd_sc_hd__nand2_2": 4,
+            "sky130_fd_sc_hd__nand2b_2": 3,
+            "sky130_fd_sc_hd__nand3_2": 1,
+            "sky130_fd_sc_hd__nand3b_2": 1,
+            "sky130_fd_sc_hd__nor2_2": 4,
+            "sky130_fd_sc_hd__o211a_2": 8,
+            "sky130_fd_sc_hd__o21a_2": 1,
+            "sky130_fd_sc_hd__o21ai_2": 1,
+            "sky130_fd_sc_hd__or2_2": 10,
+            "sky130_fd_sc_hd__or3b_2": 1,
+            "sky130_fd_sc_hd__xnor2_2": 5,
+            "sky130_fd_sc_hd__xor2_2": 2
+         }
+      }
+   },
+      "design": {
+         "num_wires":         129,
+         "num_wire_bits":     139,
+         "num_pub_wires":     28,
+         "num_pub_wire_bits": 38,
+         "num_ports":         7,
+         "num_port_bits":     17,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         128,
+         "num_submodules":       0,
+         "area":              1492.681600,
+         "sequential_area":    574.300800,
+         "num_cells_by_type": {
+            "sky130_fd_sc_hd__a2111o_2": 1,
+            "sky130_fd_sc_hd__a211o_2": 1,
+            "sky130_fd_sc_hd__a21o_2": 2,
+            "sky130_fd_sc_hd__a21oi_2": 1,
+            "sky130_fd_sc_hd__a22o_2": 12,
+            "sky130_fd_sc_hd__a311o_2": 1,
+            "sky130_fd_sc_hd__a31o_2": 1,
+            "sky130_fd_sc_hd__a32o_2": 3,
+            "sky130_fd_sc_hd__and2_2": 18,
+            "sky130_fd_sc_hd__and2b_2": 6,
+            "sky130_fd_sc_hd__and3_2": 2,
+            "sky130_fd_sc_hd__dfxtp_2": 27,
+            "sky130_fd_sc_hd__inv_2": 3,
+            "sky130_fd_sc_hd__mux2_1": 9,
+            "sky130_fd_sc_hd__nand2_2": 4,
+            "sky130_fd_sc_hd__nand2b_2": 3,
+            "sky130_fd_sc_hd__nand3_2": 1,
+            "sky130_fd_sc_hd__nand3b_2": 1,
+            "sky130_fd_sc_hd__nor2_2": 4,
+            "sky130_fd_sc_hd__o211a_2": 8,
+            "sky130_fd_sc_hd__o21a_2": 1,
+            "sky130_fd_sc_hd__o21ai_2": 1,
+            "sky130_fd_sc_hd__or2_2": 10,
+            "sky130_fd_sc_hd__or3b_2": 1,
+            "sky130_fd_sc_hd__xnor2_2": 5,
+            "sky130_fd_sc_hd__xor2_2": 2
+         }
+      }
+}
+
+133. Printing statistics.
+
+=== i02_integer_sqrt ===
+
+        +----------Local Count, excluding submodules.
+        |        +-Local Area, excluding submodules.
+        |        | 
+      129        - wires
+      139        - wire bits
+       28        - public wires
+       38        - public wire bits
+        7        - ports
+       17        - port bits
+      128 1.49E+03 cells
+        1   12.512   sky130_fd_sc_hd__a2111o_2
+        1    10.01   sky130_fd_sc_hd__a211o_2
+        2   17.517   sky130_fd_sc_hd__a21o_2
+        1    8.758   sky130_fd_sc_hd__a21oi_2
+       12  120.115   sky130_fd_sc_hd__a22o_2
+        1   11.261   sky130_fd_sc_hd__a311o_2
+        1    8.758   sky130_fd_sc_hd__a31o_2
+        3   33.782   sky130_fd_sc_hd__a32o_2
+       18   135.13   sky130_fd_sc_hd__and2_2
+        6    52.55   sky130_fd_sc_hd__and2b_2
+        2   15.014   sky130_fd_sc_hd__and3_2
+       27  574.301   sky130_fd_sc_hd__dfxtp_2
+        3   11.261   sky130_fd_sc_hd__inv_2
+        9  101.347   sky130_fd_sc_hd__mux2_1
+        4   25.024   sky130_fd_sc_hd__nand2_2
+        3   26.275   sky130_fd_sc_hd__nand2b_2
+        1    10.01   sky130_fd_sc_hd__nand3_2
+        1   11.261   sky130_fd_sc_hd__nand3b_2
+        4   25.024   sky130_fd_sc_hd__nor2_2
+        8   80.077   sky130_fd_sc_hd__o211a_2
+        1    8.758   sky130_fd_sc_hd__o21a_2
+        1    8.758   sky130_fd_sc_hd__o21ai_2
+       10    62.56   sky130_fd_sc_hd__or2_2
+        1    8.758   sky130_fd_sc_hd__or3b_2
+        5   81.328   sky130_fd_sc_hd__xnor2_2
+        2   32.531   sky130_fd_sc_hd__xor2_2
+
+   Chip area for module '\i02_integer_sqrt': 1492.681600
+     of which used for sequential elements: 574.300800 (38.47%)
+
+134. Executing Verilog backend.
+Dumping module `\i02_integer_sqrt'.
+
+135. Executing JSON backend.

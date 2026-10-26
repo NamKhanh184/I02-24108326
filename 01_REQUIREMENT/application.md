@@ -50,8 +50,9 @@ Trích nguyên văn Charter mục 1:
 | **I02 — Bộ tính căn bậc hai nguyên 8-bit theo từng bit** | **Digital, tuần tự** | Có ô nhớ, hoạt động theo cạnh clock |
 | Tầng xử lý phía sau | Digital | Tiêu thụ kết quả của I02 |
 
-Bằng chứng cho dòng phân loại của I02: tổng hợp thật cho **26 flip-flop**
-(`06_GDSII/synthesis/synth_stat.txt`).
+Bằng chứng cho dòng phân loại của I02: README tham chiếu ghi nhận **26 flip-flop** sau
+tổng hợp. Raw report chưa có trong checkout; xem
+[`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md).
 
 ---
 

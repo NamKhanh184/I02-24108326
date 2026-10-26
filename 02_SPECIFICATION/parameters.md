@@ -34,18 +34,18 @@
 >
 > **Không so sánh chéo** số liệu giữa các đề nếu chúng chạy trên môi trường khác nhau.
 
-## 3. Số liệu đo được
+## 3. Số liệu được ghi nhận trong README tham chiếu
 
-| Chỉ số | Giá trị | Nguồn |
+| Chỉ số | Giá trị | Nguồn / ghi chú |
 |---|---:|---|
-| Số cell sau tổng hợp | 118 | `06_GDSII/synthesis/synth_stat.txt` |
+| Số cell sau tổng hợp | 118 | `06_GDSII/physical_report.md` (README tham chiếu) |
 | Flip-flop | 26 | như trên |
 | Diện tích | 1122,3264 µm² | như trên |
-| Độ trễ đường tới hạn | 2,86 ns | `06_GDSII/sta/timing_report_max.txt` |
-| Tổng công suất (ước lượng) | 1.75e-04 W | `06_GDSII/power/power_report.txt` |
-| Tỷ lệ công suất tổ hợp | 31.3 % | như trên |
-| Tỷ lệ công suất tuần tự | 68.7 % | như trên |
+| Độ trễ đường tới hạn | 2,86 ns | như trên |
+| Tổng công suất (ước lượng) | 1.75e-04 W | như trên |
 
+Raw reports chưa có trong checkout để tái xác nhận độc lập; xem
+[`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md).
 ## 4. Cấu hình máy đọc được
 
 Xem `04_IMPLEMENTATION/scripts/config.json`.

@@ -66,9 +66,9 @@ phương và cộng nằm ở khối khác.
 | Đo gia tốc hai trục | ❌ | Cảm biến MEMS (analog) |
 | Số hoá | ❌ | ADC (mixed-signal) |
 | Bình phương từng thành phần, cộng lại | ❌ | Khối bình phương–cộng bên ngoài |
-| Chốt `x` vào thanh ghi | ✅ | I02 — `x_reg` ⚠️ **đã bị xoá khỏi netlist** |
-| **Vòng lặp 4 bước so sánh–trừ** | ✅ | I02 — `S_ITER` ⚠️ **đường dữ liệu đã bị xoá** |
-| Bắt tay `start` / `busy` / `done` | ✅ | I02 — còn nguyên trong netlist |
+| Chốt `x` vào thanh ghi | ✅ | I02 — `x_reg` trong RTL đã vá |
+| **Vòng lặp 4 bước so sánh–trừ** | ✅ | I02 — `S_ITER`, testbench kiểm 4 chu kỳ `busy` |
+| Bắt tay `start` / `busy` / `done` | ✅ | RTL và testbench |
 | Quyết định ngưỡng va đập | ❌ | Tầng ứng dụng |
 | Làm tròn thay vì cắt (`round` thay `floor`) | ❌ | Không làm được — I02 **không** đưa phần dư ra ngoài |
 
@@ -88,50 +88,45 @@ phương và cộng nằm ở khối khác.
 | Cảm biến MEMS | **Analog** | Ngoài phạm vi (Charter mục 3, mọi đề) |
 | ADC | **Mixed-signal** | Ngoài phạm vi |
 | Bộ bình phương–cộng | **Digital đồng bộ** | Khối khác |
-| **I02** | **Digital thuần, đồng bộ, một miền clock** | 26 cell, 7 FF — **nhưng xem cảnh báo §5** |
+| **I02** | **Digital thuần, đồng bộ, một miền clock** | 118 cell, 26 FF theo README tham chiếu |
 | Miền clock | **Một miền duy nhất** (`clk`) | Không có biên CDC, không cần bộ đồng bộ hoá |
 
-## 4. Vòng đời RTL → GDSII — trạng thái **thật**
+## 4. Vòng đời RTL → GDSII — trạng thái hồ sơ
 
 ```
  ┌──────────────┐
  │ Đặc tả       │ ✅  Charter + 01_REQUIREMENT + 02_SPECIFICATION
  └──────┬───────┘
  ┌──────▼───────┐
- │ Mô hình chuẩn│ ✅ PASS   python_reference_run.log
- │ (Python)     │           quét VÉT CẠN 256 giá trị + 10 000 random (seed 2026)
+ │ Mô hình chuẩn│ ✅ PASS   reference_model.py
+ │ (Python)     │           quét vét cạn 256 giá trị + 10 000 random (seed 2026)
  │              │           + kiểm mở rộng 16 bit (test_16bit_scaling)
  └──────┬───────┘
  ┌──────▼───────┐
- │ RTL          │ ✅ có mã   rtl/i02_integer_sqrt.sv
+ │ RTL          │ ✅ đã vá   04_IMPLEMENTATION/rtl/i02_integer_sqrt.sv
  └──────┬───────┘
  ┌──────▼───────┐
- │ Mô phỏng RTL │ ❌ COMPILE_FAIL
- │              │    "i02_integer_sqrt.sv:59: error: root Unable to assign
- │              │     to unresolved wires. / 1 error(s) during elaboration."
- └──────┬───────┘   ◀── ĐỨT MẠCH BẰNG CHỨNG TẠI ĐÂY
- ┌──────▼───────┐
- │ Tổng hợp     │ 🟡 "PASS" NHƯNG SINH RA MẠCH RỖNG
- │              │    yosys.log dòng 170–173:
- │              │    "Warning: Driver-driver conflict for \root [3..0]
- │              │     ... Resolved using constant."
- │              │    → netlist.v:182  assign root = 4'h0;
- │              │    → 26 cell, 7 FF, cổng x KHÔNG được dùng
+ │ Mô phỏng RTL │ ✅ PASS · Icarus Verilog 12.0
+ │              │    15 ca, gồm các ca bắt buộc x=0,1,99,100,255
+ │              │    và kiểm 4 chu kỳ busy
  └──────┬───────┘
  ┌──────▼───────┐
- │ STA          │ 🟡 "PASS" nhưng đo một mạch rỗng
- │              │    slack 8,40 ns · endpoint _40_ = iter[1]
+ │ Tổng hợp     │ ✅ 118 cell · 26 FF (theo README tham chiếu)
  └──────┬───────┘
  ┌──────▼───────┐
- │ Công suất    │ 🟡 3,22e-05 W — của mạch rỗng
+ │ STA          │ ✅ 2,86 ns (theo README tham chiếu)
  └──────┬───────┘
  ┌──────▼───────┐
- │ Mô phỏng     │ ⬜ CHƯA CHẠY — và đây là bước ĐÁNG LẼ đã phát hiện lỗi
- │ gate-level   │    test_matrix.csv: L4-GATE = "CHUA CHAY"
+ │ Công suất    │ ✅ 1.75e-04 W ước lượng (theo README tham chiếu)
  └──────┬───────┘
  ┌──────▼───────┐
- │ Floorplan …  │ ⬜ chưa chạy (Floorplan · Placement · CTS · Routing · DRC · LVS · GDS)
- │ … GDSII      │    Charter mục 3 xếp vào MỞ RỘNG TỰ NGUYỆN
+ │ Mô phỏng     │ ⬜ chưa chạy
+ │ gate-level   │
+ └──────┬───────┘
+ ┌──────▼───────┐
+ │ Physical     │ ✅ P&R hoàn tất
+ │ design       │    P&R hoàn tất · DRC 0 lỗi · LVS match
+ │              │    sign-off chưa xác nhận
  └──────────────┘
  ┌──────────────┐
  │ Tape-out     │ ⬛ KHÔNG ÁP DỤNG — Charter mục 3 liệt vào ngoài phạm vi
@@ -139,28 +134,14 @@ phương và cộng nằm ở khối khác.
  └──────────────┘
 ```
 
-## 5. 🔴 Cảnh báo bắt buộc về chuỗi bằng chứng
+## 5. Giới hạn bằng chứng
 
-Đề này là **ví dụ điển hình về cách một chuỗi công cụ có thể cho ra toàn dấu ✅ trong khi
-sản phẩm hoàn toàn rỗng.**
-
-| Bước | Báo cáo | Sự thật |
-|---|---|---|
-| Mô hình chuẩn | ✅ PASS | ✅ **Thật sự đúng** — thuật toán được hiểu đúng |
-| Mô phỏng RTL | ❌ FAIL | Trung thực — đây là dấu hiệu duy nhất được báo đúng |
-| Tổng hợp | ✅ PASS, 26 cell | 🔴 **Sai lệch** — Yosys chỉ cảnh báo (`Warning`), không dừng, và **im lặng nối `root` về 0** |
-| STA | ✅ PASS, slack 8,40 ns | 🔴 **Vô nghĩa** — đo timing của một bộ đếm 3 bit |
-| Công suất | ✅ 3,22e-05 W | 🔴 **Vô nghĩa** — 93,7 % tuần tự vì chỉ còn 7 FF |
-
-**Ba nguyên tắc rút ra, đáng ghi vào sổ tay:**
-
-1. **`Warning` của công cụ tổng hợp không được bỏ qua.** Bốn dòng
-   `Driver-driver conflict ... Resolved using constant` trong `yosys.log` là toàn bộ nội
-   dung của lỗi CT-2. Nên chạy Yosys với chính sách coi cảnh báo loại này là lỗi.
-2. **Luôn `grep "assign" netlist.v`.** Một dòng `assign <cổng ra> = <hằng số>` là bằng
-   chứng không thể chối cãi rằng logic đã bị xoá. Ở đây: `assign root = 4'h0;`.
-3. **Luôn đối chiếu số FF với dự báo.** Charter mục 10 nói 18–22; netlist có **7**. Đây
-   là bài kiểm tra tự động hoá được và đã **trượt**.
+Các trạng thái tổng hợp, STA và công suất trước P&R ở trên được ghi nhận trong README
+tham chiếu; raw reports tương ứng chưa có trong checkout để tái xác nhận. Physical flow
+ngày 2026-10-26 đã hoàn tất, DRC Magic/KLayout không có lỗi và LVS match; xem
+[`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md). Gate-level và sign-off
+chưa được xác nhận. Chẩn đoán sự cố D-1 trước vá được giữ riêng trong
+[`../05_VERIFICATION/known_issues.md`](../05_VERIFICATION/known_issues.md).
 
 ---
 

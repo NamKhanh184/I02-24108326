@@ -12,12 +12,26 @@ module i02_integer_sqrt_tb;
     always #5 clk=~clk;
 
     task automatic run_case(input [7:0] xv, input [3:0] expected);
+        integer busy_cycles;
         begin
             @(negedge clk);
             x=xv;
             start=1;
             @(negedge clk);
             start=0;
+
+            busy_cycles=0;
+            while (busy) begin
+                @(posedge clk);
+                #1;
+                busy_cycles=busy_cycles+1;
+                if (busy_cycles > 4)
+                    $fatal(1,"busy timeout x=%0d",xv);
+            end
+
+            assert(busy_cycles == 4)
+                else $fatal(1,"iteration count x=%0d got=%0d exp=4",
+                            xv,busy_cycles);
 
             wait(done);
 
@@ -26,6 +40,11 @@ module i02_integer_sqrt_tb;
                             xv, root, expected);
         end
     endtask
+
+    initial begin
+        $dumpfile("waveforms/i02_integer_sqrt.vcd");
+        $dumpvars(0,i02_integer_sqrt_tb);
+    end
 
     initial begin
         x='0;
@@ -44,6 +63,8 @@ module i02_integer_sqrt_tb;
         run_case(8'd63,7);
         run_case(8'd64,8);
         run_case(8'd65,8);
+        run_case(8'd99,9);
+        run_case(8'd100,10);
         run_case(8'd255,15);
 
         $display("I02 RTL TB PASS");

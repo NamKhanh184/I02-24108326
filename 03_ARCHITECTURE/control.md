@@ -2,6 +2,10 @@
 
 ---
 
+> **Ảnh chụp lịch sử trước bản vá P-1:** các thống kê “7 FF còn sống” và datapath bị
+> xoá bên dưới mô tả netlist lỗi trước vá. RTL hiện tại đã bỏ driver dư; README tham chiếu
+> ghi nhận 26 FF. Xem [`../05_VERIFICATION/known_issues.md`](../05_VERIFICATION/known_issues.md).
+
 ## 1. Phần điều khiển là thứ **duy nhất** còn sống
 
 Đây là điểm riêng của đề I02, và nó phải được nói thẳng ngay từ đầu:

@@ -2,6 +2,10 @@
 
 ---
 
+> **Ghi chú trạng thái:** các tham chiếu netlist và số FF trong trang này phản ánh chẩn
+> đoán lịch sử trước bản vá P-1. RTL hiện tại đã mô phỏng PASS; số liệu tổng hợp được ghi
+> trong [`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md).
+
 ## 1. Có FSM không? — Có, và là loại Moore
 
 **Bằng chứng có FSM:**

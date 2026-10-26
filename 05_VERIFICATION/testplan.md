@@ -9,7 +9,7 @@
 | L0 | Mô hình chuẩn viết bằng Python, độc lập với RTL | `golden_model/reference_model.py` | CPython 3 | ✅ PASS |
 | L1 | Mô hình chuẩn viết bằng SystemVerilog | `golden_model/—` | Icarus Verilog 12.0 (stable) | ⬜ gói nguồn không có |
 | L2 | Mô phỏng RTL với testbench tự kiểm | `testbench/i02_integer_sqrt_tb.sv` | Icarus Verilog 12.0 (stable) | ✅ PASS |
-| L3 | Kiểm cấu trúc — số flip-flop phù hợp phân loại | `../06_GDSII/synthesis/synth_stat.txt` | Yosys 0.33 (git sha1 2584903a060) | ✅ |
+| L3 | Kiểm cấu trúc — số flip-flop phù hợp phân loại | `../06_GDSII/physical_report.md` | 26 FF theo README tham chiếu; metrics physical flow riêng ở `../06_GDSII/metrics.json` | ✅ theo hồ sơ tham chiếu; physical flow hoàn tất |
 | L4 | Mô phỏng gate-level trên netlist | — | — | ⬜ chưa chạy |
 | L5 | Mô phỏng post-layout có back-annotate SDF | — | — | ⬜ chưa chạy |
 
@@ -40,8 +40,8 @@ Bất kỳ một FAIL nào ⟹ tầng đó FAIL. Không có ngưỡng "chấp nh
 | Không chứng minh | Vì sao | Cần gì |
 |---|---|---|
 | Kiến trúc bên trong đúng như đặc tả | Kiểm chứng chức năng mù về cấu trúc | Đọc RTL + netlist |
-| Độ trễ đạt yêu cầu | Mô phỏng hành vi không có độ trễ cổng | Báo cáo STA (`../06_GDSII/sta/`) |
-| Mạch đúng sau P&R | Chưa chạy P&R | L5 + DRC/LVS |
+| Timing theo cấu hình flow | Mô phỏng hành vi không có độ trễ cổng | Metrics STA physical (`../06_GDSII/metrics.json`) và giới hạn tại `../06_GDSII/physical_report.md` |
+| Chức năng sau P&R | Chưa chạy mô phỏng gate-level/post-layout; DRC/LVS của physical flow có kết quả riêng | L4/L5 trên netlist/layout |
 | Không có glitch gây hại | Mô phỏng zero-delay không sinh glitch | L5 với SDF |
 
 ---

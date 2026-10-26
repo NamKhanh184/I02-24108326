@@ -1,0 +1,2 @@
+I02 RTL TB PASS
+tb/i02_integer_sqrt_tb.sv:58: $finish called at 795000 (1ps)

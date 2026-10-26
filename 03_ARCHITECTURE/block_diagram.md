@@ -2,6 +2,11 @@
 
 ---
 
+> **Ảnh chụp lịch sử trước bản vá P-1:** sơ đồ/netlist bên dưới minh hoạ ảnh hưởng của
+> lỗi driver kép D-1, không phải trạng thái RTL hiện tại. Bản vá và kết quả hiện tại xem
+> [`../05_VERIFICATION/known_issues.md`](../05_VERIFICATION/known_issues.md) và
+> [`../06_GDSII/physical_report.md`](../06_GDSII/physical_report.md).
+
 ## 1. Sơ đồ vẽ theo **đúng RTL thật**
 
 Đường liền `───` = tín hiệu còn sống trong netlist. Đường chấm `╌╌╌` = tồn tại trong RTL

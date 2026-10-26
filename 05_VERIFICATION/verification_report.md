@@ -13,6 +13,10 @@
 
 **Ngày chạy:** 2026-09-24 · **Phiên bản:** v1.0
 
+**Xác minh lại trong checkout:** 2026-10-26 · Python reference và mô phỏng RTL PASS;
+testbench gồm 15 ca và kiểm tra 4 chu kỳ `busy`. Physical flow cũng hoàn tất ngày
+2026-10-26; kết quả được tổng hợp tại `../06_GDSII/physical_report.md`.
+
 ---
 
 ## 1. Điều kiện tạo ra bằng chứng
@@ -36,22 +40,24 @@
 |---|---|---|
 | L0 | Mô hình chuẩn Python | ✅ **PASS** |
 | L2 | Mô phỏng RTL | ✅ PASS — testbench chạy hết, không có assertion nào vi phạm |
-| L3 | Kiểm cấu trúc — số flip-flop | ✅ đo được **26** FF, phân loại Charter là **Tuần tự** |
+| L3 | Kiểm cấu trúc — số flip-flop | ✅ 26 FF theo README tham chiếu; raw synthesis report chưa có trong checkout |
 | L4 | Mô phỏng gate-level | ⬜ chưa chạy |
 | L5 | Mô phỏng post-layout (SDF) | ⬜ chưa chạy |
 
 ## 3. Trích log mô phỏng
 
 ```
+VCD info: dumpfile waveforms/i02_integer_sqrt.vcd opened for output.
 I02 RTL TB PASS
-05_VERIFICATION/testbench/i02_integer_sqrt_tb.sv:50: $finish called at 795 (1s)
+05_VERIFICATION/testbench/i02_integer_sqrt_tb.sv:71: $finish called at 915 (1s)
 ```
 
 Log đầy đủ: [`simulation.log`](simulation.log)
 
 ## 4. Kiểm cấu trúc — số flip-flop
 
-Trích `../06_GDSII/synthesis/synth_stat.txt` (Yosys 0.33 (git sha1 2584903a060) + `sky130_fd_sc_hd`):
+README tham chiếu ghi nhận kết quả từ Yosys 0.33 (git sha1 2584903a060) +
+`sky130_fd_sc_hd`. Raw synthesis report chưa có trong checkout:
 
 | Chỉ số | Giá trị |
 |---|---:|
@@ -60,7 +66,8 @@ Trích `../06_GDSII/synthesis/synth_stat.txt` (Yosys 0.33 (git sha1 2584903a060)
 | Diện tích | 1122,3264 µm² |
 
 
-✅ Đúng phân loại **Tuần tự** của Charter — có ô nhớ đồng bộ theo clock.
+✅ Số FF được ghi nhận phù hợp với phân loại **Tuần tự** của Charter; cần raw report để
+tái xác nhận độc lập.
 
 
 ## 5. Trả lời câu hỏi kỹ thuật của Charter (mục 2)
@@ -73,7 +80,7 @@ Trích `../06_GDSII/synthesis/synth_stat.txt` (Yosys 0.33 (git sha1 2584903a060)
 Phần trả lời dựa trên số liệu đo được nằm ở:
 
 - Câu về **giao diện / tín hiệu**: `02_SPECIFICATION/interface.md`
-- Câu về **thời gian / tần số**: `06_GDSII/sta/` và `06_GDSII/physical_report.md`
+- Câu về **thời gian / tần số**: `06_GDSII/metrics.json` và `06_GDSII/physical_report.md`
 - Câu về **diện tích / tài nguyên**: `06_GDSII/physical_report.md` §2
 - Phân tích bản chất và cơ chế: `implementation-notes_I02.md`
 
@@ -83,7 +90,7 @@ Phần trả lời dựa trên số liệu đo được nằm ở:
 |---|---|
 | Kiến trúc bên trong đúng như mô tả | Kiểm chứng chức năng mù về cấu trúc — phải đọc RTL và netlist |
 | Độ trễ lan truyền đạt yêu cầu | Mô phỏng hành vi là zero-delay |
-| Mạch đúng sau place & route | Chưa chạy P&R |
+| Chức năng sau place & route | P&R đã tạo GDS; chưa chạy mô phỏng gate-level hoặc post-layout có SDF |
 | Không có glitch gây hại | Mô phỏng zero-delay không sinh glitch |
 
 Danh sách đầy đủ: `07_TRACEABILITY/limitations.md`.

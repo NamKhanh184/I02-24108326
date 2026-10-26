@@ -6,6 +6,7 @@ read_liberty $lib_file
 read_verilog 06_GDSII/synthesis/netlist.v
 link_design i02_integer_sqrt
 read_sdc 04_IMPLEMENTATION/constraints/design.sdc
+file mkdir 06_GDSII/sta 06_GDSII/power
 report_checks -path_delay max -group_path_count 12 -format full_clock_expanded \
     -fields {slew cap input_pin net fanout} > 06_GDSII/sta/timing_report_max.txt
 report_checks -path_delay min -group_path_count 5 > 06_GDSII/sta/timing_report_min.txt

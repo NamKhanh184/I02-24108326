@@ -1,5 +1,12 @@
 # I02 — Bộ tính căn bậc hai nguyên 8-bit theo từng bit · Ghi chú thực hiện
 
+> **Cập nhật trạng thái 2026-10-26:** Lỗi D-1 đã được vá; mô hình Python và mô phỏng RTL
+> PASS. Physical flow đã hoàn tất, sinh GDS, DRC/LVS không có lỗi theo metrics của lần
+> chạy. Tài liệu bên dưới giữ lại phân tích sự cố **trước khi vá** để phục vụ đối chiếu;
+> các bảng/nhận định mô tả trạng thái trước vá không phải trạng thái hiện tại. Xem
+> [`05_VERIFICATION/verification_report.md`](05_VERIFICATION/verification_report.md) và
+> [`06_GDSII/physical_report.md`](06_GDSII/physical_report.md) để biết bằng chứng hiện tại.
+
 ---
 
 ## 1. Bài toán này thực chất là gì
@@ -456,22 +463,18 @@ nếu công cụ tổng hợp dùng carry-lookahead, `O(W)` nếu ripple. Vậy 
 | Đường tới hạn thật | STA đo mạch rỗng | Vá + STA lại. Dự kiến chuỗi `rem_reg → so sánh–trừ 9 bit → rem_reg`, logic thật **> 1,24 ns** |
 | Quy luật diện tích theo `W` **bằng số đo** | Không có điểm dữ liệu hợp lệ nào | Vá + tổng hợp với `INPUT_W = 8` và `16`, so hai kết quả |
 | Netlist tương đương RTL | Mô phỏng gate-level `CHUA CHAY` | Chạy TB trên `netlist.v` |
-| Tần số tối đa, diện tích vật lý, DRC/LVS | Chưa physical design | LibreLane + sky130A — Charter xếp vào mở rộng tự nguyện |
+| Tần số tối đa theo yêu cầu hệ thống | README ghi 10 MHz nhưng SDC cấu hình 10 ns; chưa có clock requirement nhất quán | Chốt yêu cầu clock rồi đánh giá theo STA |
+| Diện tích physical, DRC/LVS | Đã có metrics physical flow: 3633,48 µm²; DRC Magic/KLayout 0; LVS match | `06_GDSII/physical_report.md`, `06_GDSII/metrics.json` |
 
 ### Tuyên bố phạm vi
 
-Hồ sơ này **không** khẳng định I02 đã sign-off, đã tape-out, đã chế tạo, hay chạy được ở
-bất kỳ tần số nào. Nó khẳng định đúng ba điều, mỗi điều có bằng chứng riêng:
-
-1. **Thuật toán khai căn từng bit đã được hiểu và mô tả đúng** — chứng minh vét cạn trên
-   256 giá trị ở mức mô hình Python.
-2. **RTL có một lỗi xung đột driver ở dòng 59**, và lỗi đó khiến 74 % thiết kế bị tổng
-   hợp xoá.
-3. **Mọi số liệu tổng hợp / STA / công suất trong hồ sơ này mô tả một mạch rỗng**, không
-   mô tả một bộ tính căn bậc hai.
-
-Bản vá **xoá một dòng** nằm ở `05_VERIFICATION/known_issues.md`. **Chưa được áp dụng** —
-RTL trong hồ sơ giữ nguyên bản gốc, chờ giảng viên duyệt.
+Đây là ghi chú hậu kiểm sự cố D-1 ngày 2026-09-24, nên các kết quả compile-fail, netlist
+rỗng và thiếu kiểm thử ở những phần trước là **bằng chứng lịch sử của bản chưa vá**. Bản
+triển khai hiện tại đã bỏ driver xung đột; mô hình Python và mô phỏng RTL PASS. Physical
+flow ngày 2026-10-26 đã tạo GDS, ghi nhận DRC Magic/KLayout bằng 0 và LVS match. Các kết
+quả này không chứng minh sign-off, tape-out, chế tạo, hay hoạt động ở một tần số hệ thống
+cụ thể. Chi tiết và giới hạn hiện tại được ghi trong báo cáo kiểm chứng và báo cáo
+physical design liên kết ở đầu tài liệu.
 
 ---
 
