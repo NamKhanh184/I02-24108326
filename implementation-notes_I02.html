@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I02 — Bộ tính căn bậc hai nguyên 8-bit theo từng bit · Ghi chú thực hiện</title>
+<style>
+:root{
+  --bg:#ffffff; --fg:#1a1d21; --muted:#5c6570; --line:#e3e7eb;
+  --accent:#1f5fa9; --accent-soft:#eef4fb; --code-bg:#f5f7f9;
+  --ok:#137a4d; --ok-bg:#e8f6ee; --warn:#8a5a00; --warn-bg:#fdf4e2;
+  --bad:#a52020; --bad-bg:#fceded; --open:#7a5ba8; --open-bg:#f3eefa;
+  --maxw:960px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15181c; --fg:#e6e9ec; --muted:#98a2ad; --line:#2a2f36;
+    --accent:#6fa8e0; --accent-soft:#1c2733; --code-bg:#1b1f24;
+    --ok:#5cc08d; --ok-bg:#16291f; --warn:#d8a54a; --warn-bg:#2a2314;
+    --bad:#e88b8b; --bad-bg:#2b1a1a; --open:#b79ad6; --open-bg:#241d2e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15181c; --fg:#e6e9ec; --muted:#98a2ad; --line:#2a2f36;
+  --accent:#6fa8e0; --accent-soft:#1c2733; --code-bg:#1b1f24;
+  --ok:#5cc08d; --ok-bg:#16291f; --warn:#d8a54a; --warn-bg:#2a2314;
+  --bad:#e88b8b; --bad-bg:#2b1a1a; --open:#b79ad6; --open-bg:#241d2e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px 96px}
+header.doc{
+  border-bottom:1px solid var(--line); margin-bottom:28px; padding:36px 0 22px;
+}
+header.doc .eyebrow{
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); font-weight:600; margin-bottom:10px;
+}
+header.doc h1{font-size:clamp(24px,4.4vw,34px); line-height:1.25; margin:0 0 14px}
+.badges{display:flex; flex-wrap:wrap; gap:7px; margin-top:6px}
+.badge{
+  font-size:12.5px; padding:3px 10px; border-radius:999px;
+  border:1px solid var(--line); color:var(--muted); background:var(--accent-soft);
+  white-space:nowrap;
+}
+.badge.ok{color:var(--ok); background:var(--ok-bg); border-color:transparent}
+.badge.warn{color:var(--warn); background:var(--warn-bg); border-color:transparent}
+.badge.bad{color:var(--bad); background:var(--bad-bg); border-color:transparent}
+.badge.open{color:var(--open); background:var(--open-bg); border-color:transparent}
+nav.toc{
+  border:1px solid var(--line); border-radius:10px; padding:16px 20px;
+  margin:0 0 32px; background:var(--accent-soft);
+}
+nav.toc p{margin:0 0 8px; font-weight:700; font-size:13px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--muted)}
+nav.toc ul{margin:0; padding-left:20px}
+nav.toc li{margin:3px 0}
+nav.toc a{color:var(--fg); text-decoration:none}
+nav.toc a:hover{color:var(--accent); text-decoration:underline}
+nav.toc ul ul{padding-left:18px; font-size:14.5px}
+h2{font-size:22px; margin:40px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--line)}
+h3{font-size:18px; margin:28px 0 8px}
+h4{font-size:16px; margin:22px 0 6px; color:var(--muted)}
+p{margin:12px 0}
+a{color:var(--accent)}
+ul,ol{padding-left:24px}
+li{margin:4px 0}
+code{
+  font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  font-size:.9em; background:var(--code-bg); padding:1.5px 5px; border-radius:4px;
+}
+pre{
+  background:var(--code-bg); border:1px solid var(--line); border-radius:8px;
+  padding:14px 16px; overflow-x:auto; line-height:1.55; font-size:13.5px;
+}
+pre code{background:none; padding:0; font-size:inherit}
+blockquote{
+  margin:16px 0; padding:2px 18px; border-left:3px solid var(--accent);
+  background:var(--accent-soft); border-radius:0 8px 8px 0; color:var(--fg);
+}
+blockquote p{margin:10px 0}
+.tablewrap{overflow-x:auto; margin:16px 0; -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:420px}
+th,td{border:1px solid var(--line); padding:7px 11px; text-align:left; vertical-align:top}
+th{background:var(--accent-soft); font-weight:650; white-space:nowrap}
+tbody tr:nth-child(even) td{background:color-mix(in srgb, var(--code-bg) 55%, transparent)}
+hr{border:0; border-top:1px solid var(--line); margin:34px 0}
+footer.doc{
+  margin-top:56px; padding-top:18px; border-top:1px solid var(--line);
+  color:var(--muted); font-size:13.5px;
+}
+.themebtn{
+  position:fixed; right:14px; bottom:14px; z-index:10;
+  border:1px solid var(--line); background:var(--bg); color:var(--muted);
+  border-radius:999px; padding:8px 14px; font-size:13px; cursor:pointer;
+}
+.themebtn:hover{color:var(--fg)}
+@media (max-width:640px){
+  .wrap{padding:0 16px 72px}
+  header.doc{padding:26px 0 18px}
+  nav.toc{padding:14px 16px}
+}
+@media print{
+  .themebtn{display:none}
+  nav.toc{break-inside:avoid}
+  pre,table,blockquote{break-inside:avoid}
+  body{font-size:11pt}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="doc">
+  <div class="eyebrow">RTL2GDS · Đề I02 · Ghi chú thực hiện</div>
+  <h1>I02 — Bộ tính căn bậc hai nguyên 8-bit theo từng bit · Ghi chú thực hiện</h1>
+  <div class="badges"><span class="badge ">🔧 Đã vá và xác minh lại</span><span class="badge ">I · Số học nâng cao</span><span class="badge ">Độ khó: Trung bình</span><span class="badge ">Loại mạch: Tuần tự</span><span class="badge ok">Mô phỏng: PASS</span><span class="badge ">Tổng hợp: 118 cell · 26 FF</span><span class="badge ">Đường tới hạn: 2,86 ns</span><span class="badge warn">Physical design: CHƯA CHẠY</span></div>
+</header>
+<nav class="toc"><p>Mục lục</p><ul><li><a href="#1-bai-toan-nay-thuc-chat-la-gi">1. Bài toán này thực chất là gì</a></li><li><a href="#2-ban-chat-ky-thuat-co-che-hoat-dong">2. Bản chất kỹ thuật — cơ chế hoạt động</a></li><ul><li><a href="#2-1-vi-sao-trial-4-root-1-day-la-toan-bo-thuat-toan">2.1 Vì sao trial = 4·root + 1 — đây là toàn bộ thuật toán</a></li><li><a href="#2-2-vi-sao-tieu-thu-2-bit-moi-buoc">2.2 Vì sao tiêu thụ 2 bit mỗi bước</a></li><li><a href="#2-3-phu-thuoc-noi-tiep-chat-hon-ca-phep-chia">2.3 Phụ thuộc nối tiếp — chặt hơn cả phép chia</a></li><li><a href="#2-4-chan-phan-du-chung-minh">2.4 Chặn phần dư — chứng minh</a></li></ul><li><a href="#3-doc-ma-nguon-rtl-lam-gi-tung-dong-quan-trong">3. Đọc mã nguồn: RTL làm gì, từng dòng quan trọng</a></li><ul><li><a href="#3-1-trai-tim-thuat-toan-khoi-always-comb-dong-37-49">3.1 Trái tim thuật toán — khối always_comb (dòng 37–49)</a></li><li><a href="#3-2-buoc-lap-va-dieu-kien-thoat-dong-79-92">3.2 Bước lặp và điều kiện thoát (dòng 79–92)</a></li><li><a href="#3-3-dong-gay-sup-do-toan-bo-thiet-ke-dong-51-va-59">3.3 🔴 Dòng gây sụp đổ toàn bộ thiết kế (dòng 51 và 59)</a></li></ul><li><a href="#4-vi-sao-chon-kien-truc-nay">4. Vì sao chọn kiến trúc này</a></li><li><a href="#5-cach-thuc-hien-lo-trinh-8-buoc-tu-dac-ta-toi-gdsii">5. Cách thực hiện — lộ trình 8 bước từ đặc tả tới GDSII</a></li><li><a href="#6-so-lieu-that-da-do-duoc-va-cach-doc-chung">6. Số liệu thật đã đo được và cách đọc chúng</a></li><ul><li><a href="#nhung-con-so-nay-chung-minh-gi">Những con số này chứng minh gì</a></li><li><a href="#nhung-con-so-nay-khong-chung-minh-gi">Những con số này KHÔNG chứng minh gì</a></li><li><a href="#hai-lop-canh-bao-phai-phan-biet">Hai lớp cảnh báo — phải phân biệt</a></li></ul><li><a href="#7-tra-loi-cac-cau-hoi-ky-thuat-cua-charter-muc-2">7. Trả lời các câu hỏi kỹ thuật của Charter (mục 2)</a></li><ul><li><a href="#cau-1-voi-so-8-bit-thuat-toan-chay-dung-4-chu-ky-kiem-chung-tren-waveform">Câu 1 — “Với số 8 bit, thuật toán chạy đúng 4 chu kỳ — kiểm chứng trên waveform?”</a></li><li><a href="#cau-2-mo-rong-len-16-bit-thi-so-chu-ky-va-dien-tich-tang-theo-quy-luat-nao-hai-quy-luat-do-co-giong-nhau-khong">Câu 2 — “Mở rộng lên 16 bit thì số chu kỳ và diện tích tăng theo quy luật nào — hai quy luật đó có giống nhau không?”</a></li><li><a href="#cau-3-thuat-toan-tung-bit-khac-thu-dan-o-cho-nao-ve-so-chu-ky">Câu 3 — “Thuật toán từng bit khác thử dần ở chỗ nào về số chu kỳ?”</a></li></ul><li><a href="#8-tra-loi-cau-phan-tich-rieng-charter-muc-9">8. Trả lời câu phân tích riêng (Charter mục 9)</a></li><ul><li><a href="#8-1-phan-kiem-chung-tren-waveform-chua-lam-duoc">8.1 Phần “kiểm chứng trên waveform” — CHƯA LÀM ĐƯỢC</a></li><li><a href="#8-2-phan-16-bit-can-bao-nhieu-chu-ky-tra-loi-duoc-bang-cau-truc">8.2 Phần “16 bit cần bao nhiêu chu kỳ” — trả lời được bằng cấu trúc</a></li><li><a href="#8-3-phan-dien-tich-tang-theo-quy-luat-nao-tra-loi-duoc-bang-cau-truc-khong-bang-so-do">8.3 Phần “diện tích tăng theo quy luật nào” — trả lời được bằng cấu trúc, KHÔNG bằng số đo</a></li><li><a href="#8-4-hai-quy-luat-do-co-giong-nhau-khong-co-cung-bac-o-w">8.4 “Hai quy luật đó có giống nhau không?” — CÓ, cùng bậc O(W)</a></li><li><a href="#8-5-gioi-han-bat-buoc-phai-neu">8.5 🔴 Giới hạn bắt buộc phải nêu</a></li></ul><li><a href="#9-nhung-cho-sinh-vien-hay-sai-va-cach-phat-hien">9. Những chỗ sinh viên hay sai và cách phát hiện</a></li><li><a href="#10-cau-hoi-mentor-nen-dat-khi-bao-ve">10. Câu hỏi mentor nên đặt khi bảo vệ</a></li><li><a href="#11-gioi-han-da-chung-minh-duoc-gi-chua-chung-minh-duoc-gi">11. Giới hạn: đã chứng minh được gì, chưa chứng minh được gì</a></li><ul><li><a href="#da-chung-minh">Đã chứng minh</a></li><li><a href="#chua-chung-minh-duoc">Chưa chứng minh được</a></li><li><a href="#tuyen-bo-pham-vi">Tuyên bố phạm vi</a></li></ul></ul></nav>
+<main>
+<hr>
+<h2 id="1-bai-toan-nay-thuc-chat-la-gi">1. Bài toán này thực chất là gì</h2>
+<p>Bề ngoài, I02 là “bộ tính căn bậc hai”. Thực chất, nó là bài học về <strong>cách biến một phép
+toán không có công thức đóng thành một chuỗi so sánh và trừ</strong> — và, một cách không cố ý,
+nó đã trở thành bài học đắt giá nhất trong cả gói về <strong>cách một chuỗi công cụ có thể báo
+toàn dấu ✅ trong khi sản phẩm hoàn toàn rỗng</strong>.</p>
+<p>Bài toán: cho <code>x ∈ [0, 255]</code>, tìm <code>root</code> sao cho <code>root² ≤ x &lt; (root+1)²</code>. Kết quả nằm
+trong <code>[0, 15]</code> — vừa <strong>4 bit</strong>, đúng một nửa độ rộng đầu vào. Đây không phải trùng hợp:
+<code>√(2^W − 1) &lt; 2^(W/2)</code>, nên căn của số <code>W</code> bit luôn vừa <code>W/2</code> bit.</p>
+<p>Bối cảnh Charter mục 1: tính <strong>độ lớn vector</strong> từ hai thành phần gia tốc — <code>√(aₓ² + a_y²)</code>.
+Khối bên ngoài tính tổng bình phương, I02 lấy căn. Về mặt toán học, so ngưỡng trên
+<code>aₓ²+a_y²</code> tương đương so trên <code>|a|</code> (hàm căn đơn điệu tăng) — nhưng <code>|a|</code> là đại lượng
+<strong>có đơn vị vật lý</strong>, đọc được và đặt ngưỡng tuyến tính được. Đó là lý do bước lấy căn
+được đưa vào phần cứng.</p>
+<h2 id="2-ban-chat-ky-thuat-co-che-hoat-dong">2. Bản chất kỹ thuật — cơ chế hoạt động</h2>
+<h3 id="2-1-vi-sao-trial-4-root-1-day-la-toan-bo-thuat-toan">2.1 Vì sao <code>trial = 4·root + 1</code> — đây là toàn bộ thuật toán</h3>
+<p>Giả sử đã biết <code>root</code> là căn của phần <code>x</code> đã xử lý. Bước kế thêm một bit <code>b</code> vào <code>root</code>:</p>
+<pre><code>   (2·root + b)²  =  4·root²  +  4·root·b  +  b²
+                  =  4·root²  +  b·(4·root + 1)        (vì b ∈ {0,1} nên b² = b)
+</code></pre>
+<p>Phần <code>4·root²</code> <strong>đã được trừ ở các bước trước</strong> — đó chính là ý nghĩa của phép
+<code>rem &lt;&lt; 2</code>. Phần còn phải trừ nếu chọn <code>b = 1</code> là đúng <strong><code>4·root + 1</code></strong>.</p>
+<blockquote>
+<p>📌 <strong>Đây là cơ chế, không chỉ là chức năng.</strong> Phép khai căn — vốn không có công thức
+đóng trong số nguyên — được biến thành một chuỗi <strong>so sánh và trừ</strong> giống hệt phép
+chia. Không cần bộ nhân, không cần bảng tra, không cần phép chia.</p>
+<p>Và chú ý một chi tiết đẹp: <code>4·root + 1 = (root &lt;&lt; 2) | 1</code>. Cả hai phép đều <strong>miễn phí</strong>
+trong phần cứng — dịch là dây nối, ghép bit <code>1</code> vào vị trí thấp nhất cũng là dây nối.
+<strong>Không một cổng logic nào được dùng để tính <code>trial</code>.</strong></p>
+</blockquote>
+<p>Mô hình chuẩn kiểm đúng đẳng thức này: <code>test_trial_recurrence()</code> khẳng định
+<code>row["trial"] == ((prev_root &lt;&lt; 2) | 1)</code> ở mọi bước — PASS.</p>
+<h3 id="2-2-vi-sao-tieu-thu-2-bit-moi-buoc">2.2 Vì sao tiêu thụ <strong>2 bit</strong> mỗi bước</h3>
+<p>Mỗi bit thêm vào <code>root</code> làm <code>root²</code> tăng theo bậc 4 (vì <code>(2r)² = 4r²</code>). Để cân bằng,
+phần dư phải được dịch <strong>2 bit</strong> mỗi bước và nạp <strong>2 bit</strong> mới của <code>x</code>. Đó là lý do:</p>
+<ul>
+<li><code>rem_shift = (rem &lt;&lt; 2) | pair</code> — dịch <strong>2</strong>.</li>
+<li><code>root_reg &lt;= (root_reg &lt;&lt; 1) | qbit</code> — dịch <strong>1</strong>.</li>
+<li>Số bước = <code>W/2</code>, không phải <code>W</code>.</li>
+</ul>
+<p>Hệ quả: với <code>W = 8</code> cần <strong>4 bước</strong>, một nửa số bước của bộ chia I01 (8 bước) — nhưng
+chuỗi mượn rộng <strong>9 bit</strong> thay vì 5 bit. <strong>Ít chu kỳ hơn, mỗi chu kỳ nặng hơn.</strong></p>
+<h3 id="2-3-phu-thuoc-noi-tiep-chat-hon-ca-phep-chia">2.3 Phụ thuộc nối tiếp — chặt hơn cả phép chia</h3>
+<pre><code> chu kỳ 2    rem₁, root₁ = f(rem₀, root₀, x[7:6])
+ chu kỳ 3    rem₂, root₂ = f(rem₁, root₁, x[5:4])   ◀── cần CẢ rem₁ LẪN root₁
+ chu kỳ 4    rem₃, root₃ = f(rem₂, root₂, x[3:2])
+ chu kỳ 5    rem₄, root₄ = f(rem₃, root₃, x[1:0])
+</code></pre>
+<p>Ở bộ chia, số bị trừ (<code>divisor</code>) là <strong>hằng số</strong> suốt 8 bước. Ở bộ khai căn, số bị trừ
+(<code>trial = 4·root + 1</code>) <strong>thay đổi mỗi bước và phụ thuộc kết quả các bước trước</strong>.</p>
+<blockquote>
+<p>🔎 <strong>Đây mới là nút thắt thật sự</strong>, không phải bộ trừ. Không có cách nào tính trước
+<code>trial₃</code> mà chưa biết <code>root₂</code>. Vì vậy khai căn <strong>không thể song song hoá</strong> theo bất kỳ
+cách nào tương tự cây Wallace của phép nhân — không chỉ vì phần dư nối tiếp (như phép
+chia), mà còn vì <strong>toán hạng thứ hai cũng nối tiếp</strong>.</p>
+</blockquote>
+<h3 id="2-4-chan-phan-du-chung-minh">2.4 Chặn phần dư — chứng minh</h3>
+<p>Bất biến: <code>rem ≤ 2·root</code> ở mọi bước.</p>
+<pre><code>   rem &lt; (root+1)² − root² = 2·root + 1    ⟹   rem ≤ 2·root
+</code></pre>
+<p>Với <code>root ≤ 15</code> → <code>rem ≤ 30</code>, nên <code>rem_shift = 4·rem + 3 ≤ 123</code> → <strong>7 bit là đủ</strong>.
+RTL khai <code>REM_W = INPUT_W + 1 = 9</code> — dư 2 bit. Không sai, nhưng công thức chặt là
+<code>REM_W = INPUT_W/2 + 3</code>.</p>
+<p>Ca <code>x = 255</code> chạm <strong>sát biên</strong>: <code>rem = 30 = 2 × 15</code>. Đó là lý do ca này là ca biên đúng
+nghĩa.</p>
+<h2 id="3-doc-ma-nguon-rtl-lam-gi-tung-dong-quan-trong">3. Đọc mã nguồn: RTL làm gì, từng dòng quan trọng</h2>
+<h3 id="3-1-trai-tim-thuat-toan-khoi-always-comb-dong-37-49">3.1 Trái tim thuật toán — khối <code>always_comb</code> (dòng 37–49)</h3>
+<pre><code class="language-systemverilog">always_comb begin
+    next_pair = x_reg[INPUT_W-1 -: 2];      // ① 2 bit cao nhất còn lại
+    rem_shift = (rem_reg &lt;&lt; 2) | next_pair; // ② nạp 2 bit mới vào phần dư
+    trial     = (root_reg &lt;&lt; 2) | 1'b1;     // ③ = 4·root + 1
+
+    if (rem_shift &gt;= trial) begin
+        rem_next = rem_shift - trial;
+        qbit     = 1'b1;
+    end else begin
+        rem_next = rem_shift;
+        qbit     = 1'b0;
+    end
+end
+</code></pre>
+<p>Bốn điều đáng chú ý:</p>
+<ol>
+<li><strong><code>x_reg[INPUT_W-1 -: 2]</code></strong> — cú pháp chọn khoảng có bề rộng cố định, đọc là “2 bit
+   tính từ <code>INPUT_W-1</code> đi xuống”. Ưu điểm so với <code>x_reg[7:6]</code>: <strong>tham số hoá được</strong>. Đây
+   cũng là dòng gây cảnh báo <code>sorry: constant selects</code> của Icarus — <strong>vô hại</strong>, xem §6.</li>
+<li><strong><code>&gt;=</code> chứ không phải <code>&gt;</code></strong> — đây là ranh giới quyết định. Ca <code>x = 100</code> rơi vào
+   <code>rem_shift == trial</code> tại <strong>hai</strong> bước; nếu viết <code>&gt;</code> thì <code>√100</code> ra <strong>8</strong> thay vì <strong>10</strong>.</li>
+<li><strong><code>always_comb</code>, không phải <code>always_ff</code></strong> — thuần tổ hợp, sinh ra bộ so sánh–trừ 9 bit
+   dùng chung cho cả 4 bước.</li>
+<li>Ba dòng ①②③ <strong>không sinh cổng logic nào</strong> — chúng chỉ là cách nối dây.</li>
+</ol>
+<h3 id="3-2-buoc-lap-va-dieu-kien-thoat-dong-79-92">3.2 Bước lặp và điều kiện thoát (dòng 79–92)</h3>
+<pre><code class="language-systemverilog">S_ITER: begin
+    busy &lt;= 1'b1;
+
+    rem_reg  &lt;= rem_next;                    // ①
+    root_reg &lt;= (root_reg &lt;&lt; 1) | qbit;      // ②
+    x_reg    &lt;= x_reg &lt;&lt; 2;                  // ③
+
+    if (iter == ROOT_W-1) begin
+        busy  &lt;= 1'b0;
+        state &lt;= S_DONE;
+    end else begin
+        iter &lt;= iter + 1'b1;
+    end
+end
+</code></pre>
+<p>Ba phép gán ①②③ nằm <strong>trước</strong> câu <code>if</code>, nên chúng thực hiện ở <strong>cả 4</strong> lần. Nếu ai đó
+“dọn dẹp” bằng cách đưa chúng vào nhánh <code>else</code>, <code>root</code> sẽ thiếu đúng <strong>1 bit</strong> — <code>√255</code>
+ra <code>7</code> thay vì <code>15</code>. Cùng một cái bẫy off-by-one với đề I01.</p>
+<p>Điều kiện thoát <code>iter == ROOT_W-1</code> dùng <strong>localparam</strong>, không dùng hằng số cứng — module
+vẫn đúng khi đổi <code>INPUT_W</code>.</p>
+<h3 id="3-3-dong-gay-sup-do-toan-bo-thiet-ke-dong-51-va-59">3.3 🔴 Dòng gây sụp đổ toàn bộ thiết kế (dòng 51 và 59)</h3>
+<pre><code class="language-systemverilog">    assign root = root_reg;              // dòng 51 — DRIVER 1 (liên tục)
+    ...
+    always_ff @(posedge clk) begin
+        if (!rst_n) begin
+            x_reg    &lt;= '0;
+            root_reg &lt;= '0;              // dòng 57 — đã xoá thanh ghi rồi
+            rem_reg  &lt;= '0;
+            iter     &lt;= '0;
+            root     &lt;= '0;              // dòng 59 — DRIVER 2 (thủ tục) ← LỖI
+</code></pre>
+<p><code>root</code> có <strong>hai driver</strong>, điều mà SystemVerilog không cho phép. Và dòng 59 <strong>hoàn toàn
+thừa</strong>: <code>root</code> chỉ là dây nối từ <code>root_reg</code>, mà <code>root_reg</code> đã bị xoá ở dòng 57.</p>
+<p><strong>Hậu quả — hiệu ứng domino từ một dòng:</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Bước</th>
+<th>Hệ quả</th>
+<th>Thiệt hại</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Icarus</td>
+<td><code>error: root Unable to assign to unresolved wires.</code></td>
+<td><strong>COMPILE_FAIL</strong></td>
+</tr>
+<tr>
+<td>Yosys</td>
+<td><code>Warning: Driver-driver conflict ... Resolved using constant.</code></td>
+<td><code>assign root = 4'h0;</code></td>
+</tr>
+<tr>
+<td>→</td>
+<td><code>root_reg</code> không còn ai đọc</td>
+<td><strong>−4 FF</strong></td>
+</tr>
+<tr>
+<td>→</td>
+<td><code>trial</code> (phụ thuộc <code>root_reg</code>) chết → bộ so sánh–trừ chết</td>
+<td><strong>−~30 cell</strong></td>
+</tr>
+<tr>
+<td>→</td>
+<td><code>qbit</code>, <code>rem_next</code> không còn ai tạo → <code>rem_reg</code> chết</td>
+<td><strong>−9 FF</strong></td>
+</tr>
+<tr>
+<td>→</td>
+<td><code>rem_shift</code>, <code>next_pair</code> chết → <code>x_reg</code> chết</td>
+<td><strong>−8 FF</strong></td>
+</tr>
+<tr>
+<td>→</td>
+<td><strong>Cổng vào <code>x[7:0]</code> có 0 tham chiếu trong netlist</strong></td>
+<td>🔴</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Từ 27 bit thanh ghi khai báo còn lại 7. Từ một dòng mã.</strong></p>
+<p>Phán xử đầy đủ và bản vá <strong>xoá một dòng</strong> ở <code>05_VERIFICATION/known_issues.md</code>.</p>
+<h2 id="4-vi-sao-chon-kien-truc-nay">4. Vì sao chọn kiến trúc này</h2>
+<p>Bốn lý do, xếp theo sức nặng:</p>
+<ol>
+<li><strong>Tên đề khoá kiến trúc.</strong> “Theo từng bit” là ràng buộc bắt buộc. Dùng <code>$sqrt</code> hay
+   bảng tra sẽ xoá sạch nội dung dạy học.</li>
+<li><strong>Charter mục 10 cấm thẳng “thử dần”</strong>: số chu kỳ 1…16 phụ thuộc dữ liệu, và còn cần
+   một <strong>bộ nhân</strong> để tính <code>(k+1)²</code> — đắt hơn hẳn bộ so sánh–trừ.</li>
+<li><strong>Mở rộng tuyến tính.</strong> Bảng tra thắng ở <code>W=8</code> (1 chu kỳ, 1024 bit ROM) nhưng
+   <code>W=16</code> cần <strong>512 kbit</strong> — tăng trưởng <strong>mũ</strong>. Thuật toán từng bit tăng <strong>tuyến tính</strong>.</li>
+<li><strong>Mở rộng sang phần thập phân không cần sửa lõi</strong> — chỉ cần chạy thêm <code>F</code> bước và nạp
+   cặp <code>00</code>. Newton–Raphson và bảng tra không có ưu thế này.</li>
+</ol>
+<p>Bảng so sánh đầy đủ với 4 kiến trúc thay thế ở <code>03_ARCHITECTURE/tradeoff.md</code> §2.</p>
+<h2 id="5-cach-thuc-hien-lo-trinh-8-buoc-tu-dac-ta-toi-gdsii">5. Cách thực hiện — lộ trình 8 bước từ đặc tả tới GDSII</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th style="text-align: right;">#</th>
+<th>Bước</th>
+<th>Trạng thái I02</th>
+<th>Bằng chứng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Chốt đặc tả: <code>root² ≤ x &lt; (root+1)²</code>, độ rộng cổng, số bước = <code>W/2</code></td>
+<td>✅</td>
+<td><code>functional_spec.md</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Viết mô hình chuẩn Python, quét <strong>vét cạn</strong> 256 giá trị</td>
+<td>✅ <strong>PASS</strong> — 7 hàm test, 10 000 ca random, kiểm cả 16 bit</td>
+<td><code>python_reference_run.log</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>Viết RTL: <code>always_comb</code> (số học) tách khỏi <code>always_ff</code> (trạng thái)</td>
+<td>🔴 <strong>có mã nhưng SAI</strong> — xung đột driver dòng 51/59</td>
+<td><code>rtl/i02_integer_sqrt.sv</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>Viết testbench tự kiểm, phủ đủ ca Charter mục 8</td>
+<td>🟡 13 ca có assertion, <strong>thiếu <code>x=100</code> và <code>x=99</code></strong></td>
+<td><code>i02_integer_sqrt_tb.sv</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Mô phỏng RTL</td>
+<td>❌ <strong>COMPILE_FAIL</strong></td>
+<td><code>iverilog_compile.log</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td>Tổng hợp, <strong>đối chiếu FF với Charter mục 10</strong></td>
+<td>🔴 tổng hợp “PASS” nhưng <strong>netlist rỗng</strong>; 7 FF so với 18–22</td>
+<td><code>synth_stat.txt</code>, <code>yosys.log</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td>STA</td>
+<td>🔴 “PASS” nhưng đo một bộ đếm 3 bit</td>
+<td><code>timing_report_max.txt</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td><strong>Mô phỏng gate-level</strong> → physical design → GDSII</td>
+<td>⬜ <strong>CHƯA CHẠY</strong> — và đây là hàng rào đáng lẽ đã bắt được lỗi</td>
+<td><code>test_matrix.csv</code> L4-GATE</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>Bước bị bỏ qua và đó là gốc rễ của việc lỗi lọt xuống tận báo cáo công suất: bước 8
+(gate-level).</strong> Mô phỏng gate-level là bước <strong>duy nhất</strong> trong toàn bộ luồng có khả năng
+phát hiện logic bị tổng hợp xoá. Mô phỏng RTL không thể (nó đọc RTL, không đọc netlist);
+STA và công suất càng không thể (chúng chỉ đo cái đang có).</p>
+</blockquote>
+<h2 id="6-so-lieu-that-da-do-duoc-va-cach-doc-chung">6. Số liệu thật đã đo được và cách đọc chúng</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Chỉ số</th>
+<th style="text-align: right;">Giá trị đo</th>
+<th>Nguồn</th>
+<th style="text-align: center;">Dùng được?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mô hình chuẩn Python</td>
+<td style="text-align: right;"><strong>PASS</strong> — 256 ca vét cạn + 10 000 random (seed 2026) + kiểm 16 bit</td>
+<td><code>python_reference_run.log</code></td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>Mô phỏng RTL</td>
+<td style="text-align: right;"><strong>COMPILE_FAIL</strong></td>
+<td><code>iverilog_compile.log</code></td>
+<td style="text-align: center;">✅ (là bằng chứng lỗi)</td>
+</tr>
+<tr>
+<td>Số cell</td>
+<td style="text-align: right;">26</td>
+<td><code>synth_stat.txt</code></td>
+<td style="text-align: center;">🔴 <strong>KHÔNG</strong></td>
+</tr>
+<tr>
+<td>Flip-flop</td>
+<td style="text-align: right;">7</td>
+<td><code>synth_stat.txt</code></td>
+<td style="text-align: center;">🔴 <strong>KHÔNG</strong></td>
+</tr>
+<tr>
+<td>Diện tích</td>
+<td style="text-align: right;">241,4816 µm²</td>
+<td><code>synth_stat.txt</code></td>
+<td style="text-align: center;">🔴 <strong>KHÔNG</strong></td>
+</tr>
+<tr>
+<td>Data arrival</td>
+<td style="text-align: right;">1,46 ns</td>
+<td><code>timing_report_max.txt</code></td>
+<td style="text-align: center;">🔴 <strong>KHÔNG</strong></td>
+</tr>
+<tr>
+<td>Slack</td>
+<td style="text-align: right;">8,40 ns (MET)</td>
+<td><code>timing_report_max.txt</code></td>
+<td style="text-align: center;">🔴 <strong>KHÔNG</strong></td>
+</tr>
+<tr>
+<td>WNS / TNS</td>
+<td style="text-align: right;">0,00 / 0,00</td>
+<td><code>wns.txt</code>, <code>tns.txt</code></td>
+<td style="text-align: center;">🔴 <strong>KHÔNG</strong></td>
+</tr>
+<tr>
+<td>Đường tới hạn</td>
+<td style="text-align: right;"><code>start → _40_</code> (= FF <code>iter[1]</code>), 4 cell</td>
+<td><code>timing_report_max.txt</code></td>
+<td style="text-align: center;">✅ (là bằng chứng lỗi)</td>
+</tr>
+<tr>
+<td>Công suất</td>
+<td style="text-align: right;">3,22e-05 W — tuần tự 93,7 %, tổ hợp 6,3 %</td>
+<td><code>power_report.txt</code></td>
+<td style="text-align: center;">🔴 <strong>KHÔNG</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="nhung-con-so-nay-chung-minh-gi">Những con số này <strong>chứng minh</strong> gì</h3>
+<ul>
+<li><strong>Thuật toán đúng trên toàn miền ở mức mô hình.</strong> Quét vét cạn 256 giá trị, 16 số chính
+  phương, 23 giá trị biên, 10 000 ca ngẫu nhiên, và kiểm cả độ rộng 16 bit — tất cả PASS.</li>
+<li><strong>Lỗi là lỗi RTL, không phải lỗi thuật toán.</strong> Hai sự thật này tách bạch nhau rất rõ.</li>
+<li><strong>Netlist là rỗng</strong> — và đây là điều các con số “xấu” chứng minh:</li>
+</ul>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Bằng chứng</th>
+<th>Con số</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cổng ra nối chết</td>
+<td><code>assign root = 4'h0;</code> (<code>netlist.v:182</code>)</td>
+</tr>
+<tr>
+<td>Cổng vào vô dụng</td>
+<td><code>x[</code> xuất hiện <strong>0 lần</strong></td>
+</tr>
+<tr>
+<td>Thiếu FF</td>
+<td><strong>7</strong> so với 18–22 (Charter mục 10)</td>
+</tr>
+<tr>
+<td>Thiếu cell số học</td>
+<td><strong>0</strong> cell <code>xor</code>/<code>xnor</code></td>
+</tr>
+<tr>
+<td>Đường tới hạn quá ngắn</td>
+<td>logic thật <strong>0,46 ns</strong> so với I01 <strong>1,24 ns</strong></td>
+</tr>
+<tr>
+<td>Cảnh báo tổng hợp</td>
+<td><strong>4</strong> dòng <code>Driver-driver conflict</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="nhung-con-so-nay-khong-chung-minh-gi">Những con số này <strong>KHÔNG</strong> chứng minh gì</h3>
+<ul>
+<li><strong>Không</strong> chứng minh RTL đúng — mô phỏng chưa chạy một chu kỳ nào.</li>
+<li><strong><code>slack 8,40 ns</code> không phải tin vui.</strong> Logic thật chỉ 0,46 ns vì gần như không còn
+  logic. So sánh: đề I01 (cùng họ thuật toán, cùng môi trường) có logic thật 1,24 ns với
+  chuỗi mượn <strong>hẹp hơn</strong> (5 bit so với 9 bit). Một thiết kế có chuỗi mượn rộng gần gấp
+  đôi mà đường tới hạn ngắn hơn một nửa là <strong>mâu thuẫn không thể giải thích bằng tối ưu
+  hoá thông thường</strong>.</li>
+<li><strong><code>tổ hợp 6,3 %</code></strong> không phải thành tích tiết kiệm công suất — nó là chữ ký của một mạch
+  chỉ còn thanh ghi trạng thái và bộ đếm. Đối chiếu I01: <strong>15,5 %</strong>.</li>
+<li><strong>Không</strong> nói được gì về tần số tối đa, diện tích thật, hay công suất thật của I02.</li>
+</ul>
+<h3 id="hai-lop-canh-bao-phai-phan-biet">Hai lớp cảnh báo — phải phân biệt</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Cảnh báo</th>
+<th>Mức</th>
+<th style="text-align: center;">Có hại?</th>
+<th>Xử lý</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sorry: constant selects in always_* processes</code> (dòng 37)</td>
+<td>Hạn chế công cụ</td>
+<td style="text-align: center;">❌ <strong>Không</strong></td>
+<td><strong>Bỏ qua.</strong> Đề I01 có cảnh báo cùng loại (dòng 34) và mô phỏng vẫn PASS</td>
+</tr>
+<tr>
+<td><code>error: root Unable to assign to unresolved wires</code> (dòng 59)</td>
+<td><strong>Lỗi ngôn ngữ</strong></td>
+<td style="text-align: center;">✅ <strong>Chí mạng</strong></td>
+<td><strong>Vá</strong> — xoá dòng 59</td>
+</tr>
+<tr>
+<td><code>Warning: Driver-driver conflict</code> (Yosys, 4 dòng)</td>
+<td><strong>Cảnh báo che giấu lỗi chí mạng</strong></td>
+<td style="text-align: center;">✅ <strong>Chí mạng</strong></td>
+<td>Nên cấu hình Yosys coi loại này là <strong>lỗi chặn</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>📌 Hàng thứ ba là bài học vận hành quan trọng nhất: <strong>một <code>Warning</code> có thể nguy hiểm hơn
+một <code>error</code></strong>, vì <code>error</code> dừng luồng còn <code>Warning</code> để luồng chạy tiếp và sinh ra số liệu
+trông có vẻ hợp lệ.</p>
+</blockquote>
+<h2 id="7-tra-loi-cac-cau-hoi-ky-thuat-cua-charter-muc-2">7. Trả lời các câu hỏi kỹ thuật của Charter (mục 2)</h2>
+<h3 id="cau-1-voi-so-8-bit-thuat-toan-chay-dung-4-chu-ky-kiem-chung-tren-waveform">Câu 1 — “Với số 8 bit, thuật toán chạy đúng 4 chu kỳ — kiểm chứng trên waveform?”</h3>
+<p><strong>Cần tách hai con số:</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Cách nói</th>
+<th style="text-align: right;">Con số</th>
+<th>Giải thích</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Số <strong>bước lặp</strong></td>
+<td style="text-align: right;"><strong>4</strong></td>
+<td><code>ROOT_W = INPUT_W/2 = 4</code>; điều kiện thoát <code>iter == ROOT_W-1</code></td>
+</tr>
+<tr>
+<td>Số chu kỳ <code>busy = 1</code></td>
+<td style="text-align: right;"><strong>4</strong></td>
+<td>Trùng với số bước lặp</td>
+</tr>
+<tr>
+<td><strong>Tổng độ trễ</strong> <code>start</code> → <code>done</code></td>
+<td style="text-align: right;"><strong>6</strong></td>
+<td>1 nạp + 4 lặp + 1 phát <code>done</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Charter viết “4 chu kỳ” — đó là <strong>số bước lặp</strong>. Trả lời đầy đủ phải nêu cả 6.</p>
+<p><strong>Kiểm chứng trên waveform: ⬜ CHƯA LÀM ĐƯỢC.</strong> <code>COMPILE_FAIL</code> nên không có VCD.
+Giản đồ suy từ mã cho <code>√255</code> và <code>√100</code> ở <code>03_ARCHITECTURE/timing_diagram.md</code> §2–3 — đã
+đối chiếu khớp từng dòng với mô hình chuẩn, nhưng <strong>không phải waveform đo được</strong>.</p>
+<blockquote>
+<p>Đối chiếu: đề I01 trả lời được câu tương đương bằng bằng chứng thật — <code>$finish at 635</code>
+trong <code>simulation.log</code>, dựng lại dòng thời gian testbench cho đúng 10 chu kỳ mỗi phép.
+I02 không có <code>simulation.log</code> nên không có bằng chứng loại này.</p>
+</blockquote>
+<h3 id="cau-2-mo-rong-len-16-bit-thi-so-chu-ky-va-dien-tich-tang-theo-quy-luat-nao-hai-quy-luat-do-co-giong-nhau-khong">Câu 2 — “Mở rộng lên 16 bit thì số chu kỳ và diện tích tăng theo quy luật nào — hai quy luật đó có giống nhau không?”</h3>
+<p>Xem §8 — đây cũng là câu Charter mục 9.</p>
+<h3 id="cau-3-thuat-toan-tung-bit-khac-thu-dan-o-cho-nao-ve-so-chu-ky">Câu 3 — “Thuật toán từng bit khác thử dần ở chỗ nào về số chu kỳ?”</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Từng bit</strong> (đang dùng)</th>
+<th><strong>Thử dần</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Số chu kỳ</td>
+<td><strong><code>W/2 + 2</code> — CỐ ĐỊNH</strong> (6 với <code>W=8</code>)</td>
+<td><strong>1…16 — PHỤ THUỘC DỮ LIỆU</strong></td>
+</tr>
+<tr>
+<td><code>x = 0</code></td>
+<td>6 chu kỳ</td>
+<td>~1 chu kỳ</td>
+</tr>
+<tr>
+<td><code>x = 255</code></td>
+<td>6 chu kỳ</td>
+<td>~16 chu kỳ</td>
+</tr>
+<tr>
+<td>Tỉ lệ xấu nhất / tốt nhất</td>
+<td><strong>1,0</strong></td>
+<td><strong>~16</strong></td>
+</tr>
+<tr>
+<td>Phần cứng cần</td>
+<td>bộ so sánh–trừ <code>W+1</code> bit</td>
+<td><strong>bộ nhân</strong> (để tính <code>(k+1)²</code>) + bộ so sánh</td>
+</tr>
+<tr>
+<td>Viết được assertion số chu kỳ?</td>
+<td>✅ <code>cyc == 6</code></td>
+<td>❌ không có giá trị cố định</td>
+</tr>
+<tr>
+<td>Ngân sách thời gian thực</td>
+<td>✅ tính được</td>
+<td>❌ phải dùng ca xấu nhất</td>
+</tr>
+<tr>
+<td>Kênh biên công suất</td>
+<td>✅ không lộ</td>
+<td>❌ công suất phụ thuộc dữ liệu</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Khác biệt cốt lõi: từng bit mua <em>tính dự đoán được</em> bằng cách luôn chạy đủ 4 bước</strong>,
+kể cả khi <code>x = 0</code> và mọi <code>qbit</code> đều bằng 0. Charter mục 10 cấm thử dần chính vì lý do này.</p>
+<h2 id="8-tra-loi-cau-phan-tich-rieng-charter-muc-9">8. Trả lời câu phân tích riêng (Charter mục 9)</h2>
+<blockquote>
+<p>“Thuật toán chạy đúng 4 chu kỳ cho số 8 bit. Kiểm chứng con số này trên waveform của
+mình, và nêu nếu mở rộng lên 16 bit thì cần bao nhiêu chu kỳ và <strong>diện tích tăng theo
+quy luật nào</strong>.”</p>
+</blockquote>
+<h3 id="8-1-phan-kiem-chung-tren-waveform-chua-lam-duoc">8.1 Phần “kiểm chứng trên waveform” — <strong>CHƯA LÀM ĐƯỢC</strong></h3>
+<p>Lý do: <code>COMPILE_FAIL</code>. Xem §7 câu 1. Giản đồ suy từ mã (đối chiếu khớp mô hình chuẩn)
+ở <code>timing_diagram.md</code>; ca B-4 trong <code>corner_cases.md</code> là cách lấy bằng chứng sau khi vá.</p>
+<h3 id="8-2-phan-16-bit-can-bao-nhieu-chu-ky-tra-loi-duoc-bang-cau-truc">8.2 Phần “16 bit cần bao nhiêu chu kỳ” — <strong>trả lời được bằng cấu trúc</strong></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th style="text-align: right;"><code>INPUT_W</code></th>
+<th style="text-align: right;"><code>ROOT_W = W/2</code></th>
+<th style="text-align: right;">Bước lặp</th>
+<th style="text-align: right;"><strong>Tổng chu kỳ = W/2 + 2</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"><strong>6</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;"><strong>16</strong></td>
+<td style="text-align: right;"><strong>8</strong></td>
+<td style="text-align: right;"><strong>8</strong></td>
+<td style="text-align: right;"><strong>10</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">18</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Quy luật số chu kỳ: <code>W/2 + 2</code> — tuyến tính theo <code>W</code>, hệ số 1/2.</strong></p>
+<p>Mô hình chuẩn xác nhận phần thuật toán: <code>test_16bit_scaling()</code> khẳng định
+<code>len(trace) == 8</code> cho <code>width=16</code> — <strong>PASS</strong>.</p>
+<h3 id="8-3-phan-dien-tich-tang-theo-quy-luat-nao-tra-loi-duoc-bang-cau-truc-khong-bang-so-do">8.3 Phần “diện tích tăng theo quy luật nào” — <strong>trả lời được bằng cấu trúc, KHÔNG bằng số đo</strong></h3>
+<p>Phân tích từng thành phần theo <code>W</code>:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Thành phần</th>
+<th>Bề rộng</th>
+<th>Quy luật theo <code>W</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_reg</code></td>
+<td><code>W</code></td>
+<td><strong>tuyến tính</strong></td>
+</tr>
+<tr>
+<td><code>rem_reg</code></td>
+<td><code>W + 1</code></td>
+<td><strong>tuyến tính</strong></td>
+</tr>
+<tr>
+<td><code>root_reg</code></td>
+<td><code>W/2</code></td>
+<td><strong>tuyến tính</strong></td>
+</tr>
+<tr>
+<td>Bộ so sánh + trừ</td>
+<td><code>W + 1</code> bit</td>
+<td><strong>tuyến tính</strong></td>
+</tr>
+<tr>
+<td><code>iter</code></td>
+<td><code>⌈log₂(W/2 + 1)⌉</code></td>
+<td><strong>logarit</strong> — bỏ qua được</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>2 bit</td>
+<td><strong>hằng số</strong></td>
+</tr>
+<tr>
+<td><strong>Tổng</strong></td>
+<td></td>
+<td><strong><code>O(W)</code> — TUYẾN TÍNH</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Ước tính cụ thể (số FF):</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th style="text-align: right;"><code>INPUT_W</code></th>
+<th style="text-align: right;"><code>x_reg</code></th>
+<th style="text-align: right;"><code>rem_reg</code></th>
+<th style="text-align: right;"><code>root_reg</code></th>
+<th style="text-align: right;"><code>iter</code></th>
+<th style="text-align: right;"><code>state</code>+cờ</th>
+<th style="text-align: right;"><strong>Tổng FF</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"><strong>28</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;"><strong>16</strong></td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"><strong>49</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"><strong>90</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Tỉ lệ <code>49/28 ≈ 1,75</code> khi <code>W</code> gấp đôi — gần 2 nhưng nhỏ hơn, vì <code>iter</code> và <code>state</code> tăng
+chậm hơn tuyến tính.</p>
+<h3 id="8-4-hai-quy-luat-do-co-giong-nhau-khong-co-cung-bac-o-w">8.4 “Hai quy luật đó có giống nhau không?” — <strong>CÓ, cùng bậc <code>O(W)</code></strong></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Đại lượng</th>
+<th>Quy luật</th>
+<th>Bậc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Số chu kỳ</td>
+<td><code>W/2 + 2</code></td>
+<td><strong><code>O(W)</code></strong></td>
+</tr>
+<tr>
+<td>Diện tích</td>
+<td><code>≈ 2,5·W + hằng</code></td>
+<td><strong><code>O(W)</code></strong></td>
+</tr>
+<tr>
+<td><strong>Tích diện tích × thời gian</strong></td>
+<td><code>≈ 1,25·W² + …</code></td>
+<td><strong><code>O(W²)</code></strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Đáp: hai quy luật giống nhau về bậc</strong> — cả hai tuyến tính theo <code>W</code>. Đây là tính chất
+làm cho thuật toán từng bit “cân bằng”: không có đại lượng nào bùng nổ so với đại lượng
+kia. Đối chiếu bảng tra: chu kỳ là <code>O(1)</code> nhưng diện tích là <code>O(2^W)</code> — <strong>hai quy luật
+hoàn toàn khác bậc</strong>, và đó là lý do bảng tra sụp đổ khi <code>W</code> tăng.</p>
+<p><strong>Một sắc thái không được bỏ qua:</strong> bộ so sánh–trừ rộng <code>W+1</code> bit có <strong>chuỗi mượn dài
+hơn</strong> khi <code>W</code> tăng, nên <strong>chu kỳ clock tối thiểu cũng phải dài ra</strong> — khoảng <code>O(log W)</code>
+nếu công cụ tổng hợp dùng carry-lookahead, <code>O(W)</code> nếu ripple. Vậy <strong>thời gian thật</strong>
+(số chu kỳ × chu kỳ clock) tăng <strong>nhanh hơn <code>O(W)</code> một chút</strong>, không hoàn toàn tuyến tính.</p>
+<h3 id="8-5-gioi-han-bat-buoc-phai-neu">8.5 🔴 Giới hạn bắt buộc phải nêu</h3>
+<blockquote>
+<p><strong>Toàn bộ §8.3 và §8.4 là phân tích CẤU TRÚC, không phải số đo.</strong></p>
+<p>Netlist hiện tại có <strong>7 FF</strong> chứ không phải 28, và <strong>không chứa</strong> <code>x_reg</code>, <code>rem_reg</code>,
+<code>root_reg</code> hay bộ so sánh–trừ nào. Vì vậy:</p>
+<ul>
+<li><strong>Không thể</strong> dùng con số 241,4816 µm² làm mốc để ngoại suy sang 16 bit.</li>
+<li><strong>Không thể</strong> khẳng định quy luật tuyến tính bằng bằng chứng đo được của chính đề này.</li>
+<li>Bằng chứng duy nhất hiện có cho phần “16 bit” là ở <strong>mức thuật toán</strong>
+  (<code>test_16bit_scaling()</code> — PASS), không phải mức phần cứng.</li>
+</ul>
+<p>Muốn có số thật: vá theo <code>known_issues.md</code>, tổng hợp lại với <code>INPUT_W = 8</code> và
+<code>INPUT_W = 16</code>, rồi so hai kết quả. Đó là một thí nghiệm rẻ và rất đáng làm.</p>
+</blockquote>
+<h2 id="9-nhung-cho-sinh-vien-hay-sai-va-cach-phat-hien">9. Những chỗ sinh viên hay sai và cách phát hiện</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th style="text-align: right;">#</th>
+<th>Sai lầm</th>
+<th>Hậu quả</th>
+<th><strong>Phát hiện bằng bằng chứng nào</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Gán cổng ra vừa bằng <code>assign</code> vừa bằng <code>&lt;=</code> trong <code>always_ff</code></td>
+<td>🔴 <strong>Xung đột driver</strong> → cổng ra bị nối chết → cả datapath biến mất</td>
+<td>Icarus: <code>error: ... Unable to assign to unresolved wires</code>. Yosys: <code>grep "Driver-driver" yosys.log</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Bỏ qua <code>Warning</code> của công cụ tổng hợp</td>
+<td>Lỗi lọt xuống tận STA và báo cáo công suất, kèm số liệu trông hợp lệ</td>
+<td>Đọc <strong>toàn bộ</strong> <code>yosys.log</code>, không chỉ đọc <code>synth_stat.txt</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>Không kiểm netlist sau tổng hợp</td>
+<td>Không biết logic đã bị xoá</td>
+<td><code>grep "assign" netlist.v</code> → tìm thấy <code>assign root = 4'h0;</code>. <strong>Đây là kỹ thuật chẩn đoán nhanh nhất</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>Không đối chiếu số FF với dự báo</td>
+<td>Thiếu 11–15 FF mà không biết</td>
+<td>So <code>synth_stat.txt</code> (7) với Charter mục 10 (18–22). Chênh &gt; 20 % là phải điều tra</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Không kiểm cổng vào có được dùng không</td>
+<td>Đầu vào bị cô lập</td>
+<td>Đếm tham chiếu tới tên cổng trong netlist. <code>x</code>: <strong>0 lần</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td>Bỏ qua mô phỏng gate-level</td>
+<td>Mất hàng rào cuối cùng</td>
+<td><code>test_matrix.csv</code> L4-GATE = <code>CHUA CHAY</code>. Một ca <code>x=4</code> sẽ ra <code>root=0</code> và phát hiện ngay</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td>Dùng <code>&gt;</code> thay vì <code>&gt;=</code> trong so sánh</td>
+<td><code>√100</code> ra <strong>8</strong> thay vì <strong>10</strong>; <code>√1</code> ra 0</td>
+<td>Ca <code>x=100</code> và <code>x=1</code> — <strong>cả hai rơi vào <code>rem_shift == trial</code></strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td>Đặt ba phép gán datapath vào nhánh <code>else</code> của <code>if (iter==ROOT_W-1)</code></td>
+<td>Thiếu 1 bit <code>root</code>; <code>√255</code> ra <strong>7</strong></td>
+<td>Ca <code>x=255</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td>Dùng <strong>thử dần</strong> cho dễ</td>
+<td>Số chu kỳ 1…16 phụ thuộc dữ liệu; cần thêm bộ nhân</td>
+<td>So số chu kỳ giữa <code>x=0</code> và <code>x=255</code>. Charter mục 10 cấm thẳng</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td>Nhầm “4 bước lặp” với “4 chu kỳ độ trễ”</td>
+<td>Báo cáo sai ngân sách thời gian cho tầng ngoài</td>
+<td>Đếm chu kỳ trong TB (ca B-4): đáp án là <strong>6</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">11</td>
+<td>Dịch <code>rem</code> 1 bit thay vì 2 bit mỗi bước</td>
+<td>Thuật toán sai hoàn toàn</td>
+<td>Bất kỳ ca nào ngoài <code>x ∈ {0,1}</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">12</td>
+<td>Coi cảnh báo <code>sorry: constant selects</code> là lỗi</td>
+<td>Mất thời gian sửa thứ không hỏng</td>
+<td>Phân biệt <code>sorry:</code> với <code>error:</code>. Đề I01 có cảnh báo cùng loại và vẫn PASS</td>
+</tr>
+<tr>
+<td style="text-align: right;">13</td>
+<td>Kết luận “slack 8,40 ns ⟹ thiết kế nhanh”</td>
+<td>Che giấu việc logic bị xoá</td>
+<td>Đối chiếu slack với số cell: 26 cell mà slack dư 84 % chu kỳ → nghi ngờ ngay</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="10-cau-hoi-mentor-nen-dat-khi-bao-ve">10. Câu hỏi mentor nên đặt khi bảo vệ</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th style="text-align: right;">#</th>
+<th>Câu hỏi</th>
+<th>Đáp án mong đợi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Vì sao <code>trial = 4·root + 1</code>? Chứng minh.</td>
+<td><code>(2r+b)² = 4r² + b·(4r+1)</code> với <code>b ∈ {0,1}</code>. Phần <code>4r²</code> đã trừ ở các bước trước (chính là <code>rem &lt;&lt; 2</code>), phần còn lại phải trừ là <code>4r+1</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Vì sao mỗi bước tiêu thụ <strong>2 bit</strong> của <code>x</code> chứ không phải 1?</td>
+<td>Mỗi bit thêm vào <code>root</code> làm <code>root²</code> tăng bậc 4. Để cân bằng, phần dư phải dịch 2 bit và nạp 2 bit mới. Vì vậy số bước là <code>W/2</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>Thuật toán chạy bao nhiêu <strong>bước lặp</strong> và bao nhiêu <strong>chu kỳ</strong>?</td>
+<td><strong>4 bước lặp</strong>, <strong>6 chu kỳ</strong> tổng độ trễ (1 nạp + 4 lặp + 1 <code>done</code>). Hai con số khác nhau, phải nói rõ</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>Số chu kỳ có phụ thuộc dữ liệu không?</td>
+<td>Không. Điều kiện thoát chỉ là <code>iter == ROOT_W-1</code>; <code>qbit</code> không ảnh hưởng <code>state</code> hay <code>iter</code>. Đây là lý do Charter mục 10 cấm “thử dần”</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td><strong>Mô phỏng RTL báo lỗi gì, và lỗi nằm ở đâu?</strong></td>
+<td><code>error: root Unable to assign to unresolved wires</code> (dòng 59). Lỗi <strong>trong DUT</strong>: <code>root</code> có hai driver — <code>assign root = root_reg;</code> (dòng 51) và <code>root &lt;= '0;</code> (dòng 59)</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td>Bản vá là gì?</td>
+<td><strong>Xoá dòng 59.</strong> Một dòng, không thêm gì. Dòng 57 (<code>root_reg &lt;= '0</code>) đã lo việc reset, và <code>root</code> chỉ là dây nối từ <code>root_reg</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td><strong>Netlist có 7 FF, Charter dự báo 18–22. Giải thích.</strong></td>
+<td>Yosys giải quyết xung đột driver bằng cách nối <code>root</code> về hằng <code>4'h0</code>. Sau đó <code>root_reg</code> → <code>trial</code> → bộ so sánh–trừ → <code>rem_reg</code> → <code>x_reg</code> chết theo dây chuyền. Cổng vào <code>x</code> có <strong>0 tham chiếu</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td>Tổng hợp báo PASS mà mô phỏng báo FAIL — tin ai?</td>
+<td><strong>Tin cả hai, và điều tra.</strong> Icarus dừng (<code>error</code>), Yosys tiếp tục (<code>Warning</code>). Hai mức nghiêm ngặt khác nhau cho cùng một lỗi. Bài học: <code>Warning</code> của công cụ tổng hợp không được bỏ qua</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td>Làm sao phát hiện nhanh một netlist bị rỗng?</td>
+<td>Ba lệnh: <code>grep "assign" netlist.v</code> (tìm cổng ra nối hằng) · đếm FF so với dự báo Charter mục 10 · <code>grep "Warning" yosys.log</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td>Bước nào trong luồng <strong>đáng lẽ</strong> đã bắt được lỗi này?</td>
+<td><strong>Mô phỏng gate-level</strong> (<code>L4-GATE</code>, hiện <code>CHUA CHAY</code>). Một ca <code>x=4</code> sẽ ra <code>root=0</code> thay vì <code>2</code>. Đây là bước <strong>duy nhất</strong> phát hiện được logic bị tổng hợp xoá</td>
+</tr>
+<tr>
+<td style="text-align: right;">11</td>
+<td><code>slack 8,40 ns</code> nghĩa là thiết kế nhanh?</td>
+<td>Không. Logic thật chỉ <strong>0,46 ns</strong> vì netlist gần như rỗng. So I01 (cùng họ, chuỗi mượn <strong>hẹp hơn</strong>): 1,24 ns. Mâu thuẫn này chính là bằng chứng</td>
+</tr>
+<tr>
+<td style="text-align: right;">12</td>
+<td>Testbench có đủ ca Charter mục 8 không?</td>
+<td><strong>Không</strong> — thiếu <code>x=100</code> và <code>x=99</code>. Cả hai đều rơi vào <code>rem_shift == trial</code>, nhắm thẳng vào ranh giới <code>&gt;</code> / <code>&gt;=</code>. Và chúng là ca duy nhất cho <code>root</code> <strong>mẫu bit xen kẽ</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">13</td>
+<td>Mở rộng lên 16 bit: chu kỳ và diện tích tăng thế nào?</td>
+<td>Chu kỳ: <code>W/2 + 2</code> → 6 thành <strong>10</strong>. Diện tích: <strong>tuyến tính</strong> theo <code>W</code> (<code>x_reg</code>, <code>rem_reg</code>, <code>root_reg</code>, bộ so sánh đều <code>O(W)</code>). <strong>Hai quy luật cùng bậc <code>O(W)</code></strong>; tích diện tích × thời gian là <code>O(W²)</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">14</td>
+<td>Vì sao không dùng bảng tra cho <code>W=8</code>?</td>
+<td>Với <code>W=8</code> bảng tra chỉ cần 1024 bit và 1 chu kỳ — rất tốt. Nhưng <code>W=16</code> cần <strong>512 kbit</strong>, tăng trưởng <strong>mũ</strong>. Và nó không còn là “theo từng bit”</td>
+</tr>
+<tr>
+<td style="text-align: right;">15</td>
+<td>Phần dư cuối có ý nghĩa gì? Sao không đưa ra ngoài?</td>
+<td><code>rem = x − root²</code> cho biết sai số cắt. Hiện <strong>không có cổng ra</strong> cho nó — khác đề I01 vốn có <code>remainder</code>. Thêm <code>rem_zero</code> (1 bit) sẽ rẻ và hữu ích; còn dư 10 chân</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="11-gioi-han-da-chung-minh-duoc-gi-chua-chung-minh-duoc-gi">11. Giới hạn: đã chứng minh được gì, chưa chứng minh được gì</h2>
+<h3 id="da-chung-minh">Đã chứng minh</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Điều</th>
+<th>Bằng chứng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thuật toán đúng trên <strong>toàn miền 256 giá trị</strong></td>
+<td><code>test_full_domain()</code> — PASS</td>
+</tr>
+<tr>
+<td><code>root² ≤ x &lt; (root+1)²</code> với mọi <code>x</code></td>
+<td><code>test_full_domain()</code>, <code>test_boundaries()</code> — PASS</td>
+</tr>
+<tr>
+<td>Đẳng thức <code>trial = 4·root + 1</code> đúng ở mọi bước</td>
+<td><code>test_trial_recurrence()</code> — PASS</td>
+</tr>
+<tr>
+<td><strong>Đúng 4 bước lặp</strong> với mọi <code>x</code></td>
+<td><code>test_cycle_count()</code> — PASS</td>
+</tr>
+<tr>
+<td>Thuật toán mở rộng đúng lên 16 bit (8 bước)</td>
+<td><code>test_16bit_scaling()</code> — PASS</td>
+</tr>
+<tr>
+<td>10 000 ca ngẫu nhiên khớp <code>math.isqrt</code></td>
+<td><code>test_random()</code> (seed 2026) — PASS</td>
+</tr>
+<tr>
+<td><strong>RTL có lỗi xung đột driver, và lỗi đó nằm ở đúng dòng 59</strong></td>
+<td><code>iverilog_compile.log</code> + 4 cảnh báo <code>Driver-driver conflict</code> trong <code>yosys.log</code></td>
+</tr>
+<tr>
+<td><strong>Netlist không chứa đường dữ liệu khai căn</strong></td>
+<td><code>assign root = 4'h0;</code> · <code>x</code> 0 tham chiếu · 7 FF · 0 cell <code>xor</code>/<code>xnor</code></td>
+</tr>
+<tr>
+<td>FSM và bộ đếm <strong>đúng và đầy đủ</strong>, không cần sửa</td>
+<td><code>03_ARCHITECTURE/fsm.md</code> §4, §7</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="chua-chung-minh-duoc">Chưa chứng minh được</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Điều</th>
+<th>Vì sao</th>
+<th>Cần gì</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RTL tính đúng <strong>một giá trị nào</strong></td>
+<td><code>COMPILE_FAIL</code></td>
+<td>Xoá dòng 59, chạy lại</td>
+</tr>
+<tr>
+<td>Độ trễ 6 chu kỳ <strong>đo được</strong></td>
+<td>Không có <code>simulation.log</code></td>
+<td>Vá + ca B-4</td>
+</tr>
+<tr>
+<td>Ca Charter <code>x=100</code>, <code>x=99</code></td>
+<td><strong>Không có trong testbench</strong></td>
+<td>Thêm 2 dòng <code>run_case</code></td>
+</tr>
+<tr>
+<td>Độ phủ toàn miền trên RTL</td>
+<td>TB có 13/256 = 5,1 % ca</td>
+<td>Ca B-3 — quét vét cạn</td>
+</tr>
+<tr>
+<td>Số cell / FF / diện tích <strong>thật</strong> của I02</td>
+<td>Netlist rỗng</td>
+<td>Vá + tổng hợp lại. Dự kiến ~28 FF, ~90–120 cell</td>
+</tr>
+<tr>
+<td>Đường tới hạn thật</td>
+<td>STA đo mạch rỗng</td>
+<td>Vá + STA lại. Dự kiến chuỗi <code>rem_reg → so sánh–trừ 9 bit → rem_reg</code>, logic thật <strong>&gt; 1,24 ns</strong></td>
+</tr>
+<tr>
+<td>Quy luật diện tích theo <code>W</code> <strong>bằng số đo</strong></td>
+<td>Không có điểm dữ liệu hợp lệ nào</td>
+<td>Vá + tổng hợp với <code>INPUT_W = 8</code> và <code>16</code>, so hai kết quả</td>
+</tr>
+<tr>
+<td>Netlist tương đương RTL</td>
+<td>Mô phỏng gate-level <code>CHUA CHAY</code></td>
+<td>Chạy TB trên <code>netlist.v</code></td>
+</tr>
+<tr>
+<td>Tần số tối đa, diện tích vật lý, DRC/LVS</td>
+<td>Chưa physical design</td>
+<td>LibreLane + sky130A — Charter xếp vào mở rộng tự nguyện</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="tuyen-bo-pham-vi">Tuyên bố phạm vi</h3>
+<p>Hồ sơ này <strong>không</strong> khẳng định I02 đã sign-off, đã tape-out, đã chế tạo, hay chạy được ở
+bất kỳ tần số nào. Nó khẳng định đúng ba điều, mỗi điều có bằng chứng riêng:</p>
+<ol>
+<li><strong>Thuật toán khai căn từng bit đã được hiểu và mô tả đúng</strong> — chứng minh vét cạn trên
+   256 giá trị ở mức mô hình Python.</li>
+<li><strong>RTL có một lỗi xung đột driver ở dòng 59</strong>, và lỗi đó khiến 74 % thiết kế bị tổng
+   hợp xoá.</li>
+<li><strong>Mọi số liệu tổng hợp / STA / công suất trong hồ sơ này mô tả một mạch rỗng</strong>, không
+   mô tả một bộ tính căn bậc hai.</li>
+</ol>
+<p>Bản vá <strong>xoá một dòng</strong> nằm ở <code>05_VERIFICATION/known_issues.md</code>. <strong>Chưa được áp dụng</strong> —
+RTL trong hồ sơ giữ nguyên bản gốc, chờ giảng viên duyệt.</p>
+<hr>
+<p><em>Phiên bản: v1.0 · Ngày: 2026-09-24</em></p>
+</main>
+<footer class="doc">
+  Tài liệu sinh từ <code>implementation-notes_I02.md</code>.
+  Mọi số liệu đều kèm công cụ, phiên bản và lệnh tái lập trong
+  <code>07_TRACEABILITY/evidence_index.md</code>.
+</footer>
+</div>
+<script>
+(function(){
+  var b=document.createElement('button');
+  b.className='themebtn'; b.type='button';
+  function lbl(){var t=document.documentElement.getAttribute('data-theme');
+    return t==='dark'?'Nen sang':(t==='light'?'Nen toi':'Doi nen');}
+  b.textContent=lbl();
+  try{var s=localStorage.getItem('rtl2gds-theme'); if(s)document.documentElement.setAttribute('data-theme',s);}catch(e){}
+  b.textContent=lbl();
+  b.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var mq=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=cur?(cur==='dark'?'light':'dark'):(mq?'light':'dark');
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('rtl2gds-theme',next);}catch(e){}
+    b.textContent=lbl();
+  });
+  document.body.appendChild(b);
+})();
+</script>
+</body>
+</html>

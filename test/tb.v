@@ -23,7 +23,7 @@ module tb;
     integer so_ca  = 0;   // đã chạy bao nhiêu ca
     integer so_sai = 0;   // sai bao nhiêu ca
 
-    tt_um_eee703128_<MSSV> dut (
+    tt_um_eee703128_24108326 dut (
         .ui_in(ui_in), .uo_out(uo_out),
         .uio_in(uio_in), .uio_out(uio_out), .uio_oe(uio_oe),
         .ena(ena), .clk(clk), .rst_n(rst_n)
@@ -34,23 +34,25 @@ module tb;
     always #5 clk = ~clk;
 
     // ── Nhiệm vụ kiểm một ca ──────────────────────────────────────────────
-    // Sửa hai tham số cho khớp đề của em.
     task kiem;
-        input [7:0] a;          // giá trị đưa vào ui_in
-        input [7:0] b;          // giá trị đưa vào uio_in
-        input [7:0] mong_doi;   // giá trị MONG ĐỢI ở uo_out — tự tính tay
-        input [255:0] ten;      // tên ca kiểm thử (tối đa 32 ký tự)
+        input [7:0] a;
+        input [7:0] b;
+        input [3:0] mong_doi;
+        input [255:0] ten;
         begin
-            ui_in  = a;
-            uio_in = b;
-            #10;                            // chờ mạch ổn định
+            ui_in = a;
+            @(negedge clk);
+            uio_in[0] = 1;
+            @(negedge clk);
+            uio_in[0] = 0;
+            wait (uo_out[4] === 1'b1);
             so_ca = so_ca + 1;
-            if (uo_out === mong_doi)
-                $display("  ✓ %0s | ui=%0d uio=%0d -> uo=%0d", ten, a, b, uo_out);
+            if (uo_out[3:0] === mong_doi)
+                $display("  ✓ %0s | ui=%0d -> root=%0d", ten, a, uo_out[3:0]);
             else begin
                 so_sai = so_sai + 1;
-                $display("  ✗ %0s | ui=%0d uio=%0d -> uo=%0d  (MONG ĐỢI %0d)",
-                         ten, a, b, uo_out, mong_doi);
+                $display("  ✗ %0s | ui=%0d -> root=%0d  (MONG ĐỢI %0d)",
+                         ten, a, uo_out[3:0], mong_doi);
             end
         end
     endtask
@@ -71,13 +73,14 @@ module tb;
         // Xoá đi và thay bằng các ca ở cột "Ca kiểm thử tối thiểu" của đề em.
         // Nhớ thêm ít nhất hai ca do em tự nghĩ — rubric tiêu chí 2 có tính điểm phần này.
 
-        kiem(  0,   0, 8'd1, "bang nhau o 0    ");   // 0 >= 0   -> alarm = 1
-        kiem(  0,   1, 8'd0, "duoi nguong      ");   // 0 >= 1   -> alarm = 0
-        kiem(200, 120, 8'd1, "tren nguong      ");   // 200>=120 -> alarm = 1
-        kiem(120, 120, 8'd1, "dung bien        ");   // 120>=120 -> alarm = 1
-        kiem(119, 120, 8'd0, "duoi bien 1 don vi");  // 119>=120 -> alarm = 0
-        kiem(255,   0, 8'd1, "gia tri lon nhat ");   // 255>=0   -> alarm = 1
-        kiem(  0, 255, 8'd0, "nguong lon nhat  ");   // 0 >= 255 -> alarm = 0
+        kiem(  0,   0, 8'd0, "khong                ");
+        kiem(  1,   0, 8'd1, "mot                  ");
+        kiem(  3,   0, 8'd1, "duoi 4               ");
+        kiem(  4,   0, 8'd2, "chinh phuong 4       ");
+        kiem(  9,   0, 8'd3, "chinh phuong 9       ");
+        kiem( 64,   0, 8'd8, "chinh phuong 64      ");
+        kiem(100,   0, 8'd10, "tu 100"); 
+        kiem(255,   0, 8'd15, "gia tri lon nhat     ");
 
         // ══════════════════ CA KIỂM THỬ CỦA EM — KẾT THÚC ══════════════════
 

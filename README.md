@@ -1,105 +1,97 @@
-# Kho mẫu B2 — EEE703128
+# I02 — Bộ tính căn bậc hai nguyên 8-bit theo từng bit
 
-> ⚠️ **ĐÂY LÀ GÓI FILE OVERLAY/THAM CHIẾU, KHÔNG PHẢI MỘT REPOSITORY CI HOÀN CHỈNH.**
-> Sinh viên phải tạo repo bằng **Use this template** từ kho GitHub chính thức do giảng viên phát trên LMS. Hạ tầng `.github/workflows/` nằm ở kho chính thức. Nếu tab **Actions** trống, báo mentor; không tự cài Docker để chữa repo thiếu workflow.
+> 🔧 **ĐỀ NÀY ĐÃ ĐƯỢC VÁ LỖI**
+>
+> Mô phỏng ban đầu không đạt. Lỗi đã được chẩn đoán, vá và **xác minh lại bằng
+> công cụ thật**. Mọi số liệu trong hồ sơ là số liệu **sau khi vá**.
+>
+> * Mã nguồn gốc: [`08_ORIGINAL_SOURCE/`](08_ORIGINAL_SOURCE/) — giữ nguyên, quay lui được
+> * Nhật ký vá: [`08_ORIGINAL_SOURCE/PATCHLOG.md`](08_ORIGINAL_SOURCE/PATCHLOG.md)
+> * Chẩn đoán đầy đủ: [`05_VERIFICATION/known_issues.md`](05_VERIFICATION/known_issues.md)
 
 
-Kho này là điểm xuất phát cho **Bài kiểm tra số 2**: chọn một đề trong 80 đề, viết Verilog, cho
-chạy qua chuỗi RTL-to-GDSII, rồi viết báo cáo giải thích kết quả.
 
-> **Bắt đầu:** bấm **Use this template → Create a new repository**, đặt tên `eee703128-b2-<MSSV>`.
-> Đừng bấm *Fork* — fork làm rối lịch sử commit, mà lịch sử commit là bằng chứng em tự làm.
-
----
-
-## Có gì trong kho này
-
-```text
-src/project.v              ← viết thiết kế của em ở đây (đang chứa ví dụ mẫu)
-test/tb.v                  ← testbench, thay bằng ca kiểm thử của đề em
-info.yaml                  ← tên đề, MSSV, tần số xung nhịp, đặt tên chân
-docs/info.md               ← mô tả thiết kế, nộp kèm
-HUONG_DAN_CHAY_FLOW.md     ← đọc trước tiên: cách chạy và cách đọc kết quả
-```
-
-## Bốn việc phải sửa
-
-| Tệp | Sửa gì |
+| | |
 |---|---|
-| `src/project.v` | Đổi `<MSSV>` trong tên module · xoá ví dụ mẫu · viết thiết kế của em |
-| `test/tb.v` | Đổi tên module cho khớp · thay ca kiểm thử · tính giá trị mong đợi **bằng tay trước** |
-| `info.yaml` | Tên đề, họ tên, MSSV, `top_module` (khớp `project.v`), `clock_hz`, đặt tên chân |
-| `docs/info.md` | Điền hết chỗ trong dấu `<>` |
-
-Xong bốn việc đó thì **Commit**. Vào thẻ **Actions**, đợi ~5 phút, tải kết quả ở mục *Artifacts*.
+| **Mã đề** | I02 |
+| **Nhóm** | I · Số học nâng cao |
+| **Độ khó** | Trung bình |
+| **Loại mạch** | Tuần tự |
+| **Sinh viên** | Hà Vĩnh Nam Khanh · 24108326 |
+| **Quy mô ước lượng (Charter)** | ~230–330 cell · 1×1 tile |
+| **Top module** | `i02_integer_sqrt` |
+| **Top TinyTapeout** | `tt_um_eee703128_24108326` |
+| **Clock** | 10 MHz, chu kỳ 10 ns |
+| **Phiên bản hồ sơ** | v1.0 · 2026-09-24 |
 
 ---
 
-## Ví dụ mẫu đang có sẵn
+## 1. Tóm tắt kết quả
 
-`src/project.v` hiện chứa case `threshold_alarm` của học phần — chính cái đã học ở tuần 8–10:
+| Tầng | Trạng thái | Kết quả chính |
+|---|---|---|
+| 01 Yêu cầu | ✅ | Yêu cầu truy vết từ Charter I02 |
+| 02 Đặc tả | ✅ | Giao diện đọc trực tiếp từ RTL; ràng buộc timing đã lập |
+| 03 Kiến trúc | ✅ | Sơ đồ khối, datapath, điều khiển, đánh đổi |
+| 04 Hiện thực | ✅ | RTL + SDC + 4 script chạy được |
+| 05 Kiểm chứng | ✅ | ✅ PASS — testbench chạy hết, không có assertion nào vi phạm |
+| 06 GDSII | 🟡 một phần | Synthesis ✅ · STA ✅ · Power ✅ · P&R ⬜ |
+| 07 Truy vết | ✅ | RTM + chỉ mục bằng chứng + giới hạn |
 
-```verilog
-alarm = 1 khi sample >= threshold
+### Số liệu đo được (không phải ước lượng)
+
+| Chỉ số | Giá trị | Công cụ |
+|---|---:|---|
+| Mô hình chuẩn Python | PASS | CPython 3 |
+| Mô phỏng RTL | PASS | Icarus Verilog 12.0 (stable) |
+| Số cell | **118** | Yosys 0.33 (git sha1 2584903a060) |
+| Flip-flop | **26** | như trên |
+| Diện tích | **1122,3264 µm²** | như trên |
+| Đường tới hạn | `_191_` → `_199_` | OpenSTA 3.1.0 |
+| **Độ trễ** | **2,86 ns** | như trên |
+| Công suất (ước lượng) | 1.75e-04 W | như trên |
+
+## 2. Đọc từ đâu
+
+| Bạn là | Đọc theo thứ tự |
+|---|---|
+| **Muốn nắm bản chất nhanh** | **[`implementation-notes_I02.md`](implementation-notes_I02.md)** — hoặc mở bản `.html` |
+| **Giảng viên chấm bài** | `07_TRACEABILITY/limitations.md` → `RTM.csv` → `06_GDSII/physical_report.md` |
+| **Sinh viên nhận đề** | `01_REQUIREMENT/application.md` → `02_SPECIFICATION/` → `03_ARCHITECTURE/` → `04_IMPLEMENTATION/README.md` |
+| **Muốn chạy lại** | `07_TRACEABILITY/evidence_index.md` §5 |
+
+## 3. Cây thư mục
+
+```
+I02/
+├── implementation-notes_I02.md      ← phân tích bản chất + cách thực hiện
+├── implementation-notes_I02.html    ← bản đọc trên trình duyệt (tự chứa)
+├── 01_REQUIREMENT/     application · requirements · scope · acceptance_criteria
+├── 02_SPECIFICATION/   functional_spec · interface · timing · corner_cases · parameters
+├── 03_ARCHITECTURE/    system_diagram · block_diagram · datapath · control · fsm
+│                       timing_diagram · tradeoff
+├── 04_IMPLEMENTATION/  rtl/ · constraints/ · scripts/ · README
+├── 05_VERIFICATION/    golden_model/ · testbench/ · assertions/ · waveforms/
+│                       testplan · test_matrix.csv · verification_report
+├── 06_GDSII/           synthesis/ sta/ power/ floorplan/ placement/ cts/
+│                       routing/ drc/ lvs/ gds/ · physical_report
+└── 07_TRACEABILITY/    RTM.csv · evidence_index · limitations
 ```
 
-Nó **không nằm trong 80 đề**, chỉ để em thấy cách nối tín hiệu vào khung chân và cách viết
-testbench. Đọc hiểu rồi xoá đi.
-
-Chạy thử ví dụ này trên máy (nếu có Icarus Verilog):
+## 4. Chạy lại toàn bộ
 
 ```bash
-iverilog -g2012 -o tb.out test/tb.v src/project.v && vvp tb.out
+python3 05_VERIFICATION/golden_model/reference_model.py
+bash    04_IMPLEMENTATION/scripts/01_run_sim.sh
+bash    04_IMPLEMENTATION/scripts/02_run_synth.sh
+sta -no_splash -exit 04_IMPLEMENTATION/scripts/03_run_sta.tcl
+bash    04_IMPLEMENTATION/scripts/04_run_librelane.sh     # cần PDK sky130A
 ```
 
-Kết quả mong đợi: **7 ca, 0 sai**.
 
-> **Vì sao testbench mẫu có ca `sample = threshold`.** Đổi `>=` thành `>` là lỗi kinh điển và
-> mạch vẫn chạy — chỉ sai đúng ở biên. Testbench mẫu bắt được lỗi đó (2/7 ca đỏ). Testbench nào
-> không có ca biên thì gần như vô dụng. Rubric tiêu chí 2 chấm chính chỗ này.
 
 ---
 
-## Khung chân — dùng chung cho mọi đề
-
-```verilog
-module tt_um_eee703128_<MSSV> (
-    input  wire [7:0] ui_in,    // 8 chân vào riêng
-    output wire [7:0] uo_out,   // 8 chân ra riêng
-    input  wire [7:0] uio_in,   // 8 chân hai chiều — chiều vào
-    output wire [7:0] uio_out,  // 8 chân hai chiều — chiều ra
-    output wire [7:0] uio_oe,   // 1 = chân đó là đầu ra
-    input  wire       ena,      // luôn = 1
-    input  wire       clk,      // xung nhịp
-    input  wire       rst_n     // reset, TÍCH CỰC MỨC THẤP
-);
-```
-
-Ba quy tắc không được phá:
-
-1. **Không đổi danh sách cổng.** Kể cả đề tổ hợp cũng phải khai báo `clk` và `rst_n`.
-2. **Mọi chân ra phải được gán.** Không dùng thì gán `8'b0`. Để hở là lỗi.
-3. **`rst_n` tích cực mức thấp** — `rst_n == 0` nghĩa là đang reset.
-
-Cột *Giao diện* của mỗi đề cho biết gán tín hiệu nào vào chân nào.
-
----
-
-## Nhắc lại điều quan trọng nhất
-
-**58 trên 100 điểm nằm ở việc đọc hiểu kết quả**, không phải ở độ khó của thiết kế. Thiết kế
-được giữ đơn giản một cách có chủ ý. Chạy ra GDS mới là nửa đầu; nửa sau — và là nửa nặng điểm hơn —
-là giải thích được các con số nghĩa là gì, và chúng **không** chứng minh được điều gì.
-
-**Học phần này không chế tạo chip.** Em thu được một tệp layout dùng để học. Không phải tape-out,
-không phải sign-off, không phải sản phẩm sẵn sàng sản xuất. Viết vượt mức bị trừ điểm — xem mục 5
-của đề bài.
-
----
-
-## Ghi chú kỹ thuật
-
-- Chuỗi công cụ: **LibreLane** (bản kế tục OpenLane, do FOSSi Foundation duy trì) trên **PDK
-  SkyWater sky130A**, chạy qua GitHub Actions.
-- Khung chân và hạ tầng CI dựa trên mẫu `ttsky-verilog-template` của dự án Tiny Tapeout.
-- **Không bắt buộc nộp lên shuttle chế tạo.** Lớp chỉ dùng phần chạy tự động, hoàn toàn miễn phí.
+*Nguồn chuẩn: `Project_Charter_80_De.docx` — mục I02. Gói nguồn: `I02_FINAL_MENTOR_PACKAGE_v1_0`.*
+*Hồ sơ này không đưa ra khẳng định nào về sign-off, tape-out, chế tạo hay kiểm tra sau chế
+tạo — những mục nằm ngoài phạm vi đề tài theo Charter mục 3.*

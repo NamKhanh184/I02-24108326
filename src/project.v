@@ -18,44 +18,123 @@
 // ─────────────────────────────────────────────────────────────────────────────
 `default_nettype none
 
-module tt_um_eee703128_<MSSV> (
-    input  wire [7:0] ui_in,    // 8 chân vào riêng
-    output wire [7:0] uo_out,   // 8 chân ra riêng
-    input  wire [7:0] uio_in,   // 8 chân hai chiều — chiều vào
-    output wire [7:0] uio_out,  // 8 chân hai chiều — chiều ra
-    output wire [7:0] uio_oe,   // 1 = chân tương ứng là đầu ra
-    input  wire       ena,      // luôn bằng 1 khi thiết kế được chọn
-    input  wire       clk,      // xung nhịp hệ thống
-    input  wire       rst_n     // reset, TÍCH CỰC MỨC THẤP
+module i02_integer_sqrt_wrapper (
+    input  wire       clk,
+    input  wire       rst_n,
+    input  wire       start,
+    input  wire [7:0] x,
+    output wire [3:0] root,
+    output wire       busy,
+    output wire       done
 );
+    reg [7:0] x_reg;
+    reg [3:0] root_reg;
+    reg busy_reg;
+    reg done_reg;
+    reg [8:0] rem_reg;
+    reg [2:0] iter;
+    reg [1:0] state;
 
-    // ══════════════════ PHẦN CỦA EM — BẮT ĐẦU ══════════════════
-    //
-    // Ví dụ mẫu dưới đây là case threshold_alarm của học phần (tuần 8–10):
-    //     alarm = 1 khi sample >= threshold
-    // Nó KHÔNG nằm trong 80 đề — chỉ để em thấy cách nối chân.
-    //
-    // Ánh xạ chân của ví dụ này:
-    //     ui_in [7:0] = sample
-    //     uio_in[7:0] = threshold
-    //     uo_out[0]   = alarm
-    //     uo_out[7:1] = 0  (phải gán, không được để hở)
+    localparam S_IDLE = 2'd0;
+    localparam S_ITER = 2'd1;
+    localparam S_DONE = 2'd2;
 
-    wire [7:0] sample    = ui_in;
-    wire [7:0] threshold = uio_in;
-    wire       alarm     = (sample >= threshold);
+    reg [8:0] rem_shift;
+    reg [8:0] trial;
+    reg [8:0] rem_next;
+    reg qbit;
 
-    assign uo_out  = {7'b0, alarm};
-    assign uio_out = 8'b0;      // ví dụ này không dùng chân hai chiều làm đầu ra
-    assign uio_oe  = 8'b0;      // ...nên toàn bộ để ở chiều VÀO
+    always @* begin
+        rem_shift = (rem_reg << 2) | x_reg[7:6];
+        trial = (root_reg << 2) | 1'b1;
+        if (rem_shift >= trial) begin
+            rem_next = rem_shift - trial;
+            qbit = 1'b1;
+        end else begin
+            rem_next = rem_shift;
+            qbit = 1'b0;
+        end
+    end
 
-    // ══════════════════ PHẦN CỦA EM — KẾT THÚC ══════════════════
+    always @(posedge clk) begin
+        if (!rst_n) begin
+            x_reg <= 0;
+            root_reg <= 0;
+            rem_reg <= 0;
+            iter <= 0;
+            busy_reg <= 0;
+            done_reg <= 0;
+            state <= S_IDLE;
+        end else begin
+            done_reg <= 0;
+            case (state)
+                S_IDLE: begin
+                    busy_reg <= 0;
+                    if (start) begin
+                        x_reg <= x;
+                        root_reg <= 0;
+                        rem_reg <= 0;
+                        iter <= 0;
+                        busy_reg <= 1;
+                        state <= S_ITER;
+                    end
+                end
+                S_ITER: begin
+                    busy_reg <= 1;
+                    rem_reg <= rem_next;
+                    root_reg <= (root_reg << 1) | qbit;
+                    x_reg <= x_reg << 2;
+                    if (iter == 3) begin
+                        busy_reg <= 0;
+                        state <= S_DONE;
+                    end else begin
+                        iter <= iter + 1'b1;
+                    end
+                end
+                S_DONE: begin
+                    busy_reg <= 0;
+                    done_reg <= 1;
+                    state <= S_IDLE;
+                end
+                default: begin
+                    busy_reg <= 0;
+                    state <= S_IDLE;
+                end
+            endcase
+        end
+    end
+    assign root = root_reg;
+    assign busy = busy_reg;
+    assign done = done_reg;
+endmodule
 
-    // Chống cảnh báo "tín hiệu khai báo mà không dùng".
-    // Nếu đề của em là mạch tổ hợp thì clk và rst_n sẽ không được dùng —
-    // dòng này giữ cho công cụ không kêu. Đề tuần tự thì bỏ clk, rst_n ra khỏi đây.
-    wire _unused = &{ena, clk, rst_n, 1'b0};
+module tt_um_eee703128_24108326 (
+    input  wire [7:0] ui_in,
+    output wire [7:0] uo_out,
+    input  wire [7:0] uio_in,
+    output wire [7:0] uio_out,
+    output wire [7:0] uio_oe,
+    input  wire       ena,
+    input  wire       clk,
+    input  wire       rst_n
+);
+    wire [3:0] root;
+    wire busy;
+    wire done;
 
+    i02_integer_sqrt_wrapper dut_i02 (
+        .clk(clk),
+        .rst_n(rst_n),
+        .start(ena && uio_in[0]),
+        .x(ui_in),
+        .root(root),
+        .busy(busy),
+        .done(done)
+    );
+
+    assign uo_out = {2'b00, busy, done, root};
+    assign uio_out = 8'b0;
+    assign uio_oe = 8'b0;
 endmodule
 
 `default_nettype wire
